@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Odonto Suprimentos | Precisão e Minimalismo</title>
+    <title> Odonto Suprimentos | Precisão e Minimalismo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -231,9 +231,10 @@
         .btn-checkout:hover { background: var(--accent-blue); }
         .btn-checkout:disabled { background: var(--text-secondary); cursor: not-allowed; }
 
+        /* TÍTULOS DE PÁGINA (Desktop) */
         .page-header { padding: 60px 0; background: var(--light-gray); text-align: center; margin-bottom: 40px; }
         .page-header h1 { font-size: 2.5rem; font-weight: 300; }
-
+        
         .checkout-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px; }
         .checkout-section { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border-color); }
         .checkout-section h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 24px; }
@@ -268,13 +269,16 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
             font-size: 2.5rem; margin: 0 auto 24px; 
         }
+        .success-container h2 { font-size: 2rem; font-weight: 400; margin-bottom: 16px; }
 
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 60px 0; }
         .contact-info h3 { font-size: 1.5rem; font-weight: 400; margin-bottom: 24px; }
+        .contact-form h3 { font-size: 1.5rem; font-weight: 400; margin-bottom: 24px; }
         .contact-info p { margin-bottom: 16px; color: var(--text-secondary); }
         .contact-info strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
 
         .politicas-container { padding: 60px 0; max-width: 900px; margin: 0 auto; }
+        .politicas-container > h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 32px; }
         .politicas-nav { display: flex; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
         .politicas-nav button {
             padding: 12px 24px; border: 1px solid var(--border-color); background: white;
@@ -290,14 +294,25 @@
         .politica-content ul { margin-left: 24px; margin-bottom: 16px; }
         .politica-content li { color: var(--text-secondary); margin-bottom: 8px; line-height: 1.8; }
 
+        /* =========================================
+           RESPONSIVIDADE (Mobile)
+           ========================================= */
         @media (max-width: 1024px) {
             .nav-desktop { display: none; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 768px) {
+            .hero { padding: 60px 0; }
             .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
             .btn-add-quick { opacity: 1; transform: translateY(0); }
+            
+            .section-header h2 { font-size: 1.5rem; }
+            .promo-banner h2 { font-size: 1.8rem; }
+            .newsletter h3 { font-size: 1.3rem; }
+
             .footer-grid { grid-template-columns: 1fr; }
             .footer-bottom { flex-direction: column; text-align: center; }
             #cart-sidebar { width: 100%; }
@@ -305,21 +320,37 @@
             .newsletter-form input { border-right: 1px solid var(--border-color); border-radius: var(--radius); }
             .newsletter-form button { border-radius: var(--radius); }
             
-            .checkout-container, .contact-grid { grid-template-columns: 1fr; }
+            .checkout-container, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
             .form-row { grid-template-columns: 1fr; }
             .summary-box { position: static; margin-top: 24px; }
+            
+            /* AJUSTE DOS TÍTULOS PRINCIPAIS EM TELAS PEQUENAS */
+            .page-header { padding: 40px 0; margin-bottom: 24px; }
+            .page-header h1 { font-size: 1.8rem; }
+            
+            .politicas-container { padding: 32px 0; }
+            .politicas-container > h1 { font-size: 1.8rem; margin-bottom: 24px; }
+            .politica-content h2 { font-size: 1.4rem; }
+            
+            .contact-grid { padding: 32px 0; }
+            .contact-info h3, .contact-form h3 { font-size: 1.3rem; }
+            
+            .success-container { margin: 40px auto; }
+            .success-container h2 { font-size: 1.5rem; }
+            .success-icon { width: 60px; height: 60px; font-size: 2rem; }
+            
+            #view-checkout h2 { font-size: 1.5rem; margin-bottom: 24px; }
         }
     </style>
 </head>
 <body>
-
-    <div class="announcement-bar">
-        Frete Grátis em compras acima de R$ 500 | Entrega Estéril Garantida
+    <div class="announcement-bar">* DEMO  *
+        Frete Grátis em compras acima de R$ 500 | Entrega  Garantida
     </div>
 
     <header>
         <div class="container header-inner">
-            <a onclick="navigate('home')" class="logo">APEX <span>ODONTO</span></a>
+            <a onclick="navigate('home')" class="logo">GERLAB <span>ODONTO</span></a>
             
             <nav class="nav-desktop">
                 <a onclick="navigate('categoria', 'zirconia')">Zircônia</a>
@@ -416,7 +447,7 @@
                         <p><strong>Horário de Atendimento</strong>Segunda a Sexta: 08h às 18h<br>Sábado: 09h às 13h</p>
                     </div>
                     <div class="contact-form">
-                        <h3 style="font-size: 1.5rem; font-weight: 400; margin-bottom: 24px;">Envie uma Mensagem</h3>
+                        <h3>Envie uma Mensagem</h3>
                         <form onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso!');">
                             <div class="form-group">
                                 <label>Nome Completo</label>
@@ -444,7 +475,7 @@
         <!-- VIEW: POLÍTICAS -->
         <div id="view-politicas" class="view">
             <div class="container politicas-container">
-                <h1 style="font-size: 2.5rem; font-weight: 300; margin-bottom: 32px;">Políticas da Loja</h1>
+                <h1>Políticas da Loja</h1>
                 
                 <div class="politicas-nav">
                     <button onclick="showPolitica('reembolso')" class="active" id="btn-reembolso">Reembolso</button>
@@ -515,7 +546,7 @@
         <div id="view-checkout" class="view">
             <div class="container" style="padding-top: 40px; padding-bottom: 80px;">
                 <button onclick="navigate('home')" class="btn-outline" style="margin-bottom: 24px; padding: 8px 16px; font-size: 0.8rem;">← Voltar à loja</button>
-                <h2 style="margin-bottom: 32px; font-weight: 400;">Finalizar Compra</h2>
+                <h2>Finalizar Compra</h2>
                 
                 <div class="checkout-container">
                     <div class="checkout-forms">
@@ -624,7 +655,7 @@
         <div id="view-success" class="view">
             <div class="container success-container">
                 <div class="success-icon">✓</div>
-                <h2 style="font-size: 2rem; font-weight: 400; margin-bottom: 16px;">Pedido Confirmado!</h2>
+                <h2>Pedido Confirmado!</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 12px;">Obrigado por comprar na Apex Odonto.</p>
                 <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 32px;">Seu número de pedido é <strong id="order-number">#000000</strong></p>
                 <p style="color: var(--text-secondary); margin-bottom: 40px; font-size: 0.9rem;">Enviamos os detalhes e o código de rastreamento para o seu e-mail.</p>
