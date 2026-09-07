@@ -42,6 +42,16 @@
         }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
         input, select, textarea { font-family: inherit; }
+        
+        /* Acessibilidade - foco visível */
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--cobalt-bright);
+            outline-offset: 2px;
+        }
 
         /* Header */
         .admin-header {
@@ -67,9 +77,7 @@
             font-weight: 900;
             letter-spacing: -0.02em;
         }
-        .admin-logo span {
-            color: var(--gold);
-        }
+        .admin-logo span { color: var(--gold); }
         .admin-badge {
             background: rgba(255,255,255,0.15);
             padding: 4px 12px;
@@ -95,20 +103,10 @@
             gap: 6px;
             text-decoration: none;
         }
-        .btn-view-store {
-            background: rgba(255,255,255,0.15);
-            color: white;
-        }
-        .btn-view-store:hover {
-            background: rgba(255,255,255,0.25);
-        }
-        .btn-logout {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-logout:hover {
-            background: #dc2626;
-        }
+        .btn-view-store { background: rgba(255,255,255,0.15); color: white; }
+        .btn-view-store:hover { background: rgba(255,255,255,0.25); }
+        .btn-logout { background: var(--danger); color: white; }
+        .btn-logout:hover { background: #dc2626; }
         .menu-toggle {
             display: none;
             background: rgba(255,255,255,0.15);
@@ -117,6 +115,8 @@
             height: 40px;
             border-radius: var(--radius);
             font-size: 1.3rem;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Layout */
@@ -137,9 +137,7 @@
             overflow-y: auto;
             transition: var(--transition);
         }
-        .sidebar-section {
-            margin-bottom: 24px;
-        }
+        .sidebar-section { margin-bottom: 24px; }
         .sidebar-title {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -171,9 +169,21 @@
             border-left-color: var(--cobalt-main);
         }
         .sidebar-item .icon {
-            font-size: 1.2rem;
             width: 24px;
-            text-align: center;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sidebar-item .icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* Content */
@@ -181,25 +191,19 @@
             flex: 1;
             padding: 32px;
             max-width: 1400px;
+            width: 100%;
         }
-        .content-header {
-            margin-bottom: 32px;
-        }
+        .content-header { margin-bottom: 32px; }
         .content-header h1 {
             font-size: 1.8rem;
             font-weight: 900;
             color: var(--cobalt-deep);
             margin-bottom: 4px;
         }
-        .content-header p {
-            color: var(--text-gray);
-            font-size: 0.95rem;
-        }
+        .content-header p { color: var(--text-gray); font-size: 0.95rem; }
 
         /* Views */
-        .admin-view {
-            display: none;
-        }
+        .admin-view { display: none; }
         .admin-view.active {
             display: block;
             animation: fadeIn 0.3s ease;
@@ -256,13 +260,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
             flex-shrink: 0;
         }
-        .stat-icon.blue { background: rgba(26, 79, 184, 0.1); }
-        .stat-icon.gold { background: rgba(251, 191, 36, 0.15); }
-        .stat-icon.green { background: rgba(16, 185, 129, 0.1); }
-        .stat-icon.red { background: rgba(239, 68, 68, 0.1); }
+        .stat-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .stat-icon.blue { background: rgba(26, 79, 184, 0.1); color: var(--cobalt-main); }
+        .stat-icon.gold { background: rgba(251, 191, 36, 0.15); color: var(--gold-dark); }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .stat-info h3 {
             font-size: 1.8rem;
             font-weight: 900;
@@ -285,7 +297,16 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--cobalt-main), var(--cobalt-bright));
@@ -295,6 +316,11 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-lg);
         }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         .btn-gold {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--cobalt-deep);
@@ -303,25 +329,15 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
         }
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #dc2626; }
         .btn-secondary {
             background: var(--bg-light);
             color: var(--text-dark);
             border: 1px solid var(--border);
         }
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 0.8rem;
-        }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-sm { padding: 8px 16px; font-size: 0.8rem; }
 
         /* Tables */
         .table-container {
@@ -329,10 +345,7 @@
             border-radius: var(--radius);
             border: 1px solid var(--border);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        table { width: 100%; border-collapse: collapse; }
         th {
             background: var(--bg-light);
             padding: 14px 16px;
@@ -349,9 +362,7 @@
             border-bottom: 1px solid var(--border);
             font-size: 0.9rem;
         }
-        tr:hover {
-            background: var(--bg-light);
-        }
+        tbody tr:hover { background: var(--bg-light); }
         .product-img-thumb {
             width: 50px;
             height: 50px;
@@ -365,7 +376,6 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            display: inline-block;
         }
         .badge-sale { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .badge-new { background: rgba(26, 79, 184, 0.1); color: var(--cobalt-main); }
@@ -374,10 +384,53 @@
         .badge-active { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .badge-inactive { background: var(--bg-light); color: var(--text-gray); }
 
-        /* Forms */
-        .form-group {
-            margin-bottom: 20px;
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
         }
+        .pagination-info {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .page-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            color: var(--text-dark);
+        }
+        .page-btn:hover:not(:disabled) {
+            background: var(--cobalt-main);
+            color: white;
+            border-color: var(--cobalt-main);
+        }
+        .page-btn.active {
+            background: var(--cobalt-main);
+            color: white;
+            border-color: var(--cobalt-main);
+        }
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-size: 0.85rem;
@@ -386,10 +439,6 @@
             margin-bottom: 6px;
         }
         .form-group label .req { color: var(--danger); }
-        .form-group small {
-            display: block;
-            margin-top: 4px;
-        }
         .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 12px 14px;
@@ -404,18 +453,9 @@
             border-color: var(--cobalt-main);
             box-shadow: 0 0 0 3px rgba(26, 79, 184, 0.1);
         }
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .form-row.three {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
 
         /* Upload */
         .upload-area {
@@ -431,25 +471,16 @@
             background: rgba(26, 79, 184, 0.08);
             border-color: var(--cobalt-bright);
         }
-        .upload-area.has-image {
-            padding: 16px;
-        }
-        .upload-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-        }
-        .upload-text {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-        }
-        .upload-text strong {
-            color: var(--cobalt-main);
-        }
+        .upload-area.has-image { padding: 16px; }
+        .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .upload-text { color: var(--text-gray); font-size: 0.9rem; }
+        .upload-text strong { color: var(--cobalt-main); }
         .preview-img {
             max-width: 100%;
             max-height: 200px;
             border-radius: 8px;
             margin: 0 auto;
+            display: block;
         }
 
         /* Toggle Switch */
@@ -459,18 +490,11 @@
             width: 52px;
             height: 28px;
         }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-color: var(--border);
             transition: var(--transition);
             border-radius: 34px;
@@ -478,29 +502,21 @@
         .toggle-slider:before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
-            left: 3px;
-            bottom: 3px;
+            height: 22px; width: 22px;
+            left: 3px; bottom: 3px;
             background-color: white;
             transition: var(--transition);
             border-radius: 50%;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        input:checked + .toggle-slider {
-            background-color: var(--success);
-        }
-        input:checked + .toggle-slider:before {
-            transform: translateX(24px);
-        }
+        input:checked + .toggle-slider { background-color: var(--success); }
+        input:checked + .toggle-slider:before { transform: translateX(24px); }
 
         /* Modal */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(10, 42, 110, 0.7);
             backdrop-filter: blur(4px);
             z-index: 2000;
@@ -510,9 +526,7 @@
             padding: 40px 20px;
             overflow-y: auto;
         }
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
         .modal {
             background: white;
             border-radius: 16px;
@@ -534,26 +548,17 @@
             justify-content: space-between;
             align-items: center;
         }
-        .modal-header h3 {
-            font-size: 1.2rem;
-            font-weight: 800;
-        }
+        .modal-header h3 { font-size: 1.2rem; font-weight: 800; }
         .modal-close {
             color: white;
             font-size: 1.5rem;
             opacity: 0.8;
             transition: var(--transition);
-            background: none;
-            border: none;
-            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
         }
-        .modal-close:hover {
-            opacity: 1;
-            transform: rotate(90deg);
-        }
-        .modal-body {
-            padding: 24px;
-        }
+        .modal-close:hover { opacity: 1; transform: rotate(90deg); }
+        .modal-body { padding: 24px; }
         .modal-footer {
             padding: 16px 24px;
             border-top: 1px solid var(--border);
@@ -593,17 +598,10 @@
             margin-bottom: 16px;
             opacity: 0.5;
         }
-        .empty-state h3 {
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
+        .empty-state h3 { color: var(--text-dark); margin-bottom: 8px; }
 
         /* Loading */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-gray);
-        }
+        .loading { text-align: center; padding: 40px; color: var(--text-gray); }
         .spinner-inline {
             width: 24px;
             height: 24px;
@@ -637,18 +635,9 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-        .message-sender {
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .message-email {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-        }
-        .message-date {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-        }
+        .message-sender { font-weight: 700; color: var(--text-dark); }
+        .message-email { font-size: 0.85rem; color: var(--text-gray); }
+        .message-date { font-size: 0.8rem; color: var(--text-gray); }
         .message-subject {
             font-weight: 700;
             color: var(--cobalt-main);
@@ -658,6 +647,8 @@
             color: var(--text-gray);
             font-size: 0.9rem;
             line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
         .message-actions {
             margin-top: 16px;
@@ -684,23 +675,15 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-        .order-id {
-            font-weight: 800;
-            color: var(--cobalt-deep);
-        }
-        .order-date {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-        }
+        .order-id { font-weight: 800; color: var(--cobalt-deep); }
+        .order-date { font-size: 0.85rem; color: var(--text-gray); }
         .order-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
             margin-bottom: 16px;
         }
-        .order-detail-item {
-            font-size: 0.9rem;
-        }
+        .order-detail-item { font-size: 0.9rem; }
         .order-detail-item strong {
             color: var(--text-dark);
             display: block;
@@ -709,9 +692,7 @@
             letter-spacing: 0.05em;
             margin-bottom: 4px;
         }
-        .order-detail-item span {
-            color: var(--text-gray);
-        }
+        .order-detail-item span { color: var(--text-gray); }
         .order-products {
             background: var(--bg-light);
             padding: 16px;
@@ -725,9 +706,7 @@
             font-size: 0.9rem;
             border-bottom: 1px solid var(--border);
         }
-        .order-product-row:last-child {
-            border-bottom: none;
-        }
+        .order-product-row:last-child { border-bottom: none; }
         .order-total {
             text-align: right;
             font-size: 1.2rem;
@@ -744,59 +723,42 @@
                 z-index: 999;
                 box-shadow: var(--shadow-lg);
             }
-            .admin-sidebar.open {
-                left: 0;
-            }
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .admin-content {
-                padding: 24px 16px;
-            }
-            .form-row, .form-row.three {
-                grid-template-columns: 1fr;
-            }
-            .order-details {
-                grid-template-columns: 1fr;
-            }
+            .admin-sidebar.open { left: 0; }
+            .menu-toggle { display: flex; }
+            .admin-content { padding: 24px 16px; }
+            .form-row, .form-row.three { grid-template-columns: 1fr; }
+            .order-details { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .admin-header {
-                padding: 0 16px;
+            .admin-header { padding: 0 16px; }
+            .admin-badge { display: none; }
+            .btn-header span { display: none; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .modal { margin: 20px; }
+            .pagination {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
             }
-            .admin-badge {
-                display: none;
-            }
-            .btn-header span {
-                display: none;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            .modal {
-                margin: 20px;
-            }
+            .pagination-controls { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
     <!-- HEADER -->
-    <header class="admin-header">
+    <header class="admin-header" role="banner">
         <div class="header-left">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
             <div class="admin-logo">S<span>7</span>TE</div>
             <span class="admin-badge">Admin</span>
         </div>
         <div class="header-right">
-            <!-- ✅ URL do site já correta -->
-            <a href="https://demonsites.github.io/sete" target="_blank" class="btn-header btn-view-store">
+            <a href="https://SEU-USUARIO.github.io/s7te-loja" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-store" aria-label="Ver loja em nova aba">
                 👁️ <span>Ver Loja</span>
             </a>
-            <button class="btn-header btn-logout" onclick="sair()">
+            <button class="btn-header btn-logout" id="btn-logout" aria-label="Sair do painel">
                 🚪 <span>Sair</span>
             </button>
         </div>
@@ -804,87 +766,87 @@
 
     <div class="admin-layout">
         <!-- SIDEBAR -->
-        <aside class="admin-sidebar" id="sidebar">
+        <aside class="admin-sidebar" id="sidebar" role="navigation" aria-label="Menu principal">
             <div class="sidebar-section">
                 <div class="sidebar-title">Principal</div>
-                <div class="sidebar-item active" data-view="dashboard" onclick="navegarPara('dashboard', this)">
-                    <span class="icon">📊</span>
+                <div class="sidebar-item active" data-view="dashboard" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg></span>
                     <span>Dashboard</span>
                 </div>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Catálogo</div>
-                <div class="sidebar-item" data-view="produtos" onclick="navegarPara('produtos', this)">
-                    <span class="icon">📦</span>
+                <div class="sidebar-item" data-view="produtos" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0v10l-8 4m8-14l-8 4m0 10L4 17V7m8 4v10"/></svg></span>
                     <span>Produtos</span>
                 </div>
-                <div class="sidebar-item" data-view="categorias" onclick="navegarPara('categorias', this)">
-                    <span class="icon">📂</span>
+                <div class="sidebar-item" data-view="categorias" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg></span>
                     <span>Categorias</span>
                 </div>
-                <div class="sidebar-item" data-view="banners" onclick="navegarPara('banners', this)">
-                    <span class="icon">🎯</span>
+                <div class="sidebar-item" data-view="banners" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/><path d="M4 15l4-4 4 4 4-6 4 4"/></svg></span>
                     <span>Banners</span>
                 </div>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Vendas</div>
-                <div class="sidebar-item" data-view="pedidos" onclick="navegarPara('pedidos', this)">
-                    <span class="icon">🛒</span>
+                <div class="sidebar-item" data-view="pedidos" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5h15M17 18a2 2 0 100 4 2 2 0 000-4zM9 18a2 2 0 100 4 2 2 0 000-4z"/></svg></span>
                     <span>Pedidos</span>
                 </div>
-                <div class="sidebar-item" data-view="mensagens" onclick="navegarPara('mensagens', this)">
-                    <span class="icon">💬</span>
+                <div class="sidebar-item" data-view="mensagens" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M8 10h8M8 14h5M21 12c0 4.4-4 8-9 8a9.8 9.8 0 01-4-.8L3 20l.8-4A8 8 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg></span>
                     <span>Mensagens</span>
                 </div>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Configurações</div>
-                <div class="sidebar-item" data-view="conteudo" onclick="navegarPara('conteudo', this)">
-                    <span class="icon">✏️</span>
+                <div class="sidebar-item" data-view="conteudo" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2 2 0 112.8 2.8L11.8 15 8 16l1-3.8 9.6-9.6z"/></svg></span>
                     <span>Conteúdo do Site</span>
                 </div>
-                <div class="sidebar-item" data-view="config" onclick="navegarPara('config', this)">
-                    <span class="icon">⚙️</span>
+                <div class="sidebar-item" data-view="config" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M10.3 3.6a1.7 1.7 0 013.4 0c0 .6.3 1.2.8 1.5l.1.1c.5.3 1.1.4 1.6.1a1.7 1.7 0 012.4 2.4c-.4.5-.4 1.2 0 1.7l.1.1c.3.5.9.8 1.5.8a1.7 1.7 0 010 3.4c-.6 0-1.2.3-1.5.8l-.1.1c-.3.5-.4 1.1-.1 1.6a1.7 1.7 0 01-2.4 2.4c-.5-.4-1.2-.4-1.7 0l-.1.1c-.5.3-.8.9-.8 1.5a1.7 1.7 0 01-3.4 0c0-.6-.3-1.2-.8-1.5l-.1-.1c-.5-.3-1.1-.4-1.6-.1a1.7 1.7 0 01-2.4-2.4c.4-.5.4-1.2 0-1.7l-.1-.1c-.3-.5-.9-.8-1.5-.8a1.7 1.7 0 010-3.4c.6 0 1.2-.3 1.5-.8l.1-.1c.3-.5.4-1.1.1-1.6a1.7 1.7 0 012.4-2.4c.5.4 1.2.4 1.7 0l.1-.1c.5-.3.8-.9.8-1.5zM12 15a3 3 0 100-6 3 3 0 000 6z"/></svg></span>
                     <span>Configurações</span>
                 </div>
             </div>
         </aside>
 
         <!-- CONTENT -->
-        <main class="admin-content">
+        <main class="admin-content" role="main">
 
             <!-- DASHBOARD -->
             <div class="admin-view active" id="view-dashboard">
                 <div class="content-header">
-                    <h1>📊 Dashboard</h1>
+                    <h1>Dashboard</h1>
                     <p>Visão geral da sua loja</p>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon blue">📦</div>
+                        <div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0v10l-8 4m8-14l-8 4m0 10L4 17V7m8 4v10"/></svg></div>
                         <div class="stat-info">
                             <h3 id="stat-produtos">0</h3>
                             <p>Produtos</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon gold">🛒</div>
+                        <div class="stat-icon gold"><svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5h15M17 18a2 2 0 100 4 2 2 0 000-4zM9 18a2 2 0 100 4 2 2 0 000-4z"/></svg></div>
                         <div class="stat-info">
                             <h3 id="stat-pedidos">0</h3>
                             <p>Pedidos</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon green">💬</div>
+                        <div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M8 10h8M8 14h5M21 12c0 4.4-4 8-9 8a9.8 9.8 0 01-4-.8L3 20l.8-4A8 8 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg></div>
                         <div class="stat-info">
                             <h3 id="stat-mensagens">0</h3>
                             <p>Mensagens</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon red">🎯</div>
+                        <div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/></svg></div>
                         <div class="stat-info">
                             <h3 id="stat-banners">0</h3>
                             <p>Banners</p>
@@ -893,22 +855,25 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🚀 Ações Rápidas</h2>
+                    <h2 class="card-title">Ações Rápidas</h2>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="navegarPara('produtos', document.querySelector('[data-view=produtos]')); abrirModalProduto()">
-                            ➕ Novo Produto
+                        <button class="btn btn-primary" data-action="quick-new-product">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                            Novo Produto
                         </button>
-                        <button class="btn btn-gold" onclick="navegarPara('banners', document.querySelector('[data-view=banners]')); abrirModalBanner()">
-                            🎯 Novo Banner
+                        <button class="btn btn-gold" data-action="quick-new-banner">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                            Novo Banner
                         </button>
-                        <button class="btn btn-secondary" onclick="navegarPara('pedidos', document.querySelector('[data-view=pedidos]'))">
-                            🛒 Ver Pedidos
+                        <button class="btn btn-secondary" data-action="quick-view-orders">
+                            <svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5h15"/></svg>
+                            Ver Pedidos
                         </button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">📦 Produtos Recentes</h2>
+                    <h2 class="card-title">Produtos Recentes</h2>
                     <div id="dashboard-produtos" class="loading">
                         <span class="spinner-inline"></span> Carregando...
                     </div>
@@ -918,12 +883,15 @@
             <!-- PRODUTOS -->
             <div class="admin-view" id="view-produtos">
                 <div class="content-header">
-                    <h1>📦 Produtos</h1>
+                    <h1>Produtos</h1>
                     <p>Gerencie o catálogo de produtos</p>
                 </div>
 
                 <div style="margin-bottom: 24px;">
-                    <button class="btn btn-gold" onclick="abrirModalProduto()">➕ Novo Produto</button>
+                    <button class="btn btn-gold" data-action="new-product">
+                        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                        Novo Produto
+                    </button>
                 </div>
 
                 <div class="card">
@@ -936,12 +904,15 @@
             <!-- CATEGORIAS -->
             <div class="admin-view" id="view-categorias">
                 <div class="content-header">
-                    <h1>📂 Categorias</h1>
+                    <h1>Categorias</h1>
                     <p>Gerencie as categorias de produtos</p>
                 </div>
 
                 <div style="margin-bottom: 24px;">
-                    <button class="btn btn-gold" onclick="abrirModalCategoria()">➕ Nova Categoria</button>
+                    <button class="btn btn-gold" data-action="new-category">
+                        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                        Nova Categoria
+                    </button>
                 </div>
 
                 <div class="card">
@@ -954,7 +925,7 @@
             <!-- BANNERS -->
             <div class="admin-view" id="view-banners">
                 <div class="content-header">
-                    <h1>🎯 Banners</h1>
+                    <h1>Banners</h1>
                     <p>Gerencie os banners promocionais da home</p>
                 </div>
 
@@ -965,7 +936,10 @@
                 </div>
 
                 <div style="margin-bottom: 24px;">
-                    <button class="btn btn-gold" onclick="abrirModalBanner()">➕ Novo Banner</button>
+                    <button class="btn btn-gold" data-action="new-banner">
+                        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                        Novo Banner
+                    </button>
                 </div>
 
                 <div class="card">
@@ -978,7 +952,7 @@
             <!-- PEDIDOS -->
             <div class="admin-view" id="view-pedidos">
                 <div class="content-header">
-                    <h1>🛒 Pedidos</h1>
+                    <h1>Pedidos</h1>
                     <p>Acompanhe os pedidos realizados</p>
                 </div>
 
@@ -992,7 +966,7 @@
             <!-- MENSAGENS -->
             <div class="admin-view" id="view-mensagens">
                 <div class="content-header">
-                    <h1>💬 Mensagens</h1>
+                    <h1>Mensagens</h1>
                     <p>Mensagens recebidas pelo formulário de contato</p>
                 </div>
 
@@ -1006,12 +980,12 @@
             <!-- CONTEÚDO -->
             <div class="admin-view" id="view-conteudo">
                 <div class="content-header">
-                    <h1>✏️ Conteúdo do Site</h1>
+                    <h1>Conteúdo do Site</h1>
                     <p>Edite todos os textos que aparecem na loja</p>
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">📢 Barra de Urgência (Topo)</h2>
+                    <h2 class="card-title">Barra de Urgência (Topo)</h2>
                     <div class="form-group">
                         <label>Texto da barra (aceita HTML: &lt;strong&gt;, &lt;em&gt;)</label>
                         <input type="text" class="form-input" id="cfg-urgencia_texto" placeholder="🚚 FRETE GRATIS em compras acima de R$ 500">
@@ -1019,7 +993,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🦸 Seção Principal (Hero)</h2>
+                    <h2 class="card-title">Seção Principal (Hero)</h2>
                     <div class="form-group">
                         <label>Selo (badge)</label>
                         <input type="text" class="form-input" id="cfg-hero_badge" placeholder="⚡ Estoque Limitado">
@@ -1039,7 +1013,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">📊 Estatísticas do Hero</h2>
+                    <h2 class="card-title">Estatísticas do Hero</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Stat 1 - Valor</label>
@@ -1083,7 +1057,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🛍️ Seção de Produtos</h2>
+                    <h2 class="card-title">Seção de Produtos</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Título</label>
@@ -1097,7 +1071,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">📧 Newsletter</h2>
+                    <h2 class="card-title">Newsletter</h2>
                     <div class="form-group">
                         <label>Título</label>
                         <input type="text" class="form-input" id="cfg-newsletter_titulo" placeholder="Ganhe 10% OFF...">
@@ -1113,7 +1087,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🦶 Rodapé</h2>
+                    <h2 class="card-title">Rodapé</h2>
                     <div class="form-group">
                         <label>Sobre a empresa</label>
                         <textarea class="form-textarea" id="cfg-footer_sobre"></textarea>
@@ -1141,7 +1115,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">📞 Página de Contato</h2>
+                    <h2 class="card-title">Página de Contato</h2>
                     <div class="form-group">
                         <label>Endereço completo</label>
                         <textarea class="form-textarea" id="cfg-contato_endereco"></textarea>
@@ -1168,7 +1142,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="salvarConteudo()" id="btn-salvar-conteudo">
+                <button class="btn btn-primary" id="btn-salvar-conteudo">
                     💾 Salvar Todo o Conteúdo
                 </button>
             </div>
@@ -1176,12 +1150,12 @@
             <!-- CONFIGURAÇÕES -->
             <div class="admin-view" id="view-config">
                 <div class="content-header">
-                    <h1>⚙️ Configurações</h1>
+                    <h1>Configurações</h1>
                     <p>Ajuste as configurações da loja</p>
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🏷️ Identidade</h2>
+                    <h2 class="card-title">Identidade</h2>
                     <div class="form-group">
                         <label>Nome da Loja (logo)</label>
                         <input type="text" class="form-input" id="cfg-logo_texto" placeholder="S7TE">
@@ -1189,7 +1163,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">🚚 Frete</h2>
+                    <h2 class="card-title">Frete</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Frete grátis acima de (R$)</label>
@@ -1203,14 +1177,14 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">💰 Desconto PIX</h2>
+                    <h2 class="card-title">Desconto PIX</h2>
                     <div class="form-group">
                         <label>Percentual de desconto no PIX (%)</label>
                         <input type="number" step="0.1" class="form-input" id="cfg-desconto_pix_percent" placeholder="5">
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="salvarConfig()">
+                <button class="btn btn-primary" id="btn-salvar-config">
                     💾 Salvar Configurações
                 </button>
             </div>
@@ -1219,11 +1193,11 @@
     </div>
 
     <!-- MODAL PRODUTO -->
-    <div class="modal-overlay" id="modal-produto">
+    <div class="modal-overlay" id="modal-produto" role="dialog" aria-labelledby="modal-produto-titulo">
         <div class="modal">
             <div class="modal-header">
-                <h3 id="modal-produto-titulo">➕ Novo Produto</h3>
-                <button class="modal-close" onclick="fecharModal('modal-produto')">×</button>
+                <h3 id="modal-produto-titulo">Novo Produto</h3>
+                <button class="modal-close" data-close-modal="modal-produto" aria-label="Fechar">×</button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="prod-id">
@@ -1257,21 +1231,21 @@
                 <div class="form-row three">
                     <div class="form-group">
                         <label>Preço de Venda (R$) <span class="req">*</span></label>
-                        <input type="number" step="0.01" class="form-input" id="prod-preco" placeholder="249.00">
+                        <input type="number" step="0.01" min="0" class="form-input" id="prod-preco" placeholder="249.00">
                     </div>
                     <div class="form-group">
                         <label>Preço Original (R$)</label>
-                        <input type="number" step="0.01" class="form-input" id="prod-preco-original" placeholder="350.00">
+                        <input type="number" step="0.01" min="0" class="form-input" id="prod-preco-original" placeholder="350.00">
                     </div>
                     <div class="form-group">
                         <label>Estoque <span class="req">*</span></label>
-                        <input type="number" class="form-input" id="prod-estoque" placeholder="25">
+                        <input type="number" min="0" class="form-input" id="prod-estoque" placeholder="25">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Imagem do Produto <span class="req">*</span></label>
-                    <div class="upload-area" id="prod-upload" onclick="document.getElementById('prod-img-input').click()">
+                    <div class="upload-area" id="prod-upload">
                         <div id="prod-upload-content">
                             <div class="upload-icon">📷</div>
                             <div class="upload-text">
@@ -1280,23 +1254,23 @@
                             </div>
                         </div>
                     </div>
-                    <input type="file" id="prod-img-input" accept="image/*" style="display:none" onchange="previewProduto(this)">
+                    <input type="file" id="prod-img-input" accept="image/*" style="display:none">
                     <input type="hidden" id="prod-img-url">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="fecharModal('modal-produto')">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarProduto()" id="btn-salvar-produto">💾 Salvar Produto</button>
+                <button class="btn btn-secondary" data-close-modal="modal-produto">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-produto">💾 Salvar Produto</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL CATEGORIA -->
-    <div class="modal-overlay" id="modal-categoria">
+    <div class="modal-overlay" id="modal-categoria" role="dialog" aria-labelledby="modal-cat-titulo">
         <div class="modal">
             <div class="modal-header">
-                <h3 id="modal-cat-titulo">➕ Nova Categoria</h3>
-                <button class="modal-close" onclick="fecharModal('modal-categoria')">×</button>
+                <h3 id="modal-cat-titulo">Nova Categoria</h3>
+                <button class="modal-close" data-close-modal="modal-categoria" aria-label="Fechar">×</button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="cat-id">
@@ -1323,18 +1297,18 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="fecharModal('modal-categoria')">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarCategoria()">💾 Salvar</button>
+                <button class="btn btn-secondary" data-close-modal="modal-categoria">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-categoria">💾 Salvar</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL BANNER -->
-    <div class="modal-overlay" id="modal-banner">
+    <div class="modal-overlay" id="modal-banner" role="dialog" aria-labelledby="modal-banner-titulo">
         <div class="modal">
             <div class="modal-header">
-                <h3>➕ Novo Banner</h3>
-                <button class="modal-close" onclick="fecharModal('modal-banner')">×</button>
+                <h3 id="modal-banner-titulo">Novo Banner</h3>
+                <button class="modal-close" data-close-modal="modal-banner" aria-label="Fechar">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1342,7 +1316,7 @@
                     <p style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 12px;">
                         📐 Tamanho recomendado: <strong>1400x300 pixels</strong>
                     </p>
-                    <div class="upload-area" id="banner-upload" onclick="document.getElementById('banner-img-input').click()">
+                    <div class="upload-area" id="banner-upload">
                         <div id="banner-upload-content">
                             <div class="upload-icon">🖼️</div>
                             <div class="upload-text">
@@ -1351,52 +1325,58 @@
                             </div>
                         </div>
                     </div>
-                    <input type="file" id="banner-img-input" accept="image/*" style="display:none" onchange="previewBanner(this)">
+                    <input type="file" id="banner-img-input" accept="image/*" style="display:none">
                     <input type="hidden" id="banner-img-url">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="fecharModal('modal-banner')">Cancelar</button>
-                <button class="btn btn-primary" onclick="salvarBanner()">💾 Salvar Banner</button>
+                <button class="btn btn-secondary" data-close-modal="modal-banner">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-banner">💾 Salvar Banner</button>
             </div>
         </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
     <script>
         // ============================================
-        // ✅ CONFIGURAÇÃO - URL JÁ CORRETA
+        // 🔧 CONFIGURAÇÃO - TROQUE SEU-USUARIO
         // ============================================
-        const URL_SITE = 'https://demonsites.github.io/sete';
+        const URL_SITE = 'https://SEU-USUARIO.github.io/s7te-loja';
 
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
         
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let produtosCache = [];
-        let categoriasCache = [];
-        let bannersCache = [];
-        let pedidosCache = [];
-        let mensagensCache = [];
-        let configCache = {};
+        // Estado global
+        const state = {
+            produtos: [],
+            categorias: [],
+            banners: [],
+            pedidos: [],
+            mensagens: [],
+            config: {},
+            pagination: {
+                produtos: { page: 1, perPage: 20, total: 0 },
+                pedidos:  { page: 1, perPage: 10, total: 0 },
+                mensagens:{ page: 1, perPage: 10, total: 0 }
+            }
+        };
 
         // ============================================
         // HELPERS
         // ============================================
         function formatarPreco(valor) {
-            return parseFloat(valor || 0).toFixed(2).replace('.', ',');
+            const num = parseFloat(valor || 0);
+            return Number.isFinite(num) ? num.toFixed(2).replace('.', ',') : '0,00';
         }
 
         function formatarData(data) {
             if (!data) return '-';
             return new Date(data).toLocaleDateString('pt-BR', { 
-                day: '2-digit', 
-                month: '2-digit', 
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
             });
         }
 
@@ -1405,7 +1385,19 @@
             if (!toast) return;
             toast.textContent = msg;
             toast.className = 'toast show' + (type === 'error' ? ' error' : '');
-            setTimeout(() => toast.classList.remove('show'), 3500);
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // 🔒 SANITIZAÇÃO - previne XSS
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         // ============================================
@@ -1426,6 +1418,7 @@
         async function sair() {
             try {
                 await supabaseClient.auth.signOut();
+                localStorage.removeItem('admin_current_view');
                 window.location.href = 'login.html';
             } catch (error) {
                 console.error('Erro ao sair:', error);
@@ -1436,23 +1429,31 @@
         // ============================================
         // NAVEGAÇÃO
         // ============================================
-        function navegarPara(view, el) {
+        function navegarPara(view) {
             document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
             
             const viewEl = document.getElementById('view-' + view);
             if (viewEl) viewEl.classList.add('active');
-            if (el) el.classList.add('active');
+            
+            const sidebarItem = document.querySelector(`.sidebar-item[data-view="${view}"]`);
+            if (sidebarItem) sidebarItem.classList.add('active');
 
             document.getElementById('sidebar').classList.remove('open');
+            localStorage.setItem('admin_current_view', view);
 
-            if (view === 'dashboard') carregarDashboard();
-            if (view === 'produtos') carregarProdutos();
-            if (view === 'categorias') carregarCategorias();
-            if (view === 'banners') carregarBanners();
-            if (view === 'pedidos') carregarPedidos();
-            if (view === 'mensagens') carregarMensagens();
-            if (view === 'conteudo' || view === 'config') carregarConfiguracoes();
+            // Carrega dados da view
+            const loaders = {
+                dashboard: carregarDashboard,
+                produtos:  () => carregarProdutos(true),
+                categorias: carregarCategorias,
+                banners:   carregarBanners,
+                pedidos:   () => carregarPedidos(true),
+                mensagens: () => carregarMensagens(true),
+                conteudo:  carregarConfiguracoes,
+                config:    carregarConfiguracoes
+            };
+            if (loaders[view]) loaders[view]();
         }
 
         function toggleSidebar() {
@@ -1481,10 +1482,7 @@
                         ctx.fillRect(0, 0, w, h);
                         ctx.drawImage(img, 0, 0, w, h);
                         canvas.toBlob(blob => {
-                            if (!blob) {
-                                reject(new Error('Falha ao comprimir'));
-                                return;
-                            }
+                            if (!blob) return reject(new Error('Falha ao comprimir'));
                             resolve(new File([blob], file.name.replace(/\.[^/.]+$/, '') + '.jpg', { type: 'image/jpeg' }));
                         }, 'image/jpeg', quality);
                     };
@@ -1504,6 +1502,9 @@
             const { data: { publicUrl } } = supabaseClient.storage.from(bucket).getPublicUrl(fileName);
             return publicUrl;
         }
+
+        // Placeholder SVG para imagens com erro
+        const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect fill='%23e2e8f0' width='50' height='50'/%3E%3C/svg%3E";
 
         // ============================================
         // DASHBOARD
@@ -1533,16 +1534,14 @@
                     container.innerHTML = `
                         <div class="table-container">
                             <table>
-                                <thead>
-                                    <tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th></tr>
-                                </thead>
+                                <thead><tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th></tr></thead>
                                 <tbody>
                                     ${recentes.map(p => `
                                         <tr>
-                                            <td><img src="${p.imagem_url}" class="product-img-thumb" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'50\\'%3E%3Crect fill=\\'%23e2e8f0\\' width=\\'50\\' height=\\'50\\'/%3E%3C/svg%3E'"></td>
-                                            <td><strong>${p.nome}</strong></td>
+                                            <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
+                                            <td><strong>${escapeHTML(p.nome)}</strong></td>
                                             <td>R$ ${formatarPreco(p.preco_venda)}</td>
-                                            <td>${p.estoque}</td>
+                                            <td>${escapeHTML(p.estoque)}</td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
@@ -1554,26 +1553,96 @@
                 }
             } catch (error) {
                 console.error('Erro ao carregar dashboard:', error);
+                showToast('Erro ao carregar dashboard', 'error');
             }
         }
 
         // ============================================
-        // PRODUTOS
+        // PAGINAÇÃO HELPER
         // ============================================
-        async function carregarProdutos() {
+        function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            let paginationHtml = container.querySelector('.pagination');
+            if (!paginationHtml) {
+                paginationHtml = document.createElement('div');
+                paginationHtml.className = 'pagination';
+                container.appendChild(paginationHtml);
+            }
+
+            const start = (currentPage - 1) * state.pagination[containerId.replace('pagination-', '')].perPage + 1;
+            const perPage = state.pagination[containerId.replace('pagination-', '')].perPage;
+            const total = state.pagination[containerId.replace('pagination-', '')].total;
+            const end = Math.min(currentPage * perPage, total);
+
+            // Botões de página
+            const pageButtons = [];
+            const maxButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+            if (endPage - startPage + 1 < maxButtons) {
+                startPage = Math.max(1, endPage - maxButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pageButtons.push(`<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`);
+            }
+
+            paginationHtml.innerHTML = `
+                <div class="pagination-info">Mostrando ${start}-${end} de ${total}</div>
+                <div class="pagination-controls">
+                    <button class="page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>← Anterior</button>
+                    ${pageButtons.join('')}
+                    <button class="page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Próxima →</button>
+                </div>
+            `;
+
+            paginationHtml.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.dataset.page);
+                    if (page >= 1 && page <= totalPages) onPageChange(page);
+                });
+            });
+        }
+
+        // ============================================
+        // PRODUTOS (com paginação)
+        // ============================================
+        async function carregarProdutos(resetPage = false) {
             const container = document.getElementById('lista-produtos');
+            const paginationId = 'pagination-produtos';
+            
+            if (resetPage) state.pagination.produtos.page = 1;
+            
             container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando produtos...</div>';
 
+            const { page, perPage } = state.pagination.produtos;
+            const from = (page - 1) * perPage;
+            const to = from + perPage - 1;
+
             try {
-                const { data, error } = await supabaseClient
+                // Carrega categorias se ainda não carregou
+                if (state.categorias.length === 0) {
+                    const { data: cats } = await supabaseClient.from('categorias').select('*').order('ordem');
+                    state.categorias = cats || [];
+                }
+
+                const { data, error, count } = await supabaseClient
                     .from('produtos')
-                    .select('*')
-                    .order('criado_em', { ascending: false });
+                    .select('*', { count: 'exact' })
+                    .order('criado_em', { ascending: false })
+                    .range(from, to);
 
                 if (error) throw error;
-                produtosCache = data || [];
+                state.produtos = data || [];
+                state.pagination.produtos.total = count || 0;
 
-                if (produtosCache.length === 0) {
+                // Remove paginação antiga
+                const oldPag = document.getElementById(paginationId);
+                if (oldPag) oldPag.remove();
+
+                if (state.produtos.length === 0 && count === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="icon">📦</div><h3>Nenhum produto cadastrado</h3><p>Clique em "Novo Produto" para começar.</p></div>';
                     return;
                 }
@@ -1593,17 +1662,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${produtosCache.map(p => `
+                                ${state.produtos.map(p => `
                                     <tr>
-                                        <td><img src="${p.imagem_url}" class="product-img-thumb" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'50\\'%3E%3Crect fill=\\'%23e2e8f0\\' width=\\'50\\' height=\\'50\\'/%3E%3C/svg%3E'"></td>
-                                        <td><strong>${p.nome}</strong></td>
-                                        <td>${getCategoriaNome(p.categoria)}</td>
+                                        <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
+                                        <td><strong>${escapeHTML(p.nome)}</strong></td>
+                                        <td>${escapeHTML(getCategoriaNome(p.categoria))}</td>
                                         <td>R$ ${formatarPreco(p.preco_venda)}</td>
-                                        <td>${p.estoque}</td>
+                                        <td>${escapeHTML(p.estoque)}</td>
                                         <td>${getBadgeHtml(p.badge)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-secondary" onclick='editarProduto(${JSON.stringify(p).replace(/'/g, "&#39;")})'>✏️</button>
-                                            <button class="btn btn-sm btn-danger" onclick="excluirProduto('${p.id}', '${p.nome.replace(/'/g, "\\'")}')">🗑️</button>
+                                            <button class="btn btn-sm btn-secondary" data-action="edit-product" data-id="${escapeHTML(p.id)}" aria-label="Editar ${escapeHTML(p.nome)}">✏️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-product" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.nome)}" aria-label="Excluir ${escapeHTML(p.nome)}">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1611,6 +1680,14 @@
                         </table>
                     </div>
                 `;
+
+                const totalPages = Math.ceil(count / perPage);
+                if (totalPages > 1) {
+                    renderizarPaginacao(paginationId, totalPages, page, (newPage) => {
+                        state.pagination.produtos.page = newPage;
+                        carregarProdutos();
+                    });
+                }
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
                 container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar produtos</h3></div>';
@@ -1627,12 +1704,12 @@
         }
 
         function getCategoriaNome(slug) {
-            const c = categoriasCache.find(cat => cat.slug === slug);
-            return c ? c.nome : slug;
+            const c = state.categorias.find(cat => cat.slug === slug);
+            return c ? c.nome : slug || '-';
         }
 
-        async function abrirModalProduto() {
-            document.getElementById('modal-produto-titulo').textContent = '➕ Novo Produto';
+        function resetFormProduto() {
+            document.getElementById('modal-produto-titulo').textContent = 'Novo Produto';
             document.getElementById('prod-id').value = '';
             document.getElementById('prod-nome').value = '';
             document.getElementById('prod-desc').value = '';
@@ -1648,13 +1725,19 @@
                 <div class="upload-icon">📷</div>
                 <div class="upload-text"><strong>Clique para enviar imagem</strong><br>PNG, JPG ou WEBP • Máx. 5MB</div>
             `;
+        }
 
+        async function abrirModalProduto() {
+            resetFormProduto();
             await carregarSelectCategorias();
             document.getElementById('modal-produto').classList.add('active');
         }
 
-        async function editarProduto(p) {
-            document.getElementById('modal-produto-titulo').textContent = '✏️ Editar Produto';
+        async function editarProduto(id) {
+            const p = state.produtos.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('modal-produto-titulo').textContent = 'Editar Produto';
             document.getElementById('prod-id').value = p.id;
             document.getElementById('prod-nome').value = p.nome;
             document.getElementById('prod-desc').value = p.descricao || '';
@@ -1669,20 +1752,20 @@
             if (p.imagem_url) {
                 const uploadArea = document.getElementById('prod-upload');
                 uploadArea.classList.add('has-image');
-                document.getElementById('prod-upload-content').innerHTML = `<img src="${p.imagem_url}" class="preview-img">`;
+                document.getElementById('prod-upload-content').innerHTML = `<img src="${escapeHTML(p.imagem_url)}" class="preview-img">`;
             }
             
             document.getElementById('modal-produto').classList.add('active');
         }
 
         async function carregarSelectCategorias(selecionada = null) {
-            if (categoriasCache.length === 0) {
+            if (state.categorias.length === 0) {
                 const { data } = await supabaseClient.from('categorias').select('*').order('ordem');
-                categoriasCache = data || [];
+                state.categorias = data || [];
             }
             const select = document.getElementById('prod-cat');
-            select.innerHTML = categoriasCache.map(c => 
-                `<option value="${c.slug}" ${c.slug === selecionada ? 'selected' : ''}>${c.nome}</option>`
+            select.innerHTML = state.categorias.map(c => 
+                `<option value="${escapeHTML(c.slug)}" ${c.slug === selecionada ? 'selected' : ''}>${escapeHTML(c.nome)}</option>`
             ).join('');
         }
 
@@ -1695,7 +1778,7 @@
                 const url = await uploadImagem(input.files[0], 'produtos');
                 document.getElementById('prod-img-url').value = url;
                 document.getElementById('prod-upload').classList.add('has-image');
-                content.innerHTML = `<img src="${url}" class="preview-img">`;
+                content.innerHTML = `<img src="${escapeHTML(url)}" class="preview-img">`;
                 showToast('✅ Imagem enviada!');
             } catch (e) {
                 showToast('Erro no upload: ' + e.message, 'error');
@@ -1716,8 +1799,12 @@
                 imagem_url: document.getElementById('prod-img-url').value
             };
 
-            if (!produto.nome || !produto.preco_venda || !produto.imagem_url) {
-                showToast('Preencha nome, preço e imagem!', 'error');
+            if (!produto.nome || isNaN(produto.preco_venda) || produto.preco_venda <= 0 || !produto.imagem_url) {
+                showToast('Preencha nome, preço válido e imagem!', 'error');
+                return;
+            }
+            if (isNaN(produto.estoque) || produto.estoque < 0) {
+                showToast('Estoque inválido!', 'error');
                 return;
             }
 
@@ -1727,13 +1814,15 @@
 
             try {
                 if (id) {
-                    await supabaseClient.from('produtos').update(produto).eq('id', id);
+                    const { error } = await supabaseClient.from('produtos').update(produto).eq('id', id);
+                    if (error) throw error;
                 } else {
-                    await supabaseClient.from('produtos').insert([produto]);
+                    const { error } = await supabaseClient.from('produtos').insert([produto]);
+                    if (error) throw error;
                 }
                 showToast('✅ Produto salvo!');
                 fecharModal('modal-produto');
-                carregarProdutos();
+                carregarProdutos(true);
             } catch (e) {
                 showToast('Erro: ' + e.message, 'error');
             } finally {
@@ -1745,7 +1834,8 @@
         async function excluirProduto(id, nome) {
             if (!confirm(`Excluir o produto "${nome}"?`)) return;
             try {
-                await supabaseClient.from('produtos').delete().eq('id', id);
+                const { error } = await supabaseClient.from('produtos').delete().eq('id', id);
+                if (error) throw error;
                 showToast('Produto excluído!');
                 carregarProdutos();
             } catch (e) {
@@ -1767,9 +1857,9 @@
                     .order('ordem');
 
                 if (error) throw error;
-                categoriasCache = data || [];
+                state.categorias = data || [];
 
-                if (categoriasCache.length === 0) {
+                if (state.categorias.length === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="icon">📂</div><h3>Nenhuma categoria</h3></div>';
                     return;
                 }
@@ -1781,15 +1871,15 @@
                                 <tr><th>Nome</th><th>Slug</th><th>Descrição</th><th>Ordem</th><th>Ações</th></tr>
                             </thead>
                             <tbody>
-                                ${categoriasCache.map(c => `
+                                ${state.categorias.map(c => `
                                     <tr>
-                                        <td><strong>${c.nome}</strong></td>
-                                        <td><code style="background: var(--bg-light); padding: 2px 8px; border-radius: 4px;">${c.slug}</code></td>
-                                        <td>${c.descricao || '-'}</td>
-                                        <td>${c.ordem}</td>
+                                        <td><strong>${escapeHTML(c.nome)}</strong></td>
+                                        <td><code style="background: var(--bg-light); padding: 2px 8px; border-radius: 4px;">${escapeHTML(c.slug)}</code></td>
+                                        <td>${escapeHTML(c.descricao) || '-'}</td>
+                                        <td>${escapeHTML(c.ordem)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-secondary" onclick='editarCategoria(${JSON.stringify(c).replace(/'/g, "&#39;")})'>✏️</button>
-                                            <button class="btn btn-sm btn-danger" onclick="excluirCategoria('${c.id}')">🗑️</button>
+                                            <button class="btn btn-sm btn-secondary" data-action="edit-category" data-id="${escapeHTML(c.id)}" aria-label="Editar ${escapeHTML(c.nome)}">✏️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-category" data-id="${escapeHTML(c.id)}" data-name="${escapeHTML(c.nome)}" aria-label="Excluir ${escapeHTML(c.nome)}">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1804,17 +1894,19 @@
         }
 
         function abrirModalCategoria() {
-            document.getElementById('modal-cat-titulo').textContent = '➕ Nova Categoria';
+            document.getElementById('modal-cat-titulo').textContent = 'Nova Categoria';
             document.getElementById('cat-id').value = '';
             document.getElementById('cat-nome').value = '';
             document.getElementById('cat-slug').value = '';
             document.getElementById('cat-desc').value = '';
-            document.getElementById('cat-ordem').value = categoriasCache.length + 1;
+            document.getElementById('cat-ordem').value = state.categorias.length + 1;
             document.getElementById('modal-categoria').classList.add('active');
         }
 
-        function editarCategoria(c) {
-            document.getElementById('modal-cat-titulo').textContent = '✏️ Editar Categoria';
+        function editarCategoria(id) {
+            const c = state.categorias.find(cat => cat.id === id);
+            if (!c) return;
+            document.getElementById('modal-cat-titulo').textContent = 'Editar Categoria';
             document.getElementById('cat-id').value = c.id;
             document.getElementById('cat-nome').value = c.nome;
             document.getElementById('cat-slug').value = c.slug;
@@ -1837,24 +1929,34 @@
                 return;
             }
 
+            const btn = document.getElementById('btn-salvar-categoria');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
             try {
                 if (id) {
-                    await supabaseClient.from('categorias').update(cat).eq('id', id);
+                    const { error } = await supabaseClient.from('categorias').update(cat).eq('id', id);
+                    if (error) throw error;
                 } else {
-                    await supabaseClient.from('categorias').insert([cat]);
+                    const { error } = await supabaseClient.from('categorias').insert([cat]);
+                    if (error) throw error;
                 }
                 showToast('✅ Categoria salva!');
                 fecharModal('modal-categoria');
                 carregarCategorias();
             } catch (e) {
                 showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar';
             }
         }
 
-        async function excluirCategoria(id) {
-            if (!confirm('Excluir esta categoria?')) return;
+        async function excluirCategoria(id, nome) {
+            if (!confirm(`Excluir a categoria "${nome}"? Produtos vinculados podem ficar sem categoria.`)) return;
             try {
-                await supabaseClient.from('categorias').delete().eq('id', id);
+                const { error } = await supabaseClient.from('categorias').delete().eq('id', id);
+                if (error) throw error;
                 showToast('Categoria excluída!');
                 carregarCategorias();
             } catch (e) {
@@ -1876,9 +1978,9 @@
                     .order('criado_em', { ascending: false });
 
                 if (error) throw error;
-                bannersCache = data || [];
+                state.banners = data || [];
 
-                if (bannersCache.length === 0) {
+                if (state.banners.length === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="icon">🎯</div><h3>Nenhum banner cadastrado</h3></div>';
                     return;
                 }
@@ -1890,19 +1992,19 @@
                                 <tr><th>Imagem</th><th>Status</th><th>Data</th><th>Ações</th></tr>
                             </thead>
                             <tbody>
-                                ${bannersCache.map(b => `
+                                ${state.banners.map(b => `
                                     <tr>
-                                        <td><img src="${b.imagem_url}" style="width: 150px; height: 50px; object-fit: cover; border-radius: 6px;" alt=""></td>
+                                        <td><img src="${escapeHTML(b.imagem_url)}" style="width: 150px; height: 50px; object-fit: cover; border-radius: 6px;" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
                                         <td>
                                             <label class="toggle-switch">
-                                                <input type="checkbox" ${b.ativo ? 'checked' : ''} onchange="toggleBanner('${b.id}', this.checked)">
+                                                <input type="checkbox" ${b.ativo ? 'checked' : ''} data-action="toggle-banner" data-id="${escapeHTML(b.id)}">
                                                 <span class="toggle-slider"></span>
                                             </label>
                                             ${b.ativo ? '<span class="badge-status badge-active" style="margin-left: 8px;">Ativo</span>' : '<span class="badge-status badge-inactive" style="margin-left: 8px;">Inativo</span>'}
                                         </td>
                                         <td>${formatarData(b.criado_em)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-danger" onclick="excluirBanner('${b.id}')">🗑️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-banner" data-id="${escapeHTML(b.id)}" aria-label="Excluir banner">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1935,7 +2037,7 @@
                 const url = await uploadImagem(input.files[0], 'banners');
                 document.getElementById('banner-img-url').value = url;
                 document.getElementById('banner-upload').classList.add('has-image');
-                content.innerHTML = `<img src="${url}" class="preview-img">`;
+                content.innerHTML = `<img src="${escapeHTML(url)}" class="preview-img">`;
                 showToast('✅ Imagem enviada!');
             } catch (e) {
                 showToast('Erro no upload: ' + e.message, 'error');
@@ -1949,22 +2051,32 @@
                 return;
             }
 
+            const btn = document.getElementById('btn-salvar-banner');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
             try {
-                await supabaseClient.from('banners').insert([{ imagem_url: url, ativo: true }]);
+                const { error } = await supabaseClient.from('banners').insert([{ imagem_url: url, ativo: true }]);
+                if (error) throw error;
                 showToast('✅ Banner criado!');
                 fecharModal('modal-banner');
                 carregarBanners();
             } catch (e) {
                 showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar Banner';
             }
         }
 
         async function toggleBanner(id, ativo) {
             try {
                 if (ativo) {
+                    // Apenas 1 banner ativo por vez
                     await supabaseClient.from('banners').update({ ativo: false }).neq('id', id);
                 }
-                await supabaseClient.from('banners').update({ ativo }).eq('id', id);
+                const { error } = await supabaseClient.from('banners').update({ ativo }).eq('id', id);
+                if (error) throw error;
                 showToast(ativo ? 'Banner ativado!' : 'Banner desativado!');
                 carregarBanners();
             } catch (e) {
@@ -1975,7 +2087,8 @@
         async function excluirBanner(id) {
             if (!confirm('Excluir este banner?')) return;
             try {
-                await supabaseClient.from('banners').delete().eq('id', id);
+                const { error } = await supabaseClient.from('banners').delete().eq('id', id);
+                if (error) throw error;
                 showToast('Banner excluído!');
                 carregarBanners();
             } catch (e) {
@@ -1984,51 +2097,64 @@
         }
 
         // ============================================
-        // PEDIDOS
+        // PEDIDOS (com paginação)
         // ============================================
-        async function carregarPedidos() {
+        async function carregarPedidos(resetPage = false) {
             const container = document.getElementById('lista-pedidos');
+            const paginationId = 'pagination-pedidos';
+            
+            if (resetPage) state.pagination.pedidos.page = 1;
+            
             container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
 
+            const { page, perPage } = state.pagination.pedidos;
+            const from = (page - 1) * perPage;
+            const to = from + perPage - 1;
+
             try {
-                const { data, error } = await supabaseClient
+                const { data, error, count } = await supabaseClient
                     .from('pedidos')
-                    .select('*')
-                    .order('criado_em', { ascending: false });
+                    .select('*', { count: 'exact' })
+                    .order('criado_em', { ascending: false })
+                    .range(from, to);
 
                 if (error) throw error;
-                pedidosCache = data || [];
+                state.pedidos = data || [];
+                state.pagination.pedidos.total = count || 0;
 
-                if (pedidosCache.length === 0) {
+                const oldPag = document.getElementById(paginationId);
+                if (oldPag) oldPag.remove();
+
+                if (state.pedidos.length === 0 && count === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><h3>Nenhum pedido ainda</h3></div>';
                     return;
                 }
 
-                container.innerHTML = pedidosCache.map(p => {
-                    const itens = p.itens || [];
+                container.innerHTML = state.pedidos.map(p => {
+                    const itens = Array.isArray(p.itens) ? p.itens : [];
                     return `
                         <div class="order-item">
                             <div class="order-header">
                                 <div>
-                                    <div class="order-id">Pedido #${p.id.substring(0, 8).toUpperCase()}</div>
+                                    <div class="order-id">Pedido #${escapeHTML(p.id.substring(0, 8).toUpperCase())}</div>
                                     <div class="order-date">${formatarData(p.criado_em)}</div>
                                 </div>
                                 <div>
-                                    <span class="badge-status ${p.status === 'aguardando_pagamento' ? 'badge-sale' : 'badge-new'}">${p.status || 'pendente'}</span>
+                                    <span class="badge-status ${p.status === 'aguardando_pagamento' ? 'badge-sale' : 'badge-new'}">${escapeHTML(p.status) || 'pendente'}</span>
                                 </div>
                             </div>
                             <div class="order-details">
                                 <div class="order-detail-item">
                                     <strong>Cliente</strong>
-                                    <span>${p.cliente_nome}</span>
+                                    <span>${escapeHTML(p.cliente_nome)}</span>
                                 </div>
                                 <div class="order-detail-item">
                                     <strong>E-mail</strong>
-                                    <span>${p.cliente_email}</span>
+                                    <span>${escapeHTML(p.cliente_email)}</span>
                                 </div>
                                 <div class="order-detail-item">
                                     <strong>Telefone</strong>
-                                    <span>${p.cliente_telefone || '-'}</span>
+                                    <span>${escapeHTML(p.cliente_telefone) || '-'}</span>
                                 </div>
                                 <div class="order-detail-item">
                                     <strong>Pagamento</strong>
@@ -2038,10 +2164,10 @@
                             <div class="order-products">
                                 ${itens.map(i => `
                                     <div class="order-product-row">
-                                        <span>${i.nome} × ${i.quantidade || 1}</span>
+                                        <span>${escapeHTML(i.nome)} × ${escapeHTML(i.quantidade) || 1}</span>
                                         <span>R$ ${formatarPreco((i.preco || 0) * (i.quantidade || 1))}</span>
                                     </div>
-                                `).join('')}
+                                `).join('') || '<em>Sem itens</em>'}
                             </div>
                             <div class="order-total">
                                 Total: R$ ${formatarPreco(p.total)}
@@ -2049,6 +2175,14 @@
                         </div>
                     `;
                 }).join('');
+
+                const totalPages = Math.ceil(count / perPage);
+                if (totalPages > 1) {
+                    renderizarPaginacao(paginationId, totalPages, page, (newPage) => {
+                        state.pagination.pedidos.page = newPage;
+                        carregarPedidos();
+                    });
+                }
             } catch (error) {
                 console.error('Erro:', error);
                 container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar pedidos</h3></div>';
@@ -2056,22 +2190,35 @@
         }
 
         // ============================================
-        // MENSAGENS
+        // MENSAGENS (com paginação)
         // ============================================
-        async function carregarMensagens() {
+        async function carregarMensagens(resetPage = false) {
             const container = document.getElementById('lista-mensagens');
+            const paginationId = 'pagination-mensagens';
+            
+            if (resetPage) state.pagination.mensagens.page = 1;
+            
             container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
 
+            const { page, perPage } = state.pagination.mensagens;
+            const from = (page - 1) * perPage;
+            const to = from + perPage - 1;
+
             try {
-                const { data, error } = await supabaseClient
+                const { data, error, count } = await supabaseClient
                     .from('contatos')
-                    .select('*')
-                    .order('criado_em', { ascending: false });
+                    .select('*', { count: 'exact' })
+                    .order('criado_em', { ascending: false })
+                    .range(from, to);
 
                 if (error) throw error;
-                mensagensCache = data || [];
+                state.mensagens = data || [];
+                state.pagination.mensagens.total = count || 0;
 
-                if (mensagensCache.length === 0) {
+                const oldPag = document.getElementById(paginationId);
+                if (oldPag) oldPag.remove();
+
+                if (state.mensagens.length === 0 && count === 0) {
                     container.innerHTML = '<div class="empty-state"><div class="icon">💬</div><h3>Nenhuma mensagem recebida</h3></div>';
                     return;
                 }
@@ -2085,24 +2232,32 @@
                     'outro': '📋 Outro assunto'
                 };
 
-                container.innerHTML = mensagensCache.map(m => `
+                container.innerHTML = state.mensagens.map(m => `
                     <div class="message-item ${m.status === 'novo' ? 'unread' : ''}">
                         <div class="message-header">
                             <div>
-                                <div class="message-sender">${m.nome}</div>
-                                <div class="message-email">${m.email}${m.telefone ? ' • ' + m.telefone : ''}</div>
+                                <div class="message-sender">${escapeHTML(m.nome)}</div>
+                                <div class="message-email">${escapeHTML(m.email)}${m.telefone ? ' • ' + escapeHTML(m.telefone) : ''}</div>
                             </div>
                             <div class="message-date">${formatarData(m.criado_em)}</div>
                         </div>
-                        <div class="message-subject">${assuntos[m.assunto] || m.assunto}</div>
-                        <div class="message-body">${m.mensagem}</div>
+                        <div class="message-subject">${escapeHTML(assuntos[m.assunto] || m.assunto)}</div>
+                        <div class="message-body">${escapeHTML(m.mensagem)}</div>
                         <div class="message-actions">
-                            <a href="mailto:${m.email}?subject=Re: ${encodeURIComponent(m.assunto || '')}" class="btn btn-sm btn-primary">📧 Responder</a>
-                            ${m.status === 'novo' ? `<button class="btn btn-sm btn-secondary" onclick="marcarLida('${m.id}')">✓ Marcar como lida</button>` : ''}
-                            <button class="btn btn-sm btn-danger" onclick="excluirMensagem('${m.id}')">🗑️</button>
+                            <a href="mailto:${escapeHTML(m.email)}?subject=Re: ${encodeURIComponent(m.assunto || '')}" class="btn btn-sm btn-primary" rel="noopener">📧 Responder</a>
+                            ${m.status === 'novo' ? `<button class="btn btn-sm btn-secondary" data-action="mark-read" data-id="${escapeHTML(m.id)}">✓ Marcar como lida</button>` : ''}
+                            <button class="btn btn-sm btn-danger" data-action="delete-message" data-id="${escapeHTML(m.id)}">🗑️</button>
                         </div>
                     </div>
                 `).join('');
+
+                const totalPages = Math.ceil(count / perPage);
+                if (totalPages > 1) {
+                    renderizarPaginacao(paginationId, totalPages, page, (newPage) => {
+                        state.pagination.mensagens.page = newPage;
+                        carregarMensagens();
+                    });
+                }
             } catch (error) {
                 console.error('Erro:', error);
                 container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar mensagens</h3></div>';
@@ -2111,7 +2266,8 @@
 
         async function marcarLida(id) {
             try {
-                await supabaseClient.from('contatos').update({ status: 'lida' }).eq('id', id);
+                const { error } = await supabaseClient.from('contatos').update({ status: 'lida' }).eq('id', id);
+                if (error) throw error;
                 showToast('Mensagem marcada como lida!');
                 carregarMensagens();
             } catch (e) {
@@ -2122,7 +2278,8 @@
         async function excluirMensagem(id) {
             if (!confirm('Excluir esta mensagem?')) return;
             try {
-                await supabaseClient.from('contatos').delete().eq('id', id);
+                const { error } = await supabaseClient.from('contatos').delete().eq('id', id);
+                if (error) throw error;
                 showToast('Mensagem excluída!');
                 carregarMensagens();
             } catch (e) {
@@ -2138,17 +2295,18 @@
                 const { data, error } = await supabaseClient.from('configuracoes').select('*');
                 if (error) throw error;
 
-                configCache = {};
-                if (data) data.forEach(c => configCache[c.chave] = c.valor);
+                state.config = {};
+                if (data) data.forEach(c => state.config[c.chave] = c.valor);
 
                 document.querySelectorAll('[id^="cfg-"]').forEach(input => {
                     const chave = input.id.replace('cfg-', '');
-                    if (configCache[chave] !== undefined) {
-                        input.value = configCache[chave];
+                    if (state.config[chave] !== undefined) {
+                        input.value = state.config[chave];
                     }
                 });
             } catch (error) {
                 console.error('Erro ao carregar configurações:', error);
+                showToast('Erro ao carregar configurações', 'error');
             }
         }
 
@@ -2211,15 +2369,135 @@
         // MODAIS
         // ============================================
         function fecharModal(id) {
-            document.getElementById(id).classList.remove('active');
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('active');
         }
 
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    overlay.classList.remove('active');
+        // ============================================
+        // EVENT DELEGATION - centraliza todos os cliques
+        // ============================================
+        document.addEventListener('click', async (e) => {
+            const target = e.target.closest('[data-action], [data-close-modal]');
+            if (!target) return;
+
+            // Fechar modal
+            if (target.dataset.closeModal) {
+                fecharModal(target.dataset.closeModal);
+                return;
+            }
+
+            const action = target.dataset.action;
+            const id = target.dataset.id;
+            const name = target.dataset.name;
+
+            switch (action) {
+                // Navegação sidebar
+                case 'navigate':
+                    navegarPara(target.dataset.view);
+                    break;
+
+                // Produtos
+                case 'new-product':
+                case 'quick-new-product':
+                    if (action === 'quick-new-product') navegarPara('produtos');
+                    abrirModalProduto();
+                    break;
+                case 'edit-product':
+                    editarProduto(id);
+                    break;
+                case 'delete-product':
+                    excluirProduto(id, name);
+                    break;
+
+                // Categorias
+                case 'new-category':
+                    abrirModalCategoria();
+                    break;
+                case 'edit-category':
+                    editarCategoria(id);
+                    break;
+                case 'delete-category':
+                    excluirCategoria(id, name);
+                    break;
+
+                // Banners
+                case 'new-banner':
+                case 'quick-new-banner':
+                    if (action === 'quick-new-banner') navegarPara('banners');
+                    abrirModalBanner();
+                    break;
+                case 'delete-banner':
+                    excluirBanner(id);
+                    break;
+
+                // Pedidos
+                case 'quick-view-orders':
+                    navegarPara('pedidos');
+                    break;
+
+                // Mensagens
+                case 'mark-read':
+                    marcarLida(id);
+                    break;
+                case 'delete-message':
+                    excluirMensagem(id);
+                    break;
+            }
+        });
+
+        // Sidebar navigation (click e teclado)
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                navegarPara(item.dataset.view);
+            });
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navegarPara(item.dataset.view);
                 }
             });
+        });
+
+        // Toggle banner (change event)
+        document.addEventListener('change', (e) => {
+            if (e.target.dataset.action === 'toggle-banner') {
+                toggleBanner(e.target.dataset.id, e.target.checked);
+            }
+        });
+
+        // Upload de imagem produto
+        document.getElementById('prod-upload').addEventListener('click', () => {
+            document.getElementById('prod-img-input').click();
+        });
+        document.getElementById('prod-img-input').addEventListener('change', (e) => previewProduto(e.target));
+
+        // Upload de imagem banner
+        document.getElementById('banner-upload').addEventListener('click', () => {
+            document.getElementById('banner-img-input').click();
+        });
+        document.getElementById('banner-img-input').addEventListener('change', (e) => previewBanner(e.target));
+
+        // Botões fixos
+        document.getElementById('btn-logout').addEventListener('click', sair);
+        document.getElementById('menu-toggle').addEventListener('click', toggleSidebar);
+        document.getElementById('btn-salvar-conteudo').addEventListener('click', salvarConteudo);
+        document.getElementById('btn-salvar-config').addEventListener('click', salvarConfig);
+        document.getElementById('btn-salvar-produto').addEventListener('click', salvarProduto);
+        document.getElementById('btn-salvar-categoria').addEventListener('click', salvarCategoria);
+        document.getElementById('btn-salvar-banner').addEventListener('click', salvarBanner);
+
+        // Fechar modal clicando fora
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+            }
         });
 
         // ============================================
@@ -2227,8 +2505,16 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', async () => {
             await verificarAuth();
-            await carregarCategorias();
-            await carregarDashboard();
+            
+            // Restaura a view anterior (persistência)
+            const savedView = localStorage.getItem('admin_current_view');
+            const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'conteudo', 'config'];
+            
+            if (savedView && validViews.includes(savedView)) {
+                navegarPara(savedView);
+            } else {
+                await carregarDashboard();
+            }
         });
     </script>
 </body>
