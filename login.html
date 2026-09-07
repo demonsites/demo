@@ -44,7 +44,6 @@
             overflow: hidden;
         }
 
-        /* Elementos decorativos de fundo */
         body::before {
             content: '';
             position: absolute;
@@ -73,7 +72,6 @@
             50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        /* Container principal */
         .login-container {
             width: 100%;
             max-width: 440px;
@@ -81,7 +79,6 @@
             z-index: 10;
         }
 
-        /* Card de login */
         .login-card {
             background: white;
             border-radius: 20px;
@@ -91,17 +88,10 @@
         }
 
         @keyframes slideUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(30px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Logo */
         .login-logo {
             text-align: center;
             margin-bottom: 32px;
@@ -137,7 +127,6 @@
             margin-top: 12px;
         }
 
-        /* Formulário */
         .form-group {
             margin-bottom: 20px;
         }
@@ -185,7 +174,6 @@
             border-color: var(--danger);
         }
 
-        /* Toggle de senha */
         .password-toggle {
             position: absolute;
             right: 16px;
@@ -202,7 +190,6 @@
             color: var(--cobalt-main);
         }
 
-        /* Lembrar e esqueci */
         .form-options {
             display: flex;
             justify-content: space-between;
@@ -232,7 +219,6 @@
             text-decoration: underline;
         }
 
-        /* Botão de login */
         .btn-login {
             width: 100%;
             padding: 16px;
@@ -266,7 +252,6 @@
             box-shadow: none;
         }
 
-        /* Spinner de loading */
         .spinner {
             width: 20px;
             height: 20px;
@@ -279,7 +264,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Mensagem de erro */
         .error-message {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--danger);
@@ -297,7 +281,6 @@
             display: flex;
         }
 
-        /* Mensagem de sucesso */
         .success-message {
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid var(--success);
@@ -315,7 +298,6 @@
             display: flex;
         }
 
-        /* Divisor */
         .divider {
             display: flex;
             align-items: center;
@@ -333,7 +315,6 @@
         .divider::before { margin-right: 12px; }
         .divider::after { margin-left: 12px; }
 
-        /* Link voltar */
         .back-link {
             text-align: center;
             margin-top: 24px;
@@ -352,7 +333,6 @@
             color: var(--cobalt-main);
         }
 
-        /* Info de segurança */
         .security-info {
             text-align: center;
             margin-top: 24px;
@@ -366,7 +346,6 @@
             gap: 6px;
         }
 
-        /* Footer */
         .login-footer {
             text-align: center;
             margin-top: 24px;
@@ -374,7 +353,6 @@
             font-size: 0.8rem;
         }
 
-        /* Responsivo */
         @media (max-width: 480px) {
             body { padding: 16px; }
             .login-card { padding: 36px 24px; }
@@ -451,7 +429,8 @@
             <div class="divider">ou</div>
 
             <div class="back-link">
-                <a href="../index.html">← Voltar para a loja</a>
+                <!-- 🔧 ALTERADO: URL completa do site -->
+                <a href="https://SEU-USUARIO.github.io/s7te-loja">← Voltar para a loja</a>
             </div>
 
             <div class="security-info">
@@ -466,21 +445,19 @@
 
     <script>
         // ============================================
-        // CONFIGURAÇÃO SUPABASE
+        // 🔧 CONFIGURAÇÃO - TROQUE SEU-USUARIO
         // ============================================
+        const URL_SITE = 'https://SEU-USUARIO.github.io/s7te-loja';
+
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
         
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ============================================
-        // VERIFICAR SE JÁ ESTÁ LOGADO
-        // ============================================
         async function verificarSessao() {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
-                    // Já está logado, redirecionar para o painel
                     window.location.href = 'index.html';
                 }
             } catch (error) {
@@ -488,9 +465,6 @@
             }
         }
 
-        // ============================================
-        // TOGGLE DE SENHA
-        // ============================================
         function togglePassword() {
             const senhaInput = document.getElementById('senha');
             const toggleBtn = document.getElementById('toggle-btn');
@@ -504,9 +478,6 @@
             }
         }
 
-        // ============================================
-        // FAZER LOGIN
-        // ============================================
         async function fazerLogin(event) {
             event.preventDefault();
 
@@ -518,11 +489,9 @@
             const errorText = document.getElementById('error-text');
             const successMsg = document.getElementById('success-message');
 
-            // Esconder mensagens anteriores
             errorMsg.classList.remove('show');
             successMsg.classList.remove('show');
 
-            // Validação básica
             if (!email || !senha) {
                 errorText.textContent = 'Preencha todos os campos';
                 errorMsg.classList.add('show');
@@ -535,7 +504,6 @@
                 return;
             }
 
-            // Estado de loading
             btn.disabled = true;
             btnText.innerHTML = '<div class="spinner"></div> Entrando...';
 
@@ -547,11 +515,9 @@
 
                 if (error) throw error;
 
-                // Login successful
                 successMsg.classList.add('show');
                 document.getElementById('success-text').textContent = 'Login realizado! Redirecionando...';
 
-                // Aguardar um pouco para mostrar a mensagem de sucesso
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 800);
@@ -559,7 +525,6 @@
             } catch (error) {
                 console.error('Erro no login:', error);
                 
-                // Mensagens de erro amigáveis
                 let mensagemErro = 'E-mail ou senha incorretos';
                 
                 if (error.message.includes('Invalid login credentials')) {
@@ -575,19 +540,14 @@
                 errorText.textContent = mensagemErro;
                 errorMsg.classList.add('show');
 
-                // Resetar botão
                 btn.disabled = false;
                 btnText.textContent = 'Entrar';
 
-                // Limpar senha
                 document.getElementById('senha').value = '';
                 document.getElementById('senha').focus();
             }
         }
 
-        // ============================================
-        // RECUPERAR SENHA
-        // ============================================
         async function recuperarSenha(event) {
             event.preventDefault();
             
@@ -608,7 +568,7 @@
 
             try {
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/admin/login.html'
+                    redirectTo: window.location.origin + '/login.html'
                 });
 
                 if (error) throw error;
@@ -623,13 +583,8 @@
             }
         }
 
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             verificarSessao();
-            
-            // Focar no campo de e-mail
             document.getElementById('email').focus();
         });
     </script>
