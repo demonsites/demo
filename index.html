@@ -285,6 +285,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--cobalt-main), var(--cobalt-bright));
@@ -364,6 +365,7 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
+            display: inline-block;
         }
         .badge-sale { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .badge-new { background: rgba(26, 79, 184, 0.1); color: var(--cobalt-main); }
@@ -384,6 +386,10 @@
             margin-bottom: 6px;
         }
         .form-group label .req { color: var(--danger); }
+        .form-group small {
+            display: block;
+            margin-top: 4px;
+        }
         .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 12px 14px;
@@ -537,6 +543,9 @@
             font-size: 1.5rem;
             opacity: 0.8;
             transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
         }
         .modal-close:hover {
             opacity: 1;
@@ -656,6 +665,7 @@
             border-top: 1px solid var(--border);
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         /* Order item */
@@ -782,8 +792,8 @@
             <span class="admin-badge">Admin</span>
         </div>
         <div class="header-right">
-            <!-- 🔧 URL do site publicada -->
-            <a href="https://SEU-USUARIO.github.io/s7te-loja" target="_blank" class="btn-header btn-view-store">
+            <!-- ✅ URL do site já correta -->
+            <a href="https://demonsites.github.io/sete" target="_blank" class="btn-header btn-view-store">
                 👁️ <span>Ver Loja</span>
             </a>
             <button class="btn-header btn-logout" onclick="sair()">
@@ -1356,9 +1366,9 @@
 
     <script>
         // ============================================
-        // 🔧 CONFIGURAÇÃO - TROQUE SEU-USUARIO
+        // ✅ CONFIGURAÇÃO - URL JÁ CORRETA
         // ============================================
-        const URL_SITE = 'https://SEU-USUARIO.github.io/s7te-loja';
+        const URL_SITE = 'https://demonsites.github.io/sete';
 
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
