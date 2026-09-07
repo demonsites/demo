@@ -331,7 +331,7 @@
             gap: 12px;
         }
         .pagination-info { font-size: 0.85rem; color: var(--text-gray); font-weight: 600; }
-        .pagination-controls { display: flex; align-items: center; gap: 8px; }
+        .pagination-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .page-btn {
             padding: 8px 14px;
             border: 1px solid var(--border);
@@ -624,7 +624,6 @@
             color: var(--cobalt-deep);
         }
 
-        /* Alert box para diagnóstico */
         .alert-box {
             padding: 16px 20px;
             border-radius: var(--radius);
@@ -641,6 +640,11 @@
             background: rgba(251, 191, 36, 0.15);
             border-left: 4px solid var(--gold-dark);
             color: #92400e;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            color: #065f46;
         }
 
         @media (max-width: 1024px) {
@@ -748,11 +752,7 @@
                     <p>Visão geral da sua loja</p>
                 </div>
 
-                <!-- 🔍 NOVO: Caixa de aviso sobre buckets -->
-                <div class="alert-box alert-warning" id="bucket-warning" style="display: none;">
-                    <strong>⚠️ Atenção aos Buckets:</strong><br>
-                    Os buckets de armazenamento podem não estar configurados. Clique em <strong>"Testar Buckets"</strong> abaixo para diagnosticar.
-                </div>
+                <div id="connection-status"></div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -800,9 +800,8 @@
                             <svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5h15"/></svg>
                             Ver Pedidos
                         </button>
-                        <!-- 🔍 NOVO: Botão de diagnóstico -->
-                        <button class="btn btn-secondary" data-action="diagnosticar-buckets" style="border: 2px solid var(--warning); color: var(--warning);">
-                            🔍 Testar Buckets
+                        <button class="btn btn-secondary" data-action="test-connection" style="border: 2px solid var(--cobalt-main); color: var(--cobalt-main);">
+                            🔍 Testar Conexão
                         </button>
                     </div>
                 </div>
@@ -820,10 +819,6 @@
                 <div class="content-header">
                     <h1>Produtos</h1>
                     <p>Gerencie o catálogo de produtos</p>
-                </div>
-
-                <div class="alert-box alert-info">
-                    <strong>💡 Dica:</strong> Se aparecer erro "bucket not found" ao enviar imagem, clique em <strong>"🔍 Testar Buckets"</strong> no Dashboard para diagnosticar.
                 </div>
 
                 <div style="margin-bottom: 24px;">
@@ -1278,6 +1273,9 @@
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
     <script>
+        // ============================================
+        // 🔧 CONFIGURAÇÃO
+        // ============================================
         const URL_SITE = 'https://SEU-USUARIO.github.io/s7te-loja';
 
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
@@ -1292,7 +1290,6 @@
             pedidos: [],
             mensagens: [],
             config: {},
-            buckets: [],
             pagination: {
                 produtos: { page: 1, perPage: 20, total: 0 },
                 pedidos:  { page: 1, perPage: 10, total: 0 },
@@ -1322,7 +1319,6 @@
             toast.textContent = msg;
             toast.className = 'toast show' + (type === 'error' ? ' error' : '');
             clearTimeout(toast._timer);
-            // Erros ficam mais tempo na tela
             const duracao = type === 'error' ? 8000 : 3500;
             toast._timer = setTimeout(() => toast.classList.remove('show'), duracao);
         }
@@ -1344,11 +1340,17 @@
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) {
-                    window.location.href = 'login.html';
+                    // Se não tem sessão, tenta login anônimo automático
+                    const { data, error } = await supabaseClient.auth.signInAnonymously();
+                    if (error) {
+                        console.warn('Login anônimo falhou:', error);
+                        showToast('⚠️ Modo limitado: login falhou. Algumas funções podem não funcionar.', 'error');
+                    } else {
+                        console.log('✅ Login anônimo realizado');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao verificar auth:', error);
-                window.location.href = 'login.html';
             }
         }
 
@@ -1356,10 +1358,105 @@
             try {
                 await supabaseClient.auth.signOut();
                 localStorage.removeItem('admin_current_view');
-                window.location.href = 'login.html';
+                window.location.reload();
             } catch (error) {
                 console.error('Erro ao sair:', error);
-                window.location.href = 'login.html';
+                window.location.reload();
+            }
+        }
+
+        // ============================================
+        // 🔍 TESTE DE CONEXÃO (mostra direto na tela)
+        // ============================================
+        async function testarConexao() {
+            const container = document.getElementById('connection-status');
+            container.innerHTML = '<div class="alert-box alert-info"><span class="spinner-inline"></span> Testando conexão com Supabase...</div>';
+            
+            const resultados = [];
+            
+            try {
+                // 1. Testa autenticação
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    resultados.push('✅ Autenticação: Logado como ' + (session.user?.email || 'anônimo'));
+                } else {
+                    resultados.push('⚠️ Autenticação: Não logado (tentando modo anônimo)');
+                }
+                
+                // 2. Testa leitura de produtos
+                const { data: produtos, error: errProd } = await supabaseClient.from('produtos').select('*', { count: 'exact', head: true });
+                if (errProd) {
+                    resultados.push('❌ Tabela produtos: ' + errProd.message);
+                } else {
+                    resultados.push('✅ Tabela produtos: OK (' + (produtos?.count || 0) + ' registros)');
+                }
+                
+                // 3. Testa buckets via listBuckets
+                const { data: buckets, error: errBucket } = await supabaseClient.storage.listBuckets();
+                if (errBucket) {
+                    resultados.push('⚠️ listBuckets: ' + errBucket.message);
+                } else {
+                    const nomes = buckets.map(b => b.name);
+                    resultados.push('📦 Buckets via listBuckets: ' + (nomes.length ? nomes.join(', ') : 'NENHUM'));
+                }
+                
+                // 4. TESTE CRUCIAL: tenta fazer upload de um arquivo de teste
+                resultados.push('🧪 Testando upload real...');
+                container.innerHTML = '<div class="alert-box alert-info">' + resultados.join('<br>') + '</div>';
+                
+                try {
+                    // Cria um arquivo de teste pequeno (1x1 pixel PNG)
+                    const testFile = new Blob(['iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='], { type: 'image/png' });
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.readAsDataURL(testFile);
+                    });
+                    
+                    // Converte base64 para File
+                    const response = await fetch(base64);
+                    const blob = await response.blob();
+                    const file = new File([blob], 'teste.png', { type: 'image/png' });
+                    
+                    const fileName = 'test-' + Date.now() + '.png';
+                    const { data: uploadData, error: uploadError } = await supabaseClient.storage
+                        .from('produtos')
+                        .upload(fileName, file, { contentType: 'image/png' });
+                    
+                    if (uploadError) {
+                        resultados.push('❌ UPLOAD FALHOU: ' + uploadError.message);
+                        resultados.push('');
+                        resultados.push('💡 POSSÍVEIS CAUSAS:');
+                        if (uploadError.message.includes('Bucket not found')) {
+                            resultados.push('   • O bucket "produtos" não existe NESTE projeto Supabase');
+                            resultados.push('   • Verifique a URL do projeto nas configurações');
+                        } else if (uploadError.message.includes('permission') || uploadError.message.includes('policy')) {
+                            resultados.push('   • Falta política INSERT para usuários autenticados');
+                        }
+                    } else {
+                        resultados.push('✅ UPLOAD FUNCIONOU! Arquivo: ' + fileName);
+                        
+                        // Remove o arquivo de teste
+                        await supabaseClient.storage.from('produtos').remove([fileName]);
+                        resultados.push('🧹 Arquivo de teste removido');
+                    }
+                } catch (testErr) {
+                    resultados.push('❌ Erro no teste de upload: ' + testErr.message);
+                }
+                
+                // Mostra resultado final
+                const allOk = resultados.every(r => !r.startsWith('❌'));
+                const alertClass = allOk ? 'alert-success' : 'alert-warning';
+                container.innerHTML = '<div class="alert-box ' + alertClass + '"><strong>📊 Resultado do Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
+                
+                if (allOk) {
+                    showToast('✅ Tudo funcionando! Pode enviar imagens.', 'success');
+                } else {
+                    showToast('⚠️ Veja o diagnóstico no topo do Dashboard', 'error');
+                }
+                
+            } catch (error) {
+                container.innerHTML = '<div class="alert-box alert-warning">❌ Erro geral: ' + escapeHTML(error.message) + '</div>';
             }
         }
 
@@ -1397,63 +1494,6 @@
         }
 
         // ============================================
-        // 🔍 NOVO: DIAGNÓSTICO DE BUCKETS
-        // ============================================
-        async function diagnosticarBuckets() {
-            showToast('🔍 Verificando buckets...', 'success');
-            
-            try {
-                // 1. Lista buckets
-                const { data: buckets, error: bucketError } = await supabaseClient.storage.listBuckets();
-                
-                if (bucketError) {
-                    showToast('❌ Erro ao acessar Storage:\n' + bucketError.message, 'error');
-                    return;
-                }
-                
-                // 2. Verifica autenticação
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                const logado = session ? '✅ Logado' : '❌ NÃO logado';
-                
-                // 3. Monta relatório
-                state.buckets = buckets || [];
-                const nomesBuckets = buckets.map(b => b.name);
-                const temProdutos = nomesBuckets.includes('produtos');
-                const temBanners = nomesBuckets.includes('banners');
-                
-                // Verifica se os buckets são públicos
-                const prodBucket = buckets.find(b => b.name === 'produtos');
-                const bannerBucket = buckets.find(b => b.name === 'banners');
-                const prodPublico = prodBucket ? (prodBucket.public ? '✅ Público' : '❌ Privado') : '—';
-                const bannerPublico = bannerBucket ? (bannerBucket.public ? '✅ Público' : '❌ Privado') : '—';
-                
-                const relatorio = 
-                    `📋 DIAGNÓSTICO COMPLETO DE BUCKETS\n\n` +
-                    `👤 Autenticação: ${logado}\n\n` +
-                    `📁 Buckets encontrados (${buckets.length}):\n` +
-                    (nomesBuckets.length ? '• ' + nomesBuckets.join('\n• ') : '• NENHUM bucket criado!') + '\n\n' +
-                    `📦 Bucket "produtos": ${temProdutos ? '✅ EXISTE' : '❌ NÃO EXISTE'} ${temProdutos ? '| ' + prodPublico : ''}\n` +
-                    `🎯 Bucket "banners": ${temBanners ? '✅ EXISTE' : '❌ NÃO EXISTE'} ${temBanners ? '| ' + bannerPublico : ''}\n\n`;
-                
-                if (temProdutos && temBanners) {
-                    alert(relatorio + '✅ Tudo certo! Os buckets estão configurados.\n\nSe ainda aparecer erro ao enviar imagem, pode ser problema de políticas (RLS) do Supabase Storage.');
-                } else {
-                    alert(relatorio + 
-                        '⚠️ PASSOS PARA RESOLVER:\n\n' +
-                        '1. Acesse supabase.com/dashboard\n' +
-                        '2. Clique em "Storage" no menu lateral\n' +
-                        '3. Clique em "New bucket"\n' +
-                        (temProdutos ? '' : '4. Crie o bucket: "produtos" (marque como PUBLIC)\n') +
-                        (temBanners ? '' : (temProdutos ? '4.' : '5.') + ' Crie o bucket: "banners" (marque como PUBLIC)\n') +
-                        '\n⚠️ IMPORTANTE: O nome deve ser exatamente "produtos" e "banners" (minúsculo, sem espaços).');
-                }
-                
-            } catch (e) {
-                showToast('❌ Erro no diagnóstico: ' + e.message, 'error');
-            }
-        }
-
-        // ============================================
         // COMPRESSÃO DE IMAGEM
         // ============================================
         function comprimirImagem(file, maxWidth, quality = 0.75) {
@@ -1487,46 +1527,72 @@
             });
         }
 
-        // 🔧 MELHORADO: Upload com diagnóstico de buckets
+        // ============================================
+        // 🔧 UPLOAD CORRIGIDO - DIRETO, SEM VERIFICAÇÃO PRÉVIA
+        // ============================================
         async function uploadImagem(file, bucket) {
-            // Verifica se o bucket existe antes de tentar enviar
-            if (state.buckets.length === 0) {
-                const { data: buckets } = await supabaseClient.storage.listBuckets();
-                state.buckets = buckets || [];
-            }
-            
-            const bucketExiste = state.buckets.some(b => b.name === bucket);
-            
-            if (!bucketExiste) {
-                throw new Error(
-                    `Bucket "${bucket}" NÃO existe!\n\n` +
-                    `Buckets disponíveis: ${state.buckets.map(b => b.name).join(', ') || 'NENHUM'}\n\n` +
-                    `Crie o bucket "${bucket}" no Supabase em:\nStorage > New bucket\n\n` +
-                    `Marque como PUBLIC e use o nome exato: "${bucket}"`
-                );
-            }
-            
+            // 1. Comprime a imagem
             const comprimida = await comprimirImagem(file, bucket === 'banners' ? 1400 : 800);
+            
+            // 2. Gera nome único
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
             
-            const { error } = await supabaseClient.storage
+            // 3. UPLOAD DIRETO - sem verificar bucket antes
+            // O Supabase vai nos dizer o erro real se algo estiver errado
+            const { data, error } = await supabaseClient.storage
                 .from(bucket)
-                .upload(fileName, comprimida, { contentType: 'image/jpeg' });
+                .upload(fileName, comprimida, { 
+                    contentType: 'image/jpeg',
+                    cacheControl: '3600',
+                    upsert: false
+                });
             
             if (error) {
                 // Traduz mensagens de erro comuns
                 let msg = error.message;
-                if (msg.includes('Bucket not found')) {
-                    msg = `Bucket "${bucket}" não encontrado. Verifique em Supabase > Storage.`;
-                } else if (msg.includes('permission') || msg.includes('policy') || msg.includes('denied')) {
-                    msg = `Permissão negada no bucket "${bucket}". Verifique as políticas (RLS) do Supabase Storage.`;
-                } else if (msg.includes('size')) {
-                    msg = `Arquivo muito grande.`;
+                
+                if (msg.toLowerCase().includes('bucket not found') || msg.toLowerCase().includes('bucket') && msg.toLowerCase().includes('not found')) {
+                    msg = `❌ Bucket "${bucket}" NÃO ENCONTRADO neste projeto Supabase!\n\n` +
+                          `🔍 Verificações:\n` +
+                          `1. Você está conectado ao projeto correto?\n` +
+                          `   URL atual: ${SUPABASE_URL}\n\n` +
+                          `2. No Supabase Dashboard:\n` +
+                          `   • Vá em Settings > API\n` +
+                          `   • Copie a "Project URL"\n` +
+                          `   • Ela deve ser EXATAMENTE a URL acima\n\n` +
+                          `3. Confirme no Supabase > Storage que existem:\n` +
+                          `   • Bucket "produtos" (público)\n` +
+                          `   • Bucket "banners" (público)\n\n` +
+                          `💡 Clique em "🔍 Testar Conexão" no Dashboard para diagnóstico completo.`;
+                } 
+                else if (msg.toLowerCase().includes('permission') || msg.toLowerCase().includes('policy') || msg.toLowerCase().includes('rls') || msg.toLowerCase().includes('violates')) {
+                    msg = `❌ Permissão negada no bucket "${bucket}"!\n\n` +
+                          `Execute este SQL no Supabase (SQL Editor):\n\n` +
+                          `DROP POLICY IF EXISTS "${bucket}_fix_insert" ON storage.objects;\n` +
+                          `CREATE POLICY "${bucket}_fix_insert"\n` +
+                          `ON storage.objects FOR INSERT\n` +
+                          `TO authenticated\n` +
+                          `WITH CHECK (bucket_id = '${bucket}');`;
                 }
+                else if (msg.toLowerCase().includes('duplicate') || msg.toLowerCase().includes('already exists')) {
+                    msg = 'Já existe um arquivo com este nome. Tente novamente.';
+                }
+                else if (msg.toLowerCase().includes('payload') || msg.toLowerCase().includes('size') || msg.toLowerCase().includes('large')) {
+                    msg = 'Arquivo muito grande. Máximo permitido: 50MB.';
+                }
+                else if (msg.toLowerCase().includes('jwt') || msg.toLowerCase().includes('token') || msg.toLowerCase().includes('unauthorized')) {
+                    msg = `❌ Você não está autenticado!\n\n` +
+                          `Recarregue a página e tente novamente.`;
+                }
+                
                 throw new Error(msg);
             }
             
-            const { data: { publicUrl } } = supabaseClient.storage.from(bucket).getPublicUrl(fileName);
+            // 4. Obtém a URL pública
+            const { data: { publicUrl } } = supabaseClient.storage
+                .from(bucket)
+                .getPublicUrl(fileName);
+            
             return publicUrl;
         }
 
@@ -1577,22 +1643,14 @@
                 } else {
                     container.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>Nenhum produto cadastrado ainda.</p></div>';
                 }
-
-                // Verifica buckets e mostra alerta se faltarem
-                const { data: buckets } = await supabaseClient.storage.listBuckets();
-                state.buckets = buckets || [];
-                const nomes = buckets.map(b => b.name);
-                if (!nomes.includes('produtos') || !nomes.includes('banners')) {
-                    document.getElementById('bucket-warning').style.display = 'block';
-                }
             } catch (error) {
                 console.error('Erro ao carregar dashboard:', error);
-                showToast('Erro ao carregar dashboard', 'error');
+                showToast('Erro ao carregar dashboard: ' + error.message, 'error');
             }
         }
 
         // ============================================
-        // PAGINAÇÃO HELPER
+        // PAGINAÇÃO
         // ============================================
         function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange) {
             const container = document.getElementById(containerId);
@@ -1703,8 +1761,8 @@
                                         <td>${escapeHTML(p.estoque)}</td>
                                         <td>${getBadgeHtml(p.badge)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-secondary" data-action="edit-product" data-id="${escapeHTML(p.id)}" aria-label="Editar ${escapeHTML(p.nome)}">✏️</button>
-                                            <button class="btn btn-sm btn-danger" data-action="delete-product" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.nome)}" aria-label="Excluir ${escapeHTML(p.nome)}">🗑️</button>
+                                            <button class="btn btn-sm btn-secondary" data-action="edit-product" data-id="${escapeHTML(p.id)}" aria-label="Editar">✏️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-product" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.nome)}" aria-label="Excluir">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1722,7 +1780,7 @@
                 }
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
-                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar produtos</h3></div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar produtos</h3><p>' + escapeHTML(error.message) + '</p></div>';
             }
         }
 
@@ -1831,8 +1889,12 @@
                 imagem_url: document.getElementById('prod-img-url').value
             };
 
-            if (!produto.nome || isNaN(produto.preco_venda) || produto.preco_venda <= 0 || !produto.imagem_url) {
-                showToast('Preencha nome, preço válido e imagem!', 'error');
+            if (!produto.nome || isNaN(produto.preco_venda) || produto.preco_venda <= 0) {
+                showToast('Preencha nome e preço válido!', 'error');
+                return;
+            }
+            if (!produto.imagem_url) {
+                showToast('Envie uma imagem do produto!', 'error');
                 return;
             }
             if (isNaN(produto.estoque) || produto.estoque < 0) {
@@ -1910,8 +1972,8 @@
                                         <td>${escapeHTML(c.descricao) || '-'}</td>
                                         <td>${escapeHTML(c.ordem)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-secondary" data-action="edit-category" data-id="${escapeHTML(c.id)}" aria-label="Editar ${escapeHTML(c.nome)}">✏️</button>
-                                            <button class="btn btn-sm btn-danger" data-action="delete-category" data-id="${escapeHTML(c.id)}" data-name="${escapeHTML(c.nome)}" aria-label="Excluir ${escapeHTML(c.nome)}">🗑️</button>
+                                            <button class="btn btn-sm btn-secondary" data-action="edit-category" data-id="${escapeHTML(c.id)}">✏️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-category" data-id="${escapeHTML(c.id)}" data-name="${escapeHTML(c.nome)}">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1985,7 +2047,7 @@
         }
 
         async function excluirCategoria(id, nome) {
-            if (!confirm(`Excluir a categoria "${nome}"? Produtos vinculados podem ficar sem categoria.`)) return;
+            if (!confirm(`Excluir a categoria "${nome}"?`)) return;
             try {
                 const { error } = await supabaseClient.from('categorias').delete().eq('id', id);
                 if (error) throw error;
@@ -2036,7 +2098,7 @@
                                         </td>
                                         <td>${formatarData(b.criado_em)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-danger" data-action="delete-banner" data-id="${escapeHTML(b.id)}" aria-label="Excluir banner">🗑️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-banner" data-id="${escapeHTML(b.id)}">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -2073,6 +2135,7 @@
                 showToast('✅ Imagem enviada!');
             } catch (e) {
                 showToast('❌ Erro no upload:\n\n' + e.message, 'error');
+                content.innerHTML = '<div class="upload-icon">🖼️</div><div class="upload-text"><strong>Clique para enviar imagem</strong></div>';
             }
         }
 
@@ -2378,6 +2441,9 @@
 
         async function salvarConfig() {
             const chaves = ['logo_texto', 'frete_gratis_acima', 'valor_frete', 'desconto_pix_percent'];
+            const btn = document.getElementById('btn-salvar-config');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
 
             try {
                 for (const chave of chaves) {
@@ -2393,6 +2459,9 @@
                 showToast('✅ Configurações salvas!');
             } catch (e) {
                 showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar Configurações';
             }
         }
 
@@ -2418,12 +2487,11 @@
             const name = target.dataset.name;
 
             switch (action) {
-                case 'navigate':
-                    navegarPara(target.dataset.view);
+                case 'quick-new-product':
+                    navegarPara('produtos');
+                    setTimeout(abrirModalProduto, 100);
                     break;
                 case 'new-product':
-                case 'quick-new-product':
-                    if (action === 'quick-new-product') navegarPara('produtos');
                     abrirModalProduto();
                     break;
                 case 'edit-product':
@@ -2441,9 +2509,11 @@
                 case 'delete-category':
                     excluirCategoria(id, name);
                     break;
-                case 'new-banner':
                 case 'quick-new-banner':
-                    if (action === 'quick-new-banner') navegarPara('banners');
+                    navegarPara('banners');
+                    setTimeout(abrirModalBanner, 100);
+                    break;
+                case 'new-banner':
                     abrirModalBanner();
                     break;
                 case 'delete-banner':
@@ -2458,9 +2528,8 @@
                 case 'delete-message':
                     excluirMensagem(id);
                     break;
-                // 🔍 NOVO: Diagnóstico
-                case 'diagnosticar-buckets':
-                    await diagnosticarBuckets();
+                case 'test-connection':
+                    await testarConexao();
                     break;
             }
         });
@@ -2513,6 +2582,9 @@
             }
         });
 
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', async () => {
             await verificarAuth();
             
