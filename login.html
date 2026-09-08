@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin | S7TE</title>
     <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Acesso restrito ao painel administrativo.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a2a6e'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='55' font-weight='900' fill='%23fbbf24' text-anchor='middle'%3ES7%3C/text%3E%3C/svg%3E">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +48,7 @@
             overflow: hidden;
         }
 
+        /* Formas decorativas animadas */
         body::before {
             content: '';
             position: absolute;
@@ -185,6 +190,7 @@
             font-size: 1.1rem;
             color: var(--text-gray);
             transition: var(--transition);
+            padding: 4px;
         }
         .password-toggle:hover {
             color: var(--cobalt-main);
@@ -214,6 +220,11 @@
             color: var(--cobalt-main);
             font-weight: 600;
             text-decoration: none;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
         }
         .forgot-link:hover {
             text-decoration: underline;
@@ -353,6 +364,12 @@
             font-size: 0.8rem;
         }
 
+        /* Modo recuperação de senha */
+        .recovery-mode .login-logo .admin-badge {
+            background: var(--text-gray);
+            color: white;
+        }
+
         @media (max-width: 480px) {
             body { padding: 16px; }
             .login-card { padding: 36px 24px; }
@@ -367,8 +384,8 @@
         <div class="login-card">
             <div class="login-logo">
                 <div class="logo-text">S<span>7</span>TE</div>
-                <div class="subtitle">Painel Administrativo</div>
-                <div class="admin-badge">🔐 Área Restrita</div>
+                <div class="subtitle" id="card-subtitle">Painel Administrativo</div>
+                <div class="admin-badge" id="card-badge">🔐 Área Restrita</div>
             </div>
 
             <div class="error-message" id="error-message">
@@ -381,7 +398,8 @@
                 <span id="success-text">Login realizado com sucesso!</span>
             </div>
 
-            <form id="login-form" onsubmit="fazerLogin(event)">
+            <!-- FORMULÁRIO DE LOGIN -->
+            <form id="login-form">
                 <div class="form-group">
                     <label>E-mail <span class="req">*</span></label>
                     <div class="input-wrapper">
@@ -409,7 +427,7 @@
                             required
                             autocomplete="current-password"
                         >
-                        <button type="button" class="password-toggle" onclick="togglePassword()" id="toggle-btn">👁️</button>
+                        <button type="button" class="password-toggle" onclick="togglePassword()" id="toggle-btn" aria-label="Mostrar senha">👁️</button>
                     </div>
                 </div>
 
@@ -418,7 +436,7 @@
                         <input type="checkbox" id="remember" checked>
                         <span>Lembrar de mim</span>
                     </label>
-                    <a href="#" class="forgot-link" onclick="recuperarSenha(event)">Esqueci a senha</a>
+                    <button type="button" class="forgot-link" onclick="mostrarRecuperacao()">Esqueci a senha</button>
                 </div>
 
                 <button type="submit" class="btn-login" id="btn-login">
@@ -426,10 +444,36 @@
                 </button>
             </form>
 
+            <!-- FORMULÁRIO DE RECUPERAÇÃO -->
+            <form id="recovery-form" style="display: none;">
+                <div class="form-group">
+                    <label>E-mail cadastrado <span class="req">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="icon">📧</span>
+                        <input 
+                            type="email" 
+                            class="form-input" 
+                            id="recovery-email" 
+                            placeholder="admin@s7te.com.br"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="btn-recovery">
+                    <span id="btn-recovery-text">📧 Enviar link de recuperação</span>
+                </button>
+
+                <div class="back-link">
+                    <button type="button" class="forgot-link" onclick="voltarParaLogin()">← Voltar para o login</button>
+                </div>
+            </form>
+
             <div class="divider">ou</div>
 
             <div class="back-link">
-                <a href="https://demonsites.github.io/sete">← Voltar para a loja</a>
+                <a href="https://SEU-USUARIO.github.io/s7te-loja">← Voltar para a loja</a>
             </div>
 
             <div class="security-info">
@@ -443,22 +487,70 @@
     </div>
 
     <script>
+        // ============================================
+        // CONFIGURAÇÃO SUPABASE
+        // ============================================
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
         
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // ============================================
+        // HELPERS
+        // ============================================
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function mostrarErro(mensagem) {
+            const errorMsg = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const successMsg = document.getElementById('success-message');
+            
+            successMsg.classList.remove('show');
+            errorText.textContent = mensagem;
+            errorMsg.classList.add('show');
+        }
+
+        function mostrarSucesso(mensagem) {
+            const errorMsg = document.getElementById('error-message');
+            const successMsg = document.getElementById('success-message');
+            const successText = document.getElementById('success-text');
+            
+            errorMsg.classList.remove('show');
+            successText.textContent = mensagem;
+            successMsg.classList.add('show');
+        }
+
+        function limparMensagens() {
+            document.getElementById('error-message').classList.remove('show');
+            document.getElementById('success-message').classList.remove('show');
+        }
+
+        // ============================================
+        // VERIFICAR SESSÃO EXISTENTE
+        // ============================================
         async function verificarSessao() {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
-                    window.location.href = 'index.html';
+                    // Já está logado, redireciona direto para o admin
+                    window.location.href = 'admin.html';
                 }
             } catch (error) {
                 console.error('Erro ao verificar sessão:', error);
             }
         }
 
+        // ============================================
+        // TOGGLE SENHA
+        // ============================================
         function togglePassword() {
             const senhaInput = document.getElementById('senha');
             const toggleBtn = document.getElementById('toggle-btn');
@@ -466,12 +558,17 @@
             if (senhaInput.type === 'password') {
                 senhaInput.type = 'text';
                 toggleBtn.textContent = '🙈';
+                toggleBtn.setAttribute('aria-label', 'Ocultar senha');
             } else {
                 senhaInput.type = 'password';
                 toggleBtn.textContent = '👁️';
+                toggleBtn.setAttribute('aria-label', 'Mostrar senha');
             }
         }
 
+        // ============================================
+        // LOGIN
+        // ============================================
         async function fazerLogin(event) {
             event.preventDefault();
 
@@ -479,22 +576,16 @@
             const senha = document.getElementById('senha').value;
             const btn = document.getElementById('btn-login');
             const btnText = document.getElementById('btn-text');
-            const errorMsg = document.getElementById('error-message');
-            const errorText = document.getElementById('error-text');
-            const successMsg = document.getElementById('success-message');
 
-            errorMsg.classList.remove('show');
-            successMsg.classList.remove('show');
+            limparMensagens();
 
             if (!email || !senha) {
-                errorText.textContent = 'Preencha todos os campos';
-                errorMsg.classList.add('show');
+                mostrarErro('Preencha todos os campos');
                 return;
             }
 
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                errorText.textContent = 'E-mail inválido';
-                errorMsg.classList.add('show');
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                mostrarErro('E-mail inválido');
                 return;
             }
 
@@ -509,11 +600,11 @@
 
                 if (error) throw error;
 
-                successMsg.classList.add('show');
-                document.getElementById('success-text').textContent = 'Login realizado! Redirecionando...';
+                mostrarSucesso('Login realizado! Redirecionando...');
 
+                // Redireciona após pequeno delay
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'admin.html';
                 }, 800);
 
             } catch (error) {
@@ -525,40 +616,67 @@
                     mensagemErro = 'E-mail ou senha incorretos';
                 } else if (error.message.includes('Email not confirmed')) {
                     mensagemErro = 'E-mail não confirmado. Verifique sua caixa de entrada.';
-                } else if (error.message.includes('rate limit')) {
+                } else if (error.message.includes('rate limit') || error.message.includes('too many')) {
                     mensagemErro = 'Muitas tentativas. Aguarde alguns minutos.';
-                } else if (error.message.includes('network')) {
+                } else if (error.message.includes('network') || error.message.includes('fetch')) {
                     mensagemErro = 'Erro de conexão. Verifique sua internet.';
                 }
 
-                errorText.textContent = mensagemErro;
-                errorMsg.classList.add('show');
+                mostrarErro(mensagemErro);
 
                 btn.disabled = false;
                 btnText.textContent = 'Entrar';
 
+                // Limpa senha e foca
                 document.getElementById('senha').value = '';
                 document.getElementById('senha').focus();
             }
         }
 
+        // ============================================
+        // RECUPERAÇÃO DE SENHA
+        // ============================================
+        function mostrarRecuperacao() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('recovery-form').style.display = 'block';
+            document.getElementById('card-subtitle').textContent = 'Recuperar Senha';
+            document.getElementById('card-badge').textContent = '🔑 Recuperação';
+            document.getElementById('card-badge').style.background = 'var(--text-gray)';
+            document.getElementById('card-badge').style.color = 'white';
+            limparMensagens();
+        }
+
+        function voltarParaLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('recovery-form').style.display = 'none';
+            document.getElementById('card-subtitle').textContent = 'Painel Administrativo';
+            document.getElementById('card-badge').textContent = '🔐 Área Restrita';
+            document.getElementById('card-badge').style.background = 'linear-gradient(135deg, var(--gold), var(--gold-dark))';
+            document.getElementById('card-badge').style.color = 'var(--cobalt-deep)';
+            limparMensagens();
+        }
+
         async function recuperarSenha(event) {
             event.preventDefault();
             
-            const email = document.getElementById('email').value.trim();
-            const errorMsg = document.getElementById('error-message');
-            const errorText = document.getElementById('error-text');
-            const successMsg = document.getElementById('success-message');
+            const email = document.getElementById('recovery-email').value.trim();
+            const btn = document.getElementById('btn-recovery');
+            const btnText = document.getElementById('btn-recovery-text');
 
-            errorMsg.classList.remove('show');
-            successMsg.classList.remove('show');
+            limparMensagens();
 
             if (!email) {
-                errorText.textContent = 'Digite seu e-mail no campo acima para recuperar a senha';
-                errorMsg.classList.add('show');
-                document.getElementById('email').focus();
+                mostrarErro('Digite seu e-mail para recuperar a senha');
                 return;
             }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                mostrarErro('E-mail inválido');
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerHTML = '<div class="spinner"></div> Enviando...';
 
             try {
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
@@ -567,19 +685,30 @@
 
                 if (error) throw error;
 
-                document.getElementById('success-text').textContent = '📧 E-mail de recuperação enviado! Verifique sua caixa de entrada.';
-                successMsg.classList.add('show');
+                mostrarSucesso('📧 E-mail de recuperação enviado! Verifique sua caixa de entrada.');
+                document.getElementById('recovery-email').value = '';
 
             } catch (error) {
                 console.error('Erro ao recuperar senha:', error);
-                errorText.textContent = 'Erro ao enviar e-mail de recuperação. Tente novamente.';
-                errorMsg.classList.add('show');
+                mostrarErro('Erro ao enviar e-mail de recuperação. Tente novamente.');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = '📧 Enviar link de recuperação';
             }
         }
 
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             verificarSessao();
+            
+            // Foca no campo de email
             document.getElementById('email').focus();
+
+            // Event listeners
+            document.getElementById('login-form').addEventListener('submit', fazerLogin);
+            document.getElementById('recovery-form').addEventListener('submit', recuperarSenha);
         });
     </script>
 </body>
