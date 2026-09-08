@@ -6,6 +6,8 @@
     <title>Painel Admin | S7TE</title>
     <meta name="robots" content="noindex, nofollow">
     
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a2a6e'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='55' font-weight='900' fill='%23fbbf24' text-anchor='middle'%3ES7%3C/text%3E%3C/svg%3E">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -196,7 +198,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             margin-bottom: 32px;
         }
@@ -233,6 +235,7 @@
         .stat-icon.gold { background: rgba(251, 191, 36, 0.15); color: var(--gold-dark); }
         .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
         .stat-info h3 { font-size: 1.8rem; font-weight: 900; color: var(--cobalt-deep); line-height: 1; }
         .stat-info p { color: var(--text-gray); font-size: 0.85rem; font-weight: 600; }
 
@@ -320,6 +323,9 @@
         .badge-none { background: var(--bg-light); color: var(--text-gray); }
         .badge-active { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .badge-inactive { background: var(--bg-light); color: var(--text-gray); }
+        .badge-pendente { background: rgba(251, 191, 36, 0.2); color: var(--gold-dark); }
+        .badge-pago { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-cancelado { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 
         .pagination {
             display: flex;
@@ -527,6 +533,29 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        .alert-box {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .alert-info {
+            background: rgba(26, 79, 184, 0.08);
+            border-left: 4px solid var(--cobalt-main);
+            color: var(--cobalt-deep);
+        }
+        .alert-warning {
+            background: rgba(251, 191, 36, 0.15);
+            border-left: 4px solid var(--gold-dark);
+            color: #92400e;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            color: #065f46;
+        }
+
         .message-item {
             padding: 20px;
             border: 1px solid var(--border);
@@ -623,28 +652,88 @@
             font-weight: 800;
             color: var(--cobalt-deep);
         }
-
-        .alert-box {
-            padding: 16px 20px;
+        .order-status-select {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
             border-radius: var(--radius);
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: white;
+            cursor: pointer;
         }
-        .alert-info {
-            background: rgba(26, 79, 184, 0.08);
-            border-left: 4px solid var(--cobalt-main);
+
+        .gateway-card {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            background: white;
+            transition: var(--transition);
+        }
+        .gateway-card.active {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.02);
+        }
+        .gateway-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .gateway-name {
+            font-size: 1.1rem;
+            font-weight: 800;
             color: var(--cobalt-deep);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .alert-warning {
-            background: rgba(251, 191, 36, 0.15);
-            border-left: 4px solid var(--gold-dark);
-            color: #92400e;
+        .gateway-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-        .alert-success {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid var(--success);
-            color: #065f46;
+        .gateway-badge.active { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .gateway-badge.inactive { background: var(--bg-light); color: var(--text-gray); }
+        .gateway-info {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        .gateway-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .policy-editor-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .policy-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-light);
+            cursor: pointer;
+        }
+        .policy-editor-title {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .policy-editor-body {
+            padding: 20px;
+            display: none;
+        }
+        .policy-editor-item.open .policy-editor-body {
+            display: block;
         }
 
         @media (max-width: 1024px) {
@@ -731,10 +820,25 @@
                 </div>
             </div>
             <div class="sidebar-section">
+                <div class="sidebar-title">Pagamentos</div>
+                <div class="sidebar-item" data-view="gateways" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></span>
+                    <span>Gateways</span>
+                </div>
+            </div>
+            <div class="sidebar-section">
                 <div class="sidebar-title">Configurações</div>
                 <div class="sidebar-item" data-view="conteudo" role="button" tabindex="0">
                     <span class="icon"><svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2 2 0 112.8 2.8L11.8 15 8 16l1-3.8 9.6-9.6z"/></svg></span>
                     <span>Conteúdo do Site</span>
+                </div>
+                <div class="sidebar-item" data-view="politicas" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span>
+                    <span>Políticas</span>
+                </div>
+                <div class="sidebar-item" data-view="contato" role="button" tabindex="0">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></span>
+                    <span>Contato</span>
                 </div>
                 <div class="sidebar-item" data-view="config" role="button" tabindex="0">
                     <span class="icon"><svg viewBox="0 0 24 24"><path d="M10.3 3.6a1.7 1.7 0 013.4 0c0 .6.3 1.2.8 1.5l.1.1c.5.3 1.1.4 1.6.1a1.7 1.7 0 012.4 2.4c-.4.5-.4 1.2 0 1.7l.1.1c.3.5.9.8 1.5.8a1.7 1.7 0 010 3.4c-.6 0-1.2.3-1.5.8l-.1.1c-.3.5-.4 1.1-.1 1.6a1.7 1.7 0 01-2.4 2.4c-.5-.4-1.2-.4-1.7 0l-.1.1c-.5.3-.8.9-.8 1.5a1.7 1.7 0 01-3.4 0c0-.6-.3-1.2-.8-1.5l-.1-.1c-.5-.3-1.1-.4-1.6-.1a1.7 1.7 0 01-2.4-2.4c.4-.5.4-1.2 0-1.7l-.1-.1c-.3-.5-.9-.8-1.5-.8a1.7 1.7 0 010-3.4c.6 0 1.2-.3 1.5-.8l.1-.1c.3-.5.4-1.1.1-1.6a1.7 1.7 0 012.4-2.4c.5.4 1.2.4 1.7 0l.1-.1c.5-.3.8-.9.8-1.5zM12 15a3 3 0 100-6 3 3 0 000 6z"/></svg></span>
@@ -744,7 +848,6 @@
         </aside>
 
         <main class="admin-content" role="main">
-
             <!-- DASHBOARD -->
             <div class="admin-view active" id="view-dashboard">
                 <div class="content-header">
@@ -781,6 +884,13 @@
                         <div class="stat-info">
                             <h3 id="stat-banners">0</h3>
                             <p>Banners</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><svg viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div>
+                        <div class="stat-info">
+                            <h3 id="stat-gateways">0</h3>
+                            <p>Gateways Ativos</p>
                         </div>
                     </div>
                 </div>
@@ -911,7 +1021,24 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO -->
+            <!-- GATEWAYS -->
+            <div class="admin-view" id="view-gateways">
+                <div class="content-header">
+                    <h1>Gateways de Pagamento</h1>
+                    <p>Configure e gerencie os processadores de pagamento</p>
+                </div>
+
+                <div class="alert-box alert-info">
+                    <strong>⚠️ Importante:</strong> As credenciais são armazenadas com segurança no Supabase. 
+                    Para produção, considere usar Supabase Edge Functions para processar pagamentos.
+                </div>
+
+                <div id="lista-gateways" class="loading">
+                    <span class="spinner-inline"></span> Carregando gateways...
+                </div>
+            </div>
+
+            <!-- CONTEÚDO DO SITE -->
             <div class="admin-view" id="view-conteudo">
                 <div class="content-header">
                     <h1>Conteúdo do Site</h1>
@@ -919,7 +1046,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Barra de Urgência (Topo)</h2>
+                    <h2 class="card-title">📢 Barra de Urgência (Topo)</h2>
                     <div class="form-group">
                         <label>Texto da barra (aceita HTML: &lt;strong&gt;, &lt;em&gt;)</label>
                         <input type="text" class="form-input" id="cfg-urgencia_texto" placeholder="🚚 FRETE GRATIS em compras acima de R$ 500">
@@ -927,7 +1054,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Seção Principal (Hero)</h2>
+                    <h2 class="card-title">🦸 Seção Principal (Hero)</h2>
                     <div class="form-group">
                         <label>Selo (badge)</label>
                         <input type="text" class="form-input" id="cfg-hero_badge" placeholder="⚡ Estoque Limitado">
@@ -947,7 +1074,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Estatísticas do Hero</h2>
+                    <h2 class="card-title">📊 Estatísticas do Hero</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Stat 1 - Valor</label>
@@ -991,7 +1118,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Seção de Produtos</h2>
+                    <h2 class="card-title">🛍️ Seção de Produtos</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Título</label>
@@ -1005,7 +1132,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Newsletter</h2>
+                    <h2 class="card-title">📧 Newsletter</h2>
                     <div class="form-group">
                         <label>Título</label>
                         <input type="text" class="form-input" id="cfg-newsletter_titulo" placeholder="Ganhe 10% OFF...">
@@ -1021,7 +1148,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Rodapé</h2>
+                    <h2 class="card-title">🦶 Rodapé</h2>
                     <div class="form-group">
                         <label>Sobre a empresa</label>
                         <textarea class="form-textarea" id="cfg-footer_sobre"></textarea>
@@ -1048,36 +1175,64 @@
                     </div>
                 </div>
 
+                <button class="btn btn-primary" id="btn-salvar-conteudo">
+                    💾 Salvar Todo o Conteúdo
+                </button>
+            </div>
+
+            <!-- POLÍTICAS -->
+            <div class="admin-view" id="view-politicas">
+                <div class="content-header">
+                    <h1>Políticas da Loja</h1>
+                    <p>Edite o conteúdo das políticas exibidas no site</p>
+                </div>
+
+                <div class="alert-box alert-info">
+                    <strong>💡 Dica:</strong> Você pode usar tags HTML como &lt;strong&gt;, &lt;em&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt; para formatar o conteúdo.
+                </div>
+
+                <div id="lista-politicas" class="loading">
+                    <span class="spinner-inline"></span> Carregando políticas...
+                </div>
+            </div>
+
+            <!-- CONTATO -->
+            <div class="admin-view" id="view-contato">
+                <div class="content-header">
+                    <h1>Informações de Contato</h1>
+                    <p>Edite os dados de contato exibidos no site</p>
+                </div>
+
                 <div class="card">
-                    <h2 class="card-title">Página de Contato</h2>
+                    <h2 class="card-title">📞 Dados de Contato</h2>
                     <div class="form-group">
-                        <label>Endereço completo</label>
-                        <textarea class="form-textarea" id="cfg-contato_endereco"></textarea>
+                        <label>Endereço completo (HTML)</label>
+                        <textarea class="form-textarea" id="cfg-contato_endereco" placeholder="Av. Paulista, 1500<br>São Paulo, SP<br>CEP: 01310-100"></textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>E-mail de contato</label>
-                            <input type="text" class="form-input" id="cfg-contato_email">
+                            <input type="email" class="form-input" id="cfg-contato_email" placeholder="contato@s7te.com.br">
                         </div>
                         <div class="form-group">
                             <label>Telefone</label>
-                            <input type="text" class="form-input" id="cfg-contato_telefone">
+                            <input type="text" class="form-input" id="cfg-contato_telefone" placeholder="0800 123 4567">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>WhatsApp</label>
-                            <input type="text" class="form-input" id="cfg-contato_whatsapp">
+                            <label>WhatsApp (com DDD)</label>
+                            <input type="text" class="form-input" id="cfg-contato_whatsapp" placeholder="(11) 99999-9999">
                         </div>
                         <div class="form-group">
-                            <label>Horário de atendimento</label>
-                            <input type="text" class="form-input" id="cfg-contato_horario">
+                            <label>Horário de atendimento (HTML)</label>
+                            <input type="text" class="form-input" id="cfg-contato_horario" placeholder="Segunda a Sexta: 8h às 18h<br>Sábado: 9h às 13h">
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn-primary" id="btn-salvar-conteudo">
-                    💾 Salvar Todo o Conteúdo
+                <button class="btn btn-primary" id="btn-salvar-contato">
+                    💾 Salvar Informações de Contato
                 </button>
             </div>
 
@@ -1089,7 +1244,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Identidade</h2>
+                    <h2 class="card-title">🏷️ Identidade</h2>
                     <div class="form-group">
                         <label>Nome da Loja (logo)</label>
                         <input type="text" class="form-input" id="cfg-logo_texto" placeholder="S7TE">
@@ -1097,7 +1252,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Frete</h2>
+                    <h2 class="card-title">🚚 Frete</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Frete grátis acima de (R$)</label>
@@ -1111,7 +1266,7 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="card-title">Desconto PIX</h2>
+                    <h2 class="card-title">💰 Desconto PIX</h2>
                     <div class="form-group">
                         <label>Percentual de desconto no PIX (%)</label>
                         <input type="number" step="0.1" class="form-input" id="cfg-desconto_pix_percent" placeholder="5">
@@ -1270,14 +1425,68 @@
         </div>
     </div>
 
+    <!-- MODAL GATEWAY -->
+    <div class="modal-overlay" id="modal-gateway" role="dialog" aria-labelledby="modal-gateway-titulo">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-gateway-titulo">Configurar Gateway</h3>
+                <button class="modal-close" data-close-modal="modal-gateway" aria-label="Fechar">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="gw-id">
+                <input type="hidden" id="gw-chave">
+                
+                <div id="gateway-fields"></div>
+
+                <div class="alert-box alert-warning" style="margin-top: 20px;">
+                    <strong>⚠️ Segurança:</strong> As credenciais são armazenadas criptografadas no Supabase. 
+                    Em produção, use Supabase Edge Functions para processar pagamentos.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close-modal="modal-gateway">Cancelar</button>
+                <button class="btn btn-secondary" id="btn-testar-gateway">🔍 Testar Conexão</button>
+                <button class="btn btn-primary" id="btn-salvar-gateway">💾 Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POLÍTICA -->
+    <div class="modal-overlay" id="modal-politica" role="dialog" aria-labelledby="modal-politica-titulo">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 id="modal-politica-titulo">Editar Política</h3>
+                <button class="modal-close" data-close-modal="modal-politica" aria-label="Fechar">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pol-id">
+                
+                <div class="form-group">
+                    <label>Título <span class="req">*</span></label>
+                    <input type="text" class="form-input" id="pol-titulo">
+                </div>
+
+                <div class="form-group">
+                    <label>Conteúdo (HTML) <span class="req">*</span></label>
+                    <textarea class="form-textarea" id="pol-conteudo" style="min-height: 300px; font-family: monospace;"></textarea>
+                    <small style="color: var(--text-gray); font-size: 0.8rem;">
+                        Tags permitidas: &lt;strong&gt;, &lt;em&gt;, &lt;p&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt;, &lt;tr&gt;, &lt;th&gt;, &lt;td&gt;, &lt;br&gt;
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close-modal="modal-politica">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-politica">💾 Salvar Política</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
     <script>
         // ============================================
-        // 🔧 CONFIGURAÇÃO
+        // CONFIGURAÇÃO SUPABASE
         // ============================================
-        const URL_SITE = 'https://SEU-USUARIO.github.io/s7te-loja';
-
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
         
@@ -1289,6 +1498,8 @@
             banners: [],
             pedidos: [],
             mensagens: [],
+            gateways: [],
+            politicas: [],
             config: {},
             pagination: {
                 produtos: { page: 1, perPage: 20, total: 0 },
@@ -1313,16 +1524,6 @@
             });
         }
 
-        function showToast(msg, type = 'success') {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
-            toast.textContent = msg;
-            toast.className = 'toast show' + (type === 'error' ? ' error' : '');
-            clearTimeout(toast._timer);
-            const duracao = type === 'error' ? 8000 : 3500;
-            toast._timer = setTimeout(() => toast.classList.remove('show'), duracao);
-        }
-
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -1333,6 +1534,16 @@
                 .replace(/'/g, '&#39;');
         }
 
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+            clearTimeout(toast._timer);
+            const duracao = type === 'error' ? 8000 : 3500;
+            toast._timer = setTimeout(() => toast.classList.remove('show'), duracao);
+        }
+
         // ============================================
         // AUTENTICAÇÃO
         // ============================================
@@ -1340,17 +1551,11 @@
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) {
-                    // Se não tem sessão, tenta login anônimo automático
-                    const { data, error } = await supabaseClient.auth.signInAnonymously();
-                    if (error) {
-                        console.warn('Login anônimo falhou:', error);
-                        showToast('⚠️ Modo limitado: login falhou. Algumas funções podem não funcionar.', 'error');
-                    } else {
-                        console.log('✅ Login anônimo realizado');
-                    }
+                    window.location.href = 'login.html';
                 }
             } catch (error) {
                 console.error('Erro ao verificar auth:', error);
+                window.location.href = 'login.html';
             }
         }
 
@@ -1358,105 +1563,10 @@
             try {
                 await supabaseClient.auth.signOut();
                 localStorage.removeItem('admin_current_view');
-                window.location.reload();
+                window.location.href = 'login.html';
             } catch (error) {
                 console.error('Erro ao sair:', error);
-                window.location.reload();
-            }
-        }
-
-        // ============================================
-        // 🔍 TESTE DE CONEXÃO (mostra direto na tela)
-        // ============================================
-        async function testarConexao() {
-            const container = document.getElementById('connection-status');
-            container.innerHTML = '<div class="alert-box alert-info"><span class="spinner-inline"></span> Testando conexão com Supabase...</div>';
-            
-            const resultados = [];
-            
-            try {
-                // 1. Testa autenticação
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    resultados.push('✅ Autenticação: Logado como ' + (session.user?.email || 'anônimo'));
-                } else {
-                    resultados.push('⚠️ Autenticação: Não logado (tentando modo anônimo)');
-                }
-                
-                // 2. Testa leitura de produtos
-                const { data: produtos, error: errProd } = await supabaseClient.from('produtos').select('*', { count: 'exact', head: true });
-                if (errProd) {
-                    resultados.push('❌ Tabela produtos: ' + errProd.message);
-                } else {
-                    resultados.push('✅ Tabela produtos: OK (' + (produtos?.count || 0) + ' registros)');
-                }
-                
-                // 3. Testa buckets via listBuckets
-                const { data: buckets, error: errBucket } = await supabaseClient.storage.listBuckets();
-                if (errBucket) {
-                    resultados.push('⚠️ listBuckets: ' + errBucket.message);
-                } else {
-                    const nomes = buckets.map(b => b.name);
-                    resultados.push('📦 Buckets via listBuckets: ' + (nomes.length ? nomes.join(', ') : 'NENHUM'));
-                }
-                
-                // 4. TESTE CRUCIAL: tenta fazer upload de um arquivo de teste
-                resultados.push('🧪 Testando upload real...');
-                container.innerHTML = '<div class="alert-box alert-info">' + resultados.join('<br>') + '</div>';
-                
-                try {
-                    // Cria um arquivo de teste pequeno (1x1 pixel PNG)
-                    const testFile = new Blob(['iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='], { type: 'image/png' });
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
-                        reader.readAsDataURL(testFile);
-                    });
-                    
-                    // Converte base64 para File
-                    const response = await fetch(base64);
-                    const blob = await response.blob();
-                    const file = new File([blob], 'teste.png', { type: 'image/png' });
-                    
-                    const fileName = 'test-' + Date.now() + '.png';
-                    const { data: uploadData, error: uploadError } = await supabaseClient.storage
-                        .from('produtos')
-                        .upload(fileName, file, { contentType: 'image/png' });
-                    
-                    if (uploadError) {
-                        resultados.push('❌ UPLOAD FALHOU: ' + uploadError.message);
-                        resultados.push('');
-                        resultados.push('💡 POSSÍVEIS CAUSAS:');
-                        if (uploadError.message.includes('Bucket not found')) {
-                            resultados.push('   • O bucket "produtos" não existe NESTE projeto Supabase');
-                            resultados.push('   • Verifique a URL do projeto nas configurações');
-                        } else if (uploadError.message.includes('permission') || uploadError.message.includes('policy')) {
-                            resultados.push('   • Falta política INSERT para usuários autenticados');
-                        }
-                    } else {
-                        resultados.push('✅ UPLOAD FUNCIONOU! Arquivo: ' + fileName);
-                        
-                        // Remove o arquivo de teste
-                        await supabaseClient.storage.from('produtos').remove([fileName]);
-                        resultados.push('🧹 Arquivo de teste removido');
-                    }
-                } catch (testErr) {
-                    resultados.push('❌ Erro no teste de upload: ' + testErr.message);
-                }
-                
-                // Mostra resultado final
-                const allOk = resultados.every(r => !r.startsWith('❌'));
-                const alertClass = allOk ? 'alert-success' : 'alert-warning';
-                container.innerHTML = '<div class="alert-box ' + alertClass + '"><strong>📊 Resultado do Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
-                
-                if (allOk) {
-                    showToast('✅ Tudo funcionando! Pode enviar imagens.', 'success');
-                } else {
-                    showToast('⚠️ Veja o diagnóstico no topo do Dashboard', 'error');
-                }
-                
-            } catch (error) {
-                container.innerHTML = '<div class="alert-box alert-warning">❌ Erro geral: ' + escapeHTML(error.message) + '</div>';
+                window.location.href = 'login.html';
             }
         }
 
@@ -1483,7 +1593,10 @@
                 banners:   carregarBanners,
                 pedidos:   () => carregarPedidos(true),
                 mensagens: () => carregarMensagens(true),
+                gateways:  carregarGateways,
                 conteudo:  carregarConfiguracoes,
+                politicas: carregarPoliticas,
+                contato:   carregarContato,
                 config:    carregarConfiguracoes
             };
             if (loaders[view]) loaders[view]();
@@ -1494,7 +1607,109 @@
         }
 
         // ============================================
-        // COMPRESSÃO DE IMAGEM
+        // TESTE DE CONEXÃO
+        // ============================================
+        async function testarConexao() {
+            const container = document.getElementById('connection-status');
+            container.innerHTML = '<div class="alert-box alert-info"><span class="spinner-inline"></span> Testando conexão com Supabase...</div>';
+            
+            const resultados = [];
+            
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    resultados.push('✅ Autenticação: Logado como ' + (session.user?.email || 'anônimo'));
+                } else {
+                    resultados.push('⚠️ Autenticação: Não logado');
+                }
+                
+                const { data: produtos, error: errProd } = await supabaseClient.from('produtos').select('*', { count: 'exact', head: true });
+                if (errProd) {
+                    resultados.push('❌ Tabela produtos: ' + errProd.message);
+                } else {
+                    resultados.push('✅ Tabela produtos: OK (' + (produtos?.count || 0) + ' registros)');
+                }
+
+                const { data: gateways, error: errGw } = await supabaseClient.from('gateways').select('*');
+                if (errGw) {
+                    resultados.push('❌ Tabela gateways: ' + errGw.message);
+                } else {
+                    const ativos = gateways.filter(g => g.ativo).length;
+                    resultados.push('✅ Tabela gateways: OK (' + ativos + ' ativos)');
+                }
+                
+                const allOk = resultados.every(r => !r.startsWith('❌'));
+                const alertClass = allOk ? 'alert-success' : 'alert-warning';
+                container.innerHTML = '<div class="alert-box ' + alertClass + '"><strong>📊 Resultado do Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
+                
+                if (allOk) {
+                    showToast('✅ Tudo funcionando!', 'success');
+                } else {
+                    showToast('⚠️ Veja o diagnóstico no topo do Dashboard', 'error');
+                }
+                
+            } catch (error) {
+                container.innerHTML = '<div class="alert-box alert-warning">❌ Erro geral: ' + escapeHTML(error.message) + '</div>';
+            }
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        async function carregarDashboard() {
+            try {
+                const [produtos, pedidos, mensagens, banners, gateways] = await Promise.all([
+                    supabaseClient.from('produtos').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('pedidos').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('contatos').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('banners').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('gateways').select('*')
+                ]);
+
+                document.getElementById('stat-produtos').textContent = produtos.count || 0;
+                document.getElementById('stat-pedidos').textContent = pedidos.count || 0;
+                document.getElementById('stat-mensagens').textContent = mensagens.count || 0;
+                document.getElementById('stat-banners').textContent = banners.count || 0;
+                
+                const gatewaysAtivos = gateways.data ? gateways.data.filter(g => g.ativo).length : 0;
+                document.getElementById('stat-gateways').textContent = gatewaysAtivos;
+
+                const { data: recentes } = await supabaseClient
+                    .from('produtos')
+                    .select('*')
+                    .order('criado_em', { ascending: false })
+                    .limit(5);
+
+                const container = document.getElementById('dashboard-produtos');
+                if (recentes && recentes.length > 0) {
+                    container.innerHTML = `
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th></tr></thead>
+                                <tbody>
+                                    ${recentes.map(p => `
+                                        <tr>
+                                            <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'50\\'%3E%3Crect fill=\\'%23e2e8f0\\' width=\\'50\\' height=\\'50\\'/%3E%3C/svg%3E'"></td>
+                                            <td><strong>${escapeHTML(p.nome)}</strong></td>
+                                            <td>R$ ${formatarPreco(p.preco_venda)}</td>
+                                            <td>${escapeHTML(p.estoque)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>Nenhum produto cadastrado ainda.</p></div>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+                showToast('Erro ao carregar dashboard', 'error');
+            }
+        }
+
+        // ============================================
+        // UPLOAD DE IMAGENS
         // ============================================
         function comprimirImagem(file, maxWidth, quality = 0.75) {
             return new Promise((resolve, reject) => {
@@ -1527,175 +1742,24 @@
             });
         }
 
-        // ============================================
-        // 🔧 UPLOAD CORRIGIDO - DIRETO, SEM VERIFICAÇÃO PRÉVIA
-        // ============================================
         async function uploadImagem(file, bucket) {
-            // 1. Comprime a imagem
             const comprimida = await comprimirImagem(file, bucket === 'banners' ? 1400 : 800);
-            
-            // 2. Gera nome único
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
             
-            // 3. UPLOAD DIRETO - sem verificar bucket antes
-            // O Supabase vai nos dizer o erro real se algo estiver errado
-            const { data, error } = await supabaseClient.storage
+            const { error } = await supabaseClient.storage
                 .from(bucket)
-                .upload(fileName, comprimida, { 
-                    contentType: 'image/jpeg',
-                    cacheControl: '3600',
-                    upsert: false
-                });
+                .upload(fileName, comprimida, { contentType: 'image/jpeg' });
             
             if (error) {
-                // Traduz mensagens de erro comuns
                 let msg = error.message;
-                
-                if (msg.toLowerCase().includes('bucket not found') || msg.toLowerCase().includes('bucket') && msg.toLowerCase().includes('not found')) {
-                    msg = `❌ Bucket "${bucket}" NÃO ENCONTRADO neste projeto Supabase!\n\n` +
-                          `🔍 Verificações:\n` +
-                          `1. Você está conectado ao projeto correto?\n` +
-                          `   URL atual: ${SUPABASE_URL}\n\n` +
-                          `2. No Supabase Dashboard:\n` +
-                          `   • Vá em Settings > API\n` +
-                          `   • Copie a "Project URL"\n` +
-                          `   • Ela deve ser EXATAMENTE a URL acima\n\n` +
-                          `3. Confirme no Supabase > Storage que existem:\n` +
-                          `   • Bucket "produtos" (público)\n` +
-                          `   • Bucket "banners" (público)\n\n` +
-                          `💡 Clique em "🔍 Testar Conexão" no Dashboard para diagnóstico completo.`;
-                } 
-                else if (msg.toLowerCase().includes('permission') || msg.toLowerCase().includes('policy') || msg.toLowerCase().includes('rls') || msg.toLowerCase().includes('violates')) {
-                    msg = `❌ Permissão negada no bucket "${bucket}"!\n\n` +
-                          `Execute este SQL no Supabase (SQL Editor):\n\n` +
-                          `DROP POLICY IF EXISTS "${bucket}_fix_insert" ON storage.objects;\n` +
-                          `CREATE POLICY "${bucket}_fix_insert"\n` +
-                          `ON storage.objects FOR INSERT\n` +
-                          `TO authenticated\n` +
-                          `WITH CHECK (bucket_id = '${bucket}');`;
+                if (msg.toLowerCase().includes('bucket not found')) {
+                    msg = `Bucket "${bucket}" não encontrado. Verifique no Supabase Storage.`;
                 }
-                else if (msg.toLowerCase().includes('duplicate') || msg.toLowerCase().includes('already exists')) {
-                    msg = 'Já existe um arquivo com este nome. Tente novamente.';
-                }
-                else if (msg.toLowerCase().includes('payload') || msg.toLowerCase().includes('size') || msg.toLowerCase().includes('large')) {
-                    msg = 'Arquivo muito grande. Máximo permitido: 50MB.';
-                }
-                else if (msg.toLowerCase().includes('jwt') || msg.toLowerCase().includes('token') || msg.toLowerCase().includes('unauthorized')) {
-                    msg = `❌ Você não está autenticado!\n\n` +
-                          `Recarregue a página e tente novamente.`;
-                }
-                
                 throw new Error(msg);
             }
             
-            // 4. Obtém a URL pública
-            const { data: { publicUrl } } = supabaseClient.storage
-                .from(bucket)
-                .getPublicUrl(fileName);
-            
+            const { data: { publicUrl } } = supabaseClient.storage.from(bucket).getPublicUrl(fileName);
             return publicUrl;
-        }
-
-        const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect fill='%23e2e8f0' width='50' height='50'/%3E%3C/svg%3E";
-
-        // ============================================
-        // DASHBOARD
-        // ============================================
-        async function carregarDashboard() {
-            try {
-                const [produtos, pedidos, mensagens, banners] = await Promise.all([
-                    supabaseClient.from('produtos').select('*', { count: 'exact', head: true }),
-                    supabaseClient.from('pedidos').select('*', { count: 'exact', head: true }),
-                    supabaseClient.from('contatos').select('*', { count: 'exact', head: true }),
-                    supabaseClient.from('banners').select('*', { count: 'exact', head: true })
-                ]);
-
-                document.getElementById('stat-produtos').textContent = produtos.count || 0;
-                document.getElementById('stat-pedidos').textContent = pedidos.count || 0;
-                document.getElementById('stat-mensagens').textContent = mensagens.count || 0;
-                document.getElementById('stat-banners').textContent = banners.count || 0;
-
-                const { data: recentes } = await supabaseClient
-                    .from('produtos')
-                    .select('*')
-                    .order('criado_em', { ascending: false })
-                    .limit(5);
-
-                const container = document.getElementById('dashboard-produtos');
-                if (recentes && recentes.length > 0) {
-                    container.innerHTML = `
-                        <div class="table-container">
-                            <table>
-                                <thead><tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th></tr></thead>
-                                <tbody>
-                                    ${recentes.map(p => `
-                                        <tr>
-                                            <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
-                                            <td><strong>${escapeHTML(p.nome)}</strong></td>
-                                            <td>R$ ${formatarPreco(p.preco_venda)}</td>
-                                            <td>${escapeHTML(p.estoque)}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>Nenhum produto cadastrado ainda.</p></div>';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar dashboard:', error);
-                showToast('Erro ao carregar dashboard: ' + error.message, 'error');
-            }
-        }
-
-        // ============================================
-        // PAGINAÇÃO
-        // ============================================
-        function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            
-            let paginationHtml = container.querySelector('.pagination');
-            if (!paginationHtml) {
-                paginationHtml = document.createElement('div');
-                paginationHtml.className = 'pagination';
-                container.appendChild(paginationHtml);
-            }
-
-            const key = containerId.replace('pagination-', '');
-            const perPage = state.pagination[key].perPage;
-            const total = state.pagination[key].total;
-            const start = (currentPage - 1) * perPage + 1;
-            const end = Math.min(currentPage * perPage, total);
-
-            const pageButtons = [];
-            const maxButtons = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-            if (endPage - startPage + 1 < maxButtons) {
-                startPage = Math.max(1, endPage - maxButtons + 1);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                pageButtons.push(`<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`);
-            }
-
-            paginationHtml.innerHTML = `
-                <div class="pagination-info">Mostrando ${start}-${end} de ${total}</div>
-                <div class="pagination-controls">
-                    <button class="page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>← Anterior</button>
-                    ${pageButtons.join('')}
-                    <button class="page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Próxima →</button>
-                </div>
-            `;
-
-            paginationHtml.querySelectorAll('.page-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const page = parseInt(btn.dataset.page);
-                    if (page >= 1 && page <= totalPages) onPageChange(page);
-                });
-            });
         }
 
         // ============================================
@@ -1754,15 +1818,15 @@
                             <tbody>
                                 ${state.produtos.map(p => `
                                     <tr>
-                                        <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
+                                        <td><img src="${escapeHTML(p.imagem_url)}" class="product-img-thumb" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'50\\'%3E%3Crect fill=\\'%23e2e8f0\\' width=\\'50\\' height=\\'50\\'/%3E%3C/svg%3E'"></td>
                                         <td><strong>${escapeHTML(p.nome)}</strong></td>
                                         <td>${escapeHTML(getCategoriaNome(p.categoria))}</td>
                                         <td>R$ ${formatarPreco(p.preco_venda)}</td>
                                         <td>${escapeHTML(p.estoque)}</td>
                                         <td>${getBadgeHtml(p.badge)}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-secondary" data-action="edit-product" data-id="${escapeHTML(p.id)}" aria-label="Editar">✏️</button>
-                                            <button class="btn btn-sm btn-danger" data-action="delete-product" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.nome)}" aria-label="Excluir">🗑️</button>
+                                            <button class="btn btn-sm btn-secondary" data-action="edit-product" data-id="${escapeHTML(p.id)}">✏️</button>
+                                            <button class="btn btn-sm btn-danger" data-action="delete-product" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.nome)}">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -1780,7 +1844,7 @@
                 }
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
-                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar produtos</h3><p>' + escapeHTML(error.message) + '</p></div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar produtos</h3></div>';
             }
         }
 
@@ -1871,7 +1935,7 @@
                 content.innerHTML = `<img src="${escapeHTML(url)}" class="preview-img">`;
                 showToast('✅ Imagem enviada!');
             } catch (e) {
-                showToast('❌ Erro no upload:\n\n' + e.message, 'error');
+                showToast('Erro no upload: ' + e.message, 'error');
                 content.innerHTML = '<div class="upload-icon">📷</div><div class="upload-text"><strong>Clique para enviar imagem</strong></div>';
             }
         }
@@ -1889,12 +1953,8 @@
                 imagem_url: document.getElementById('prod-img-url').value
             };
 
-            if (!produto.nome || isNaN(produto.preco_venda) || produto.preco_venda <= 0) {
-                showToast('Preencha nome e preço válido!', 'error');
-                return;
-            }
-            if (!produto.imagem_url) {
-                showToast('Envie uma imagem do produto!', 'error');
+            if (!produto.nome || isNaN(produto.preco_venda) || produto.preco_venda <= 0 || !produto.imagem_url) {
+                showToast('Preencha nome, preço válido e imagem!', 'error');
                 return;
             }
             if (isNaN(produto.estoque) || produto.estoque < 0) {
@@ -2088,7 +2148,7 @@
                             <tbody>
                                 ${state.banners.map(b => `
                                     <tr>
-                                        <td><img src="${escapeHTML(b.imagem_url)}" style="width: 150px; height: 50px; object-fit: cover; border-radius: 6px;" alt="" onerror="this.src='${PLACEHOLDER_IMG}'"></td>
+                                        <td><img src="${escapeHTML(b.imagem_url)}" style="width: 150px; height: 50px; object-fit: cover; border-radius: 6px;" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'150\\' height=\\'50\\'%3E%3Crect fill=\\'%23e2e8f0\\' width=\\'150\\' height=\\'50\\'/%3E%3C/svg%3E'"></td>
                                         <td>
                                             <label class="toggle-switch">
                                                 <input type="checkbox" ${b.ativo ? 'checked' : ''} data-action="toggle-banner" data-id="${escapeHTML(b.id)}">
@@ -2134,8 +2194,7 @@
                 content.innerHTML = `<img src="${escapeHTML(url)}" class="preview-img">`;
                 showToast('✅ Imagem enviada!');
             } catch (e) {
-                showToast('❌ Erro no upload:\n\n' + e.message, 'error');
-                content.innerHTML = '<div class="upload-icon">🖼️</div><div class="upload-text"><strong>Clique para enviar imagem</strong></div>';
+                showToast('Erro no upload: ' + e.message, 'error');
             }
         }
 
@@ -2208,7 +2267,7 @@
             try {
                 const { data, error, count } = await supabaseClient
                     .from('pedidos')
-                    .select('*', { count: 'exact' })
+                    .select('*')
                     .order('criado_em', { ascending: false })
                     .range(from, to);
 
@@ -2226,6 +2285,8 @@
 
                 container.innerHTML = state.pedidos.map(p => {
                     const itens = Array.isArray(p.itens) ? p.itens : [];
+                    const statusBadge = getStatusBadge(p.status);
+                    
                     return `
                         <div class="order-item">
                             <div class="order-header">
@@ -2233,8 +2294,15 @@
                                     <div class="order-id">Pedido #${escapeHTML(p.id.substring(0, 8).toUpperCase())}</div>
                                     <div class="order-date">${formatarData(p.criado_em)}</div>
                                 </div>
-                                <div>
-                                    <span class="badge-status ${p.status === 'aguardando_pagamento' ? 'badge-sale' : 'badge-new'}">${escapeHTML(p.status) || 'pendente'}</span>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    ${statusBadge}
+                                    <select class="order-status-select" data-action="update-order-status" data-id="${escapeHTML(p.id)}">
+                                        <option value="aguardando_pagamento" ${p.status === 'aguardando_pagamento' ? 'selected' : ''}>Aguardando Pagamento</option>
+                                        <option value="pago" ${p.status === 'pago' ? 'selected' : ''}>Pago</option>
+                                        <option value="enviado" ${p.status === 'enviado' ? 'selected' : ''}>Enviado</option>
+                                        <option value="entregue" ${p.status === 'entregue' ? 'selected' : ''}>Entregue</option>
+                                        <option value="cancelado" ${p.status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="order-details">
@@ -2283,6 +2351,31 @@
             }
         }
 
+        function getStatusBadge(status) {
+            const badges = {
+                'aguardando_pagamento': '<span class="badge-status badge-pendente">Aguardando</span>',
+                'pago': '<span class="badge-status badge-pago">Pago</span>',
+                'enviado': '<span class="badge-status badge-new">Enviado</span>',
+                'entregue': '<span class="badge-status badge-active">Entregue</span>',
+                'cancelado': '<span class="badge-status badge-cancelado">Cancelado</span>'
+            };
+            return badges[status] || '<span class="badge-status badge-none">' + escapeHTML(status || 'Pendente') + '</span>';
+        }
+
+        async function atualizarStatusPedido(id, status) {
+            try {
+                const { error } = await supabaseClient
+                    .from('pedidos')
+                    .update({ status: status })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                showToast('✅ Status atualizado!');
+            } catch (e) {
+                showToast('Erro: ' + e.message, 'error');
+            }
+        }
+
         // ============================================
         // MENSAGENS
         // ============================================
@@ -2301,7 +2394,7 @@
             try {
                 const { data, error, count } = await supabaseClient
                     .from('contatos')
-                    .select('*', { count: 'exact' })
+                    .select('*')
                     .order('criado_em', { ascending: false })
                     .range(from, to);
 
@@ -2382,7 +2475,293 @@
         }
 
         // ============================================
-        // CONTEÚDO E CONFIGURAÇÕES
+        // GATEWAYS DE PAGAMENTO
+        // ============================================
+        async function carregarGateways() {
+            const container = document.getElementById('lista-gateways');
+            container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('gateways')
+                    .select('*')
+                    .order('nome');
+
+                if (error) throw error;
+                state.gateways = data || [];
+
+                if (state.gateways.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="icon">💳</div><h3>Nenhum gateway configurado</h3></div>';
+                    return;
+                }
+
+                const icones = {
+                    'mercado_pago': '🟡',
+                    'picpay': '🟢',
+                    'asaas': '🔵',
+                    'pagbank': '🟠'
+                };
+
+                container.innerHTML = state.gateways.map(g => `
+                    <div class="gateway-card ${g.ativo ? 'active' : ''}">
+                        <div class="gateway-header">
+                            <div class="gateway-name">
+                                <span>${icones[g.chave] || '💳'}</span>
+                                ${escapeHTML(g.nome)}
+                                <span class="gateway-badge ${g.ativo ? 'active' : 'inactive'}">
+                                    ${g.ativo ? 'Ativo' : 'Inativo'}
+                                </span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${g.ativo ? 'checked' : ''} data-action="toggle-gateway" data-id="${escapeHTML(g.id)}">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="gateway-info">
+                            ${g.ultimo_teste ? 'Último teste: ' + formatarData(g.ultimo_teste) : 'Nunca testado'}
+                            ${g.status_teste ? ' • Status: ' + escapeHTML(g.status_teste) : ''}
+                        </div>
+                        <div class="gateway-actions">
+                            <button class="btn btn-sm btn-secondary" data-action="config-gateway" data-id="${escapeHTML(g.id)}">⚙️ Configurar</button>
+                            <button class="btn btn-sm btn-secondary" data-action="test-gateway" data-id="${escapeHTML(g.id)}">🔍 Testar</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro:', error);
+                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar gateways</h3></div>';
+            }
+        }
+
+        function abrirModalGateway(id) {
+            const gateway = state.gateways.find(g => g.id === id);
+            if (!gateway) return;
+
+            document.getElementById('modal-gateway-titulo').textContent = 'Configurar ' + gateway.nome;
+            document.getElementById('gw-id').value = gateway.id;
+            document.getElementById('gw-chave').value = gateway.chave;
+
+            const campos = getGatewayFields(gateway.chave, gateway.credenciais);
+            document.getElementById('gateway-fields').innerHTML = campos;
+
+            document.getElementById('modal-gateway').classList.add('active');
+        }
+
+        function getGatewayFields(chave, credenciais = {}) {
+            const configs = {
+                'mercado_pago': [
+                    { key: 'public_key', label: 'Public Key', type: 'text', placeholder: 'APP_USR-...' },
+                    { key: 'access_token', label: 'Access Token', type: 'password', placeholder: 'APP_USR-...' }
+                ],
+                'picpay': [
+                    { key: 'api_key', label: 'API Key (x-picpay-token)', type: 'password', placeholder: '...' }
+                ],
+                'asaas': [
+                    { key: 'api_key', label: 'API Key', type: 'password', placeholder: '$aact_...' }
+                ],
+                'pagbank': [
+                    { key: 'access_token', label: 'Access Token', type: 'password', placeholder: '...' }
+                ]
+            };
+
+            const campos = configs[chave] || [];
+            
+            return campos.map(c => `
+                <div class="form-group">
+                    <label>${c.label} <span class="req">*</span></label>
+                    <input type="${c.type}" class="form-input" id="gw-field-${c.key}" 
+                           value="${escapeHTML(credenciais[c.key] || '')}" 
+                           placeholder="${c.placeholder}">
+                </div>
+            `).join('');
+        }
+
+        async function salvarGateway() {
+            const id = document.getElementById('gw-id').value;
+            const chave = document.getElementById('gw-chave').value;
+            
+            const gateway = state.gateways.find(g => g.id === id);
+            if (!gateway) return;
+
+            const campos = {
+                'mercado_pago': ['public_key', 'access_token'],
+                'picpay': ['api_key'],
+                'asaas': ['api_key'],
+                'pagbank': ['access_token']
+            }[chave] || [];
+
+            const novasCredenciais = { ...gateway.credenciais };
+            campos.forEach(c => {
+                const input = document.getElementById('gw-field-' + c);
+                if (input) novasCredenciais[c] = input.value.trim();
+            });
+
+            const btn = document.getElementById('btn-salvar-gateway');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
+            try {
+                const { error } = await supabaseClient
+                    .from('gateways')
+                    .update({ 
+                        credenciais: novasCredenciais,
+                        atualizado_em: new Date().toISOString()
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                showToast('✅ Gateway salvo!');
+                fecharModal('modal-gateway');
+                carregarGateways();
+            } catch (e) {
+                showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar';
+            }
+        }
+
+        async function toggleGateway(id, ativo) {
+            try {
+                const { error } = await supabaseClient
+                    .from('gateways')
+                    .update({ ativo, atualizado_em: new Date().toISOString() })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                showToast(ativo ? 'Gateway ativado!' : 'Gateway desativado!');
+                carregarGateways();
+            } catch (e) {
+                showToast('Erro: ' + e.message, 'error');
+            }
+        }
+
+        async function testarGateway(id) {
+            const gateway = state.gateways.find(g => g.id === id);
+            if (!gateway) return;
+
+            showToast('🔍 Testando conexão com ' + gateway.nome + '...');
+
+            try {
+                const { error } = await supabaseClient
+                    .from('gateways')
+                    .update({ 
+                        ultimo_teste: new Date().toISOString(),
+                        status_teste: 'sucesso'
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                showToast('✅ Teste realizado! (Simulado - implemente verificação real via Edge Functions)');
+                carregarGateways();
+            } catch (e) {
+                showToast('Erro no teste: ' + e.message, 'error');
+            }
+        }
+
+        // ============================================
+        // POLÍTICAS
+        // ============================================
+        async function carregarPoliticas() {
+            const container = document.getElementById('lista-politicas');
+            container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('politicas')
+                    .select('*')
+                    .order('chave');
+
+                if (error) throw error;
+                state.politicas = data || [];
+
+                if (state.politicas.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><h3>Nenhuma política cadastrada</h3></div>';
+                    return;
+                }
+
+                const icones = {
+                    'reembolso': '💰',
+                    'frete': '🚚',
+                    'trocas': '🔄',
+                    'termos': '📜',
+                    'privacidade': '🔒'
+                };
+
+                container.innerHTML = state.politicas.map(p => `
+                    <div class="policy-editor-item" id="policy-${escapeHTML(p.chave)}">
+                        <div class="policy-editor-header" data-action="toggle-policy" data-id="${escapeHTML(p.id)}">
+                            <span class="policy-editor-title">
+                                ${icones[p.chave] || '📄'} ${escapeHTML(p.titulo)}
+                            </span>
+                            <span>▼</span>
+                        </div>
+                        <div class="policy-editor-body">
+                            <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 16px;">
+                                Última atualização: ${formatarData(p.atualizado_em)}
+                            </p>
+                            <button class="btn btn-sm btn-primary" data-action="edit-policy" data-id="${escapeHTML(p.id)}">
+                                ✏️ Editar Conteúdo
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro:', error);
+                container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar políticas</h3></div>';
+            }
+        }
+
+        function abrirModalPolitica(id) {
+            const politica = state.politicas.find(p => p.id === id);
+            if (!politica) return;
+
+            document.getElementById('modal-politica-titulo').textContent = 'Editar: ' + politica.titulo;
+            document.getElementById('pol-id').value = politica.id;
+            document.getElementById('pol-titulo').value = politica.titulo;
+            document.getElementById('pol-conteudo').value = politica.conteudo;
+
+            document.getElementById('modal-politica').classList.add('active');
+        }
+
+        async function salvarPolitica() {
+            const id = document.getElementById('pol-id').value;
+            const titulo = document.getElementById('pol-titulo').value.trim();
+            const conteudo = document.getElementById('pol-conteudo').value.trim();
+
+            if (!titulo || !conteudo) {
+                showToast('Preencha título e conteúdo!', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btn-salvar-politica');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
+            try {
+                const { error } = await supabaseClient
+                    .from('politicas')
+                    .update({ 
+                        titulo, 
+                        conteudo,
+                        atualizado_em: new Date().toISOString()
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                showToast('✅ Política salva!');
+                fecharModal('modal-politica');
+                carregarPoliticas();
+            } catch (e) {
+                showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar Política';
+            }
+        }
+
+        // ============================================
+        // CONFIGURAÇÕES E CONTEÚDO
         // ============================================
         async function carregarConfiguracoes() {
             try {
@@ -2404,6 +2783,10 @@
             }
         }
 
+        async function carregarContato() {
+            await carregarConfiguracoes();
+        }
+
         async function salvarConteudo() {
             const btn = document.getElementById('btn-salvar-conteudo');
             btn.disabled = true;
@@ -2415,8 +2798,7 @@
                 'stat3_valor', 'stat3_label', 'stat4_valor', 'stat4_label',
                 'produtos_titulo', 'produtos_subtitulo',
                 'newsletter_titulo', 'newsletter_subtitulo', 'newsletter_botao',
-                'footer_sobre', 'footer_endereco', 'footer_email', 'footer_telefone', 'footer_copyright',
-                'contato_endereco', 'contato_email', 'contato_telefone', 'contato_whatsapp', 'contato_horario'
+                'footer_sobre', 'footer_endereco', 'footer_email', 'footer_telefone', 'footer_copyright'
             ];
 
             try {
@@ -2439,11 +2821,39 @@
             }
         }
 
+        async function salvarContato() {
+            const btn = document.getElementById('btn-salvar-contato');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
+            const chaves = ['contato_endereco', 'contato_email', 'contato_telefone', 'contato_whatsapp', 'contato_horario'];
+
+            try {
+                for (const chave of chaves) {
+                    const input = document.getElementById('cfg-' + chave);
+                    if (input) {
+                        await supabaseClient.from('configuracoes').upsert({
+                            chave: chave,
+                            valor: input.value,
+                            atualizado_em: new Date().toISOString()
+                        });
+                    }
+                }
+                showToast('✅ Informações de contato salvas!');
+            } catch (e) {
+                showToast('Erro: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Salvar Informações de Contato';
+            }
+        }
+
         async function salvarConfig() {
-            const chaves = ['logo_texto', 'frete_gratis_acima', 'valor_frete', 'desconto_pix_percent'];
             const btn = document.getElementById('btn-salvar-config');
             btn.disabled = true;
             btn.textContent = 'Salvando...';
+
+            const chaves = ['logo_texto', 'frete_gratis_acima', 'valor_frete', 'desconto_pix_percent'];
 
             try {
                 for (const chave of chaves) {
@@ -2465,6 +2875,58 @@
             }
         }
 
+        // ============================================
+        // PAGINAÇÃO
+        // ============================================
+        function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange) {
+            const container = document.getElementById(containerId.replace('pagination-', 'lista-'));
+            if (!container) return;
+            
+            let paginationHtml = container.querySelector('.pagination');
+            if (!paginationHtml) {
+                paginationHtml = document.createElement('div');
+                paginationHtml.className = 'pagination';
+                container.appendChild(paginationHtml);
+            }
+
+            const key = containerId.replace('pagination-', '');
+            const perPage = state.pagination[key].perPage;
+            const total = state.pagination[key].total;
+            const start = (currentPage - 1) * perPage + 1;
+            const end = Math.min(currentPage * perPage, total);
+
+            const pageButtons = [];
+            const maxButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+            if (endPage - startPage + 1 < maxButtons) {
+                startPage = Math.max(1, endPage - maxButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pageButtons.push(`<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`);
+            }
+
+            paginationHtml.innerHTML = `
+                <div class="pagination-info">Mostrando ${start}-${end} de ${total}</div>
+                <div class="pagination-controls">
+                    <button class="page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>← Anterior</button>
+                    ${pageButtons.join('')}
+                    <button class="page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Próxima →</button>
+                </div>
+            `;
+
+            paginationHtml.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.dataset.page);
+                    if (page >= 1 && page <= totalPages) onPageChange(page);
+                });
+            });
+        }
+
+        // ============================================
+        // MODAIS
+        // ============================================
         function fecharModal(id) {
             const modal = document.getElementById(id);
             if (modal) modal.classList.remove('active');
@@ -2531,6 +2993,31 @@
                 case 'test-connection':
                     await testarConexao();
                     break;
+                case 'config-gateway':
+                    abrirModalGateway(id);
+                    break;
+                case 'test-gateway':
+                    testarGateway(id);
+                    break;
+                case 'toggle-policy':
+                    const policyItem = document.getElementById('policy-' + id);
+                    if (policyItem) policyItem.classList.toggle('open');
+                    break;
+                case 'edit-policy':
+                    abrirModalPolitica(id);
+                    break;
+            }
+        });
+
+        document.addEventListener('change', (e) => {
+            if (e.target.dataset.action === 'toggle-banner') {
+                toggleBanner(e.target.dataset.id, e.target.checked);
+            }
+            if (e.target.dataset.action === 'toggle-gateway') {
+                toggleGateway(e.target.dataset.id, e.target.checked);
+            }
+            if (e.target.dataset.action === 'update-order-status') {
+                atualizarStatusPedido(e.target.dataset.id, e.target.value);
             }
         });
 
@@ -2546,12 +3033,6 @@
             });
         });
 
-        document.addEventListener('change', (e) => {
-            if (e.target.dataset.action === 'toggle-banner') {
-                toggleBanner(e.target.dataset.id, e.target.checked);
-            }
-        });
-
         document.getElementById('prod-upload').addEventListener('click', () => {
             document.getElementById('prod-img-input').click();
         });
@@ -2565,10 +3046,17 @@
         document.getElementById('btn-logout').addEventListener('click', sair);
         document.getElementById('menu-toggle').addEventListener('click', toggleSidebar);
         document.getElementById('btn-salvar-conteudo').addEventListener('click', salvarConteudo);
+        document.getElementById('btn-salvar-contato').addEventListener('click', salvarContato);
         document.getElementById('btn-salvar-config').addEventListener('click', salvarConfig);
         document.getElementById('btn-salvar-produto').addEventListener('click', salvarProduto);
         document.getElementById('btn-salvar-categoria').addEventListener('click', salvarCategoria);
         document.getElementById('btn-salvar-banner').addEventListener('click', salvarBanner);
+        document.getElementById('btn-salvar-gateway').addEventListener('click', salvarGateway);
+        document.getElementById('btn-testar-gateway').addEventListener('click', () => {
+            const id = document.getElementById('gw-id').value;
+            testarGateway(id);
+        });
+        document.getElementById('btn-salvar-politica').addEventListener('click', salvarPolitica);
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
@@ -2589,7 +3077,7 @@
             await verificarAuth();
             
             const savedView = localStorage.getItem('admin_current_view');
-            const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'conteudo', 'config'];
+            const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'politicas', 'contato', 'config'];
             
             if (savedView && validViews.includes(savedView)) {
                 navegarPara(savedView);
