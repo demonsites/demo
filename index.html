@@ -287,8 +287,6 @@ text-transform: uppercase;
 .badge-pendente { background: rgba(251, 191, 36, 0.2); color: var(--gold-dark); }
 .badge-pago { background: rgba(16, 185, 129, 0.1); color: var(--success); }
 .badge-cancelado { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-.badge-test { background: rgba(245, 158, 11, 0.15); color: #92400e; }
-.badge-production { background: rgba(16, 185, 129, 0.1); color: var(--success); }
 .pagination {
 display: flex;
 align-items: center;
@@ -346,7 +344,7 @@ box-shadow: 0 0 0 3px rgba(26, 79, 184, 0.1);
 }
 .form-textarea { resize: vertical; min-height: 100px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-row.three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .upload-area {
 border: 2px dashed var(--cobalt-main);
 border-radius: 12px;
@@ -509,11 +507,6 @@ background: rgba(16, 185, 129, 0.1);
 border-left: 4px solid var(--success);
 color: #065f46;
 }
-.alert-danger {
-background: rgba(239, 68, 68, 0.1);
-border-left: 4px solid var(--danger);
-color: #991b1b;
-}
 .message-item {
 padding: 20px;
 border: 1px solid var(--border);
@@ -658,13 +651,15 @@ text-transform: uppercase;
 .gateway-info {
 color: var(--text-gray);
 font-size: 0.9rem;
-margin-bottom: 16px;
+margin-bottom: 8px;
 }
 .gateway-actions {
 display: flex;
 gap: 12px;
 flex-wrap: wrap;
+margin-top: 16px;
 }
+/* ✅ NOVO: Status visual do teste de conexão */
 .gateway-status {
 display: flex;
 align-items: center;
@@ -674,19 +669,12 @@ border-radius: var(--radius);
 font-size: 0.85rem;
 font-weight: 600;
 margin-top: 12px;
+word-break: break-word;
 }
-.gateway-status.success {
-background: rgba(16, 185, 129, 0.1);
-color: var(--success);
-}
-.gateway-status.error {
-background: rgba(239, 68, 68, 0.1);
-color: var(--danger);
-}
-.gateway-status.testing {
-background: rgba(251, 191, 36, 0.15);
-color: var(--gold-dark);
-}
+.gateway-status.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+.gateway-status.error { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+.gateway-status.testing { background: rgba(251, 191, 36, 0.15); color: var(--gold-dark); }
+/* ✅ NOVO: Indicador de tipo de credencial */
 .credential-info {
 display: flex;
 align-items: center;
@@ -697,18 +685,10 @@ font-size: 0.8rem;
 font-weight: 600;
 margin-top: 8px;
 }
-.credential-info.production {
-background: rgba(16, 185, 129, 0.1);
-color: var(--success);
-}
-.credential-info.test {
-background: rgba(245, 158, 11, 0.15);
-color: #92400e;
-}
-.credential-info.missing {
-background: rgba(239, 68, 68, 0.1);
-color: var(--danger);
-}
+.credential-info.production { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+.credential-info.test { background: rgba(245, 158, 11, 0.15); color: #92400e; }
+.credential-info.missing { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+.credential-info.ok { background: rgba(26, 79, 184, 0.08); color: var(--cobalt-main); }
 .policy-editor-item {
 border: 1px solid var(--border);
 border-radius: var(--radius);
@@ -810,7 +790,7 @@ text-align: center;
 <span>Pedidos</span>
 </div>
 <div class="sidebar-item" data-view="mensagens" role="button" tabindex="0">
-<span class="icon"></span>
+<span class="icon">💬</span>
 <span>Mensagens</span>
 </div>
 </div>
@@ -836,7 +816,7 @@ text-align: center;
 <span>Contato</span>
 </div>
 <div class="sidebar-item" data-view="config" role="button" tabindex="0">
-<span class="icon">️</span>
+<span class="icon">⚙️</span>
 <span>Configurações</span>
 </div>
 </div>
@@ -851,14 +831,14 @@ text-align: center;
 <div id="connection-status"></div>
 <div class="stats-grid">
 <div class="stat-card">
-<div class="stat-icon blue"></div>
+<div class="stat-icon blue">📦</div>
 <div class="stat-info">
 <h3 id="stat-produtos">0</h3>
 <p>Produtos</p>
 </div>
 </div>
 <div class="stat-card">
-<div class="stat-icon gold"></div>
+<div class="stat-icon gold">🛒</div>
 <div class="stat-info">
 <h3 id="stat-pedidos">0</h3>
 <p>Pedidos</p>
@@ -899,7 +879,7 @@ text-align: center;
 🛒 Ver Pedidos
 </button>
 <button class="btn btn-secondary" data-action="test-connection" style="border: 2px solid var(--cobalt-main); color: var(--cobalt-main);">
- Testar Conexão
+🔍 Testar Conexão
 </button>
 </div>
 </div>
@@ -996,8 +976,9 @@ text-align: center;
 <h1>Gateways de Pagamento</h1>
 <p>Configure e gerencie os processadores de pagamento</p>
 </div>
-<div class="alert-box alert-info">
-<strong>⚠️ Importante:</strong> Use credenciais de <strong>PRODUÇÃO</strong> (APP_USR-...) para processar pagamentos reais. Credenciais de TESTE (TEST-...) não debitam valores reais.
+<div class="alert-box alert-warning">
+<strong>⚠️ Importante:</strong> Use credenciais de <strong>PRODUÇÃO</strong> (APP_USR-...) para processar pagamentos reais.
+Credenciais de TESTE (TEST-...) não debitam valores reais. O teste de conexão é feito via Edge Function <code>testar-gateway</code>.
 </div>
 <div id="lista-gateways" class="loading">
 <span class="spinner-inline"></span> Carregando gateways...
@@ -1107,7 +1088,7 @@ text-align: center;
 </div>
 </div>
 <div class="card">
-<h2 class="card-title"> Rodapé</h2>
+<h2 class="card-title">🦶 Rodapé</h2>
 <div class="form-group">
 <label>Sobre a empresa</label>
 <textarea class="form-textarea" id="cfg-footer_sobre"></textarea>
@@ -1280,7 +1261,7 @@ text-align: center;
 <label>Imagem do Produto <span class="req">*</span></label>
 <div class="upload-area" id="prod-upload">
 <div id="prod-upload-content">
-<div class="upload-icon"></div>
+<div class="upload-icon">📷</div>
 <div class="upload-text">
 <strong>Clique para enviar imagem</strong><br>
 PNG, JPG ou WEBP • Máx. 5MB
@@ -1374,13 +1355,13 @@ PNG, JPG ou WEBP • Máx. 5MB
 <input type="hidden" id="gw-chave">
 <div id="gateway-fields"></div>
 <div class="alert-box alert-warning" style="margin-top: 20px;">
-<strong>⚠️ Segurança:</strong> As credenciais são armazenadas criptografadas no Supabase.
-Em produção, use Supabase Edge Functions para processar pagamentos.
+<strong>⚠️ Segurança:</strong> As credenciais são armazenadas no Supabase e lidas apenas pela Edge Function no servidor.
+Nunca exponha o Access Token no frontend.
 </div>
 </div>
 <div class="modal-footer">
 <button class="btn btn-secondary" data-close-modal="modal-gateway">Cancelar</button>
-<button class="btn btn-secondary" id="btn-testar-gateway"> Testar</button>
+<button class="btn btn-secondary" id="btn-testar-gateway">🔍 Testar</button>
 <button class="btn btn-primary" id="btn-salvar-gateway">💾 Salvar</button>
 </div>
 </div>
@@ -1554,7 +1535,7 @@ resultados.push('✅ Tabela gateways: OK (' + ativos + ' ativos)');
 }
 const allOk = resultados.every(r => !r.startsWith('❌'));
 const alertClass = allOk ? 'alert-success' : 'alert-warning';
-container.innerHTML = '<div class="alert-box ' + alertClass + '"><strong> Resultado do Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
+container.innerHTML = '<div class="alert-box ' + alertClass + '"><strong>📊 Resultado do Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
 if (allOk) {
 showToast('✅ Tudo funcionando!', 'success');
 } else {
@@ -1900,7 +1881,7 @@ ${state.categorias.map(c => `
 <td>${escapeHTML(c.descricao) || '-'}</td>
 <td>${escapeHTML(c.ordem)}</td>
 <td>
-<button class="btn btn-sm btn-secondary" data-action="edit-category" data-id="${escapeHTML(c.id)}">️</button>
+<button class="btn btn-sm btn-secondary" data-action="edit-category" data-id="${escapeHTML(c.id)}">✏️</button>
 <button class="btn btn-sm btn-danger" data-action="delete-category" data-id="${escapeHTML(c.id)}" data-name="${escapeHTML(c.nome)}">🗑️</button>
 </td>
 </tr>
@@ -2232,14 +2213,14 @@ state.pagination.mensagens.total = count || 0;
 const oldPag = document.getElementById(paginationId);
 if (oldPag) oldPag.remove();
 if (state.mensagens.length === 0 && count === 0) {
-container.innerHTML = '<div class="empty-state"><div class="icon"></div><h3>Nenhuma mensagem recebida</h3></div>';
+container.innerHTML = '<div class="empty-state"><div class="icon">💬</div><h3>Nenhuma mensagem recebida</h3></div>';
 return;
 }
 const assuntos = {
 'duvida': '❓ Dúvida sobre produto',
 'orcamento': '💰 Orçamento',
-'pedido': ' Status do pedido',
-'parceria': ' Parceria comercial',
+'pedido': '📦 Status do pedido',
+'parceria': '🤝 Parceria comercial',
 'suporte': '🛠️ Suporte técnico',
 'outro': '📋 Outro assunto'
 };
@@ -2255,7 +2236,7 @@ container.innerHTML = state.mensagens.map(m => `
 <div class="message-subject">${escapeHTML(assuntos[m.assunto] || m.assunto)}</div>
 <div class="message-body">${escapeHTML(m.mensagem)}</div>
 <div class="message-actions">
-<a href="mailto:${escapeHTML(m.email)}?subject=Re: ${encodeURIComponent(m.assunto || '')}" class="btn btn-sm btn-primary" rel="noopener"> Responder</a>
+<a href="mailto:${escapeHTML(m.email)}?subject=Re: ${encodeURIComponent(m.assunto || '')}" class="btn btn-sm btn-primary" rel="noopener">📧 Responder</a>
 ${m.status === 'novo' ? `<button class="btn btn-sm btn-secondary" data-action="mark-read" data-id="${escapeHTML(m.id)}">✓ Marcar como lida</button>` : ''}
 <button class="btn btn-sm btn-danger" data-action="delete-message" data-id="${escapeHTML(m.id)}">🗑️</button>
 </div>
@@ -2295,7 +2276,7 @@ showToast('Erro: ' + e.message, 'error');
 }
 }
 // ============================================
-// GATEWAYS DE PAGAMENTO
+// GATEWAYS DE PAGAMENTO (✅ CORRIGIDO)
 // ============================================
 async function carregarGateways() {
 const container = document.getElementById('lista-gateways');
@@ -2315,7 +2296,7 @@ return;
 const icones = {
 'mercado_pago': '🟡',
 'picpay': '🟢',
-'asaas': '',
+'asaas': '🔵',
 'pagbank': '🟠'
 };
 container.innerHTML = state.gateways.map(g => {
@@ -2338,7 +2319,6 @@ ${g.ativo ? 'Ativo' : 'Inativo'}
 </div>
 <div class="gateway-info">
 ${g.ultimo_teste ? 'Último teste: ' + formatarData(g.ultimo_teste) : 'Nunca testado'}
-${g.status_teste ? ' • Status: ' + escapeHTML(g.status_teste) : ''}
 </div>
 ${credInfo}
 ${statusInfo}
@@ -2354,33 +2334,23 @@ console.error('Erro:', error);
 container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar gateways</h3></div>';
 }
 }
+// ✅ NOVO: Detecta o tipo de credencial salva
 function getCredentialInfo(credenciais) {
-if (!credenciais) {
-return '<div class="credential-info missing">⚠️ Credenciais não configuradas</div>';
+if (!credenciais) return '<div class="credential-info missing">⚠️ Credenciais não configuradas</div>';
+const chavePrincipal = credenciais.public_key || credenciais.access_token || credenciais.api_key || '';
+if (!chavePrincipal) return '<div class="credential-info missing">⚠️ Credenciais não configuradas</div>';
+if (chavePrincipal.startsWith('APP_USR-')) return '<div class="credential-info production">✅ Credenciais de PRODUÇÃO (pagamentos reais)</div>';
+if (chavePrincipal.startsWith('TEST-')) return '<div class="credential-info test">⚠️ Credenciais de TESTE (pagamentos simulados)</div>';
+return '<div class="credential-info ok">✅ Credenciais configuradas</div>';
 }
-const publicKey = credenciais.public_key || credenciais.access_token || '';
-if (!publicKey) {
-return '<div class="credential-info missing">⚠️ Credenciais não configuradas</div>';
-}
-if (publicKey.startsWith('APP_USR-')) {
-return '<div class="credential-info production">✅ Credenciais de PRODUÇÃO (pagamentos reais)</div>';
-} else if (publicKey.startsWith('TEST-')) {
-return '<div class="credential-info test">⚠️ Credenciais de TESTE (pagamentos simulados)</div>';
-} else {
-return '<div class="credential-info missing"> Tipo de credencial desconhecido</div>';
-}
-}
+// ✅ NOVO: Exibe o status do último teste de conexão
 function getGatewayStatus(gateway) {
 if (!gateway.status_teste) return '';
-const status = gateway.status_teste.toLowerCase();
-if (status.includes('sucesso') || status.includes('ok')) {
-return '<div class="gateway-status success">✅ Conexão OK</div>';
-} else if (status.includes('erro') || status.includes('falha')) {
-return '<div class="gateway-status error">❌ Erro na conexão</div>';
-} else if (status.includes('testando')) {
-return '<div class="gateway-status testing">⏳ Testando...</div>';
-}
-return '';
+const status = String(gateway.status_teste).toLowerCase();
+if (status.includes('testando')) return '<div class="gateway-status testing">⏳ Testando conexão...</div>';
+if (status.startsWith('sucesso') || status.includes('conectado')) return '<div class="gateway-status success">✅ ' + escapeHTML(gateway.status_teste) + '</div>';
+if (status.startsWith('erro') || status.includes('falha')) return '<div class="gateway-status error">❌ ' + escapeHTML(gateway.status_teste) + '</div>';
+return '<div class="gateway-status testing">ℹ️ ' + escapeHTML(gateway.status_teste) + '</div>';
 }
 function abrirModalGateway(id) {
 const gateway = state.gateways.find(g => g.id === id);
@@ -2473,12 +2443,13 @@ carregarGateways();
 showToast('Erro: ' + e.message, 'error');
 }
 }
+// ✅ CORRIGIDO: Teste REAL via Edge Function (sem erro CORS "Failed to fetch")
 async function testarGateway(id) {
 const gateway = state.gateways.find(g => g.id === id);
 if (!gateway) return;
 showToast('🔍 Testando conexão com ' + gateway.nome + '...');
 try {
-// Atualizar status para "testando"
+// Marca como "testando" no banco
 await supabaseClient
 .from('gateways')
 .update({
@@ -2487,56 +2458,33 @@ status_teste: 'testando'
 })
 .eq('id', id);
 carregarGateways();
-// Teste real para Mercado Pago
-if (gateway.chave === 'mercado_pago') {
-const accessToken = gateway.credenciais?.access_token;
-if (!accessToken) {
-throw new Error('Access Token não configurado');
-}
-const response = await fetch('https://api.mercadopago.com/users/me', {
-method: 'GET',
-headers: {
-'Authorization': `Bearer ${accessToken}`
-}
+// Chama a Edge Function que faz o teste pelo servidor (sem bloqueio CORS)
+const { data, error } = await supabaseClient.functions.invoke('testar-gateway', {
+body: { gateway_id: id }
 });
-const data = await response.json();
-if (response.ok && data.id) {
-await supabaseClient
-.from('gateways')
-.update({
-status_teste: 'sucesso - Conectado como ' + (data.email || 'usuário MP')
-})
-.eq('id', id);
-showToast('✅ Conexão bem-sucedida! Conta: ' + (data.email || data.id));
-} else {
-const errorMsg = data.message || 'Erro desconhecido';
-await supabaseClient
-.from('gateways')
-.update({
-status_teste: 'erro - ' + errorMsg
-})
-.eq('id', id);
-showToast('❌ Erro na conexão: ' + errorMsg, 'error');
+if (error) {
+throw new Error(error.message || 'Falha ao chamar a Edge Function testar-gateway');
 }
-} else {
-// Para outros gateways, apenas simular
+// Atualiza o status com o resultado real
 await supabaseClient
 .from('gateways')
 .update({
-status_teste: 'sucesso - Teste simulado'
+status_teste: data.sucesso ? 'sucesso - ' + data.mensagem : 'erro - ' + data.mensagem
 })
 .eq('id', id);
-showToast('✅ Teste realizado! (Simulado - implemente verificação real via Edge Functions)');
+if (data.sucesso) {
+showToast(data.mensagem, 'success');
+} else {
+showToast(data.mensagem, 'error');
 }
 carregarGateways();
 } catch (e) {
+console.error('Erro no teste:', e);
 await supabaseClient
 .from('gateways')
-.update({
-status_teste: 'erro - ' + e.message
-})
+.update({ status_teste: 'erro - ' + e.message })
 .eq('id', id);
-showToast('Erro no teste: ' + e.message, 'error');
+showToast('Erro no teste: ' + e.message + '\nVerifique se a Edge Function "testar-gateway" existe e está com deploy feito.', 'error');
 carregarGateways();
 }
 }
@@ -2702,7 +2650,7 @@ showToast('✅ Informações de contato salvas!');
 showToast('Erro: ' + e.message, 'error');
 } finally {
 btn.disabled = false;
-btn.textContent = ' Salvar Informações de Contato';
+btn.textContent = '💾 Salvar Informações de Contato';
 }
 }
 async function salvarConfig() {
@@ -2835,10 +2783,11 @@ break;
 case 'test-gateway':
 await testarGateway(id);
 break;
-case 'toggle-policy':
+case 'toggle-policy': {
 const policyItem = document.getElementById('policy-' + id);
 if (policyItem) policyItem.classList.toggle('open');
 break;
+}
 case 'edit-policy':
 abrirModalPolitica(id);
 break;
