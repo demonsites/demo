@@ -2119,7 +2119,6 @@ showToast('✅ Status atualizado!');
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// 🆕 NOVA FUNÇÃO: Excluir pedido
 async function excluirPedido(id) {
 if (!confirm('Excluir este pedido permanentemente? Esta ação não pode ser desfeita.')) return;
 try {
@@ -2374,6 +2373,7 @@ carregarGateways();
 showToast('Erro no teste: ' + e.message, 'error');
 }
 }
+// 🆕 CORREÇÃO APLICADA: usa data-chave ao invés de data-id
 async function carregarPoliticas() {
 const container = document.getElementById('lista-politicas');
 container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
@@ -2397,7 +2397,7 @@ const icones = {
 };
 container.innerHTML = state.politicas.map(p => `
 <div class="policy-editor-item" id="policy-${escapeHTML(p.chave)}">
-<div class="policy-editor-header" data-action="toggle-policy" data-id="${escapeHTML(p.id)}">
+<div class="policy-editor-header" data-action="toggle-policy" data-chave="${escapeHTML(p.chave)}">
 <span class="policy-editor-title">
 ${icones[p.chave] || '📄'} ${escapeHTML(p.titulo)}
 </span>
@@ -2657,14 +2657,16 @@ break;
 case 'test-gateway':
 testarGateway(id);
 break;
-case 'toggle-policy':
-const policyItem = document.getElementById('policy-' + id);
+// 🆕 CORREÇÃO APLICADA: usa data-chave ao invés de data-id
+case 'toggle-policy': {
+const chave = target.dataset.chave;
+const policyItem = document.getElementById('policy-' + chave);
 if (policyItem) policyItem.classList.toggle('open');
 break;
+}
 case 'edit-policy':
 abrirModalPolitica(id);
 break;
-// 🆕 NOVO CASE: Excluir pedido
 case 'delete-order':
 excluirPedido(id);
 break;
