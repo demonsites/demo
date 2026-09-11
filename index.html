@@ -140,6 +140,7 @@ background: rgba(26, 79, 184, 0.08);
 color: var(--cobalt-main);
 border-left-color: var(--cobalt-main);
 }
+a.sidebar-item { text-decoration: none; }
 .sidebar-item .icon {
 width: 24px;
 height: 24px;
@@ -683,46 +684,6 @@ display: none;
 .policy-editor-item.open .policy-editor-body {
 display: block;
 }
-/* 🆕 CSS para o editor de páginas */
-.editor-toolbar {
-display: flex;
-gap: 6px;
-margin-bottom: 8px;
-flex-wrap: wrap;
-}
-.editor-toolbar button {
-padding: 6px 12px;
-background: var(--bg-light);
-border: 1px solid var(--border);
-border-radius: 4px;
-font-size: 0.85rem;
-font-weight: 600;
-cursor: pointer;
-transition: var(--transition);
-color: var(--text-dark);
-}
-.editor-toolbar button:hover {
-background: var(--cobalt-main);
-color: white;
-border-color: var(--cobalt-main);
-}
-.page-preview {
-display: none;
-border: 2px solid var(--border);
-border-radius: 8px;
-padding: 24px;
-min-height: 300px;
-background: white;
-line-height: 1.7;
-}
-.page-preview h2, .page-preview h3, .page-preview h4 {
-color: var(--cobalt-deep);
-margin: 16px 0 8px;
-}
-.page-preview p { margin-bottom: 12px; }
-.page-preview ul, .page-preview ol { margin: 0 0 12px 20px; }
-.page-preview img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
-.page-preview a { color: var(--cobalt-main); font-weight: 600; }
 @media (max-width: 1024px) {
 .admin-sidebar {
 position: fixed;
@@ -812,10 +773,10 @@ text-align: center;
 </div>
 <div class="sidebar-section">
 <div class="sidebar-title">Conteúdo</div>
-<div class="sidebar-item" data-view="paginas" role="button" tabindex="0">
+<a href="criar-pagina.html" class="sidebar-item">
 <span class="icon">📄</span>
 <span>Páginas</span>
-</div>
+</a>
 <div class="sidebar-item" data-view="politicas" role="button" tabindex="0">
 <span class="icon">📋</span>
 <span>Políticas</span>
@@ -838,7 +799,6 @@ text-align: center;
 </div>
 </aside>
 <main class="admin-content" role="main">
-<!-- DASHBOARD -->
 <div class="admin-view active" id="view-dashboard">
 <div class="content-header">
 <h1>Dashboard</h1>
@@ -906,7 +866,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- PRODUTOS -->
 <div class="admin-view" id="view-produtos">
 <div class="content-header">
 <h1>Produtos</h1>
@@ -923,7 +882,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- CATEGORIAS -->
 <div class="admin-view" id="view-categorias">
 <div class="content-header">
 <h1>Categorias</h1>
@@ -940,7 +898,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- BANNERS -->
 <div class="admin-view" id="view-banners">
 <div class="content-header">
 <h1>Banners</h1>
@@ -962,7 +919,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- PEDIDOS -->
 <div class="admin-view" id="view-pedidos">
 <div class="content-header">
 <h1>Pedidos</h1>
@@ -974,7 +930,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- MENSAGENS -->
 <div class="admin-view" id="view-mensagens">
 <div class="content-header">
 <h1>Mensagens</h1>
@@ -986,7 +941,6 @@ text-align: center;
 </div>
 </div>
 </div>
-<!-- GATEWAYS -->
 <div class="admin-view" id="view-gateways">
 <div class="content-header">
 <h1>Gateways de Pagamento</h1>
@@ -1000,30 +954,6 @@ Para produção, considere usar Supabase Edge Functions para processar pagamento
 <span class="spinner-inline"></span> Carregando gateways...
 </div>
 </div>
-
-<!-- 🆕 PÁGINAS -->
-<div class="admin-view" id="view-paginas">
-<div class="content-header">
-<h1>Páginas</h1>
-<p>Crie páginas extras para o site (Sobre, FAQ, Landing Pages...)</p>
-</div>
-<div class="alert-box alert-info">
-<strong>💡 Como funciona:</strong> Cada página criada aqui fica acessível em <code>pagina.html?s=SLUG</code>.
-Use o botão 📋 para copiar o link de cada página.
-</div>
-<div style="margin-bottom: 24px;">
-<button class="btn btn-gold" data-action="new-page">
-➕ Nova Página
-</button>
-</div>
-<div class="card">
-<div id="lista-paginas" class="loading">
-<span class="spinner-inline"></span> Carregando páginas...
-</div>
-</div>
-</div>
-
-<!-- CONTEÚDO DO SITE -->
 <div class="admin-view" id="view-conteudo">
 <div class="content-header">
 <h1>Conteúdo do Site</h1>
@@ -1157,7 +1087,6 @@ Use o botão 📋 para copiar o link de cada página.
 💾 Salvar Todo o Conteúdo
 </button>
 </div>
-<!-- POLÍTICAS -->
 <div class="admin-view" id="view-politicas">
 <div class="content-header">
 <h1>Políticas da Loja</h1>
@@ -1170,7 +1099,6 @@ Use o botão 📋 para copiar o link de cada página.
 <span class="spinner-inline"></span> Carregando políticas...
 </div>
 </div>
-<!-- CONTATO -->
 <div class="admin-view" id="view-contato">
 <div class="content-header">
 <h1>Informações de Contato</h1>
@@ -1207,7 +1135,6 @@ Use o botão 📋 para copiar o link de cada página.
 💾 Salvar Informações de Contato
 </button>
 </div>
-<!-- CONFIGURAÇÕES -->
 <div class="admin-view" id="view-config">
 <div class="content-header">
 <h1>Configurações</h1>
@@ -1250,7 +1177,6 @@ Use o botão 📋 para copiar o link de cada página.
 </div>
 </main>
 </div>
-<!-- MODAL PRODUTO -->
 <div class="modal-overlay" id="modal-produto" role="dialog" aria-labelledby="modal-produto-titulo">
 <div class="modal">
 <div class="modal-header">
@@ -1317,7 +1243,6 @@ PNG, JPG ou WEBP • Máx. 5MB
 </div>
 </div>
 </div>
-<!-- MODAL CATEGORIA -->
 <div class="modal-overlay" id="modal-categoria" role="dialog" aria-labelledby="modal-cat-titulo">
 <div class="modal">
 <div class="modal-header">
@@ -1350,7 +1275,6 @@ PNG, JPG ou WEBP • Máx. 5MB
 </div>
 </div>
 </div>
-<!-- MODAL BANNER -->
 <div class="modal-overlay" id="modal-banner" role="dialog" aria-labelledby="modal-banner-titulo">
 <div class="modal">
 <div class="modal-header">
@@ -1382,7 +1306,6 @@ PNG, JPG ou WEBP • Máx. 5MB
 </div>
 </div>
 </div>
-<!-- MODAL GATEWAY -->
 <div class="modal-overlay" id="modal-gateway" role="dialog" aria-labelledby="modal-gateway-titulo">
 <div class="modal">
 <div class="modal-header">
@@ -1405,7 +1328,6 @@ Em produção, use Supabase Edge Functions para processar pagamentos.
 </div>
 </div>
 </div>
-<!-- MODAL POLÍTICA -->
 <div class="modal-overlay" id="modal-politica" role="dialog" aria-labelledby="modal-politica-titulo">
 <div class="modal" style="max-width: 800px;">
 <div class="modal-header">
@@ -1432,71 +1354,8 @@ Tags permitidas: &lt;strong&gt;, &lt;em&gt;, &lt;p&gt;, &lt;h3&gt;, &lt;ul&gt;, 
 </div>
 </div>
 </div>
-
-<!-- 🆕 MODAL PÁGINA -->
-<div class="modal-overlay" id="modal-pagina" role="dialog" aria-labelledby="modal-pagina-titulo">
-<div class="modal" style="max-width: 900px;">
-<div class="modal-header">
-<h3 id="modal-pagina-titulo">Nova Página</h3>
-<button class="modal-close" data-close-modal="modal-pagina" aria-label="Fechar">×</button>
-</div>
-<div class="modal-body">
-<input type="hidden" id="pag-id">
-<div class="form-row">
-<div class="form-group">
-<label>Título da Página <span class="req">*</span></label>
-<input type="text" class="form-input" id="pag-titulo" placeholder="Ex: Sobre Nós">
-</div>
-<div class="form-group">
-<label>Slug (URL) <span class="req">*</span></label>
-<input type="text" class="form-input" id="pag-slug" placeholder="ex: sobre-nos">
-<small style="color: var(--text-gray); font-size: 0.8rem;">Gerado automaticamente. Letras minúsculas e hífens.</small>
-</div>
-</div>
-<div class="form-group">
-<label>Descrição para o Google (SEO)</label>
-<input type="text" class="form-input" id="pag-meta" placeholder="Descrição que aparece nos resultados de busca...">
-</div>
-<div class="form-group">
-<label>Conteúdo (HTML) <span class="req">*</span></label>
-<div class="editor-toolbar">
-<button type="button" onclick="inserirTagPagina('b')"><b>B</b></button>
-<button type="button" onclick="inserirTagPagina('i')"><i>I</i></button>
-<button type="button" onclick="inserirTagPagina('h3')">H3</button>
-<button type="button" onclick="inserirTagPagina('p')">¶ Parágrafo</button>
-<button type="button" onclick="inserirTagPagina('ul')">• Lista</button>
-<button type="button" onclick="inserirTagPagina('link')">🔗 Link</button>
-<button type="button" onclick="inserirTagPagina('img')">🖼️ Imagem</button>
-</div>
-<textarea class="form-textarea" id="pag-conteudo" style="min-height: 300px; font-family: monospace;" placeholder="<h3>Título da seção</h3>&#10;<p>Seu texto aqui...</p>"></textarea>
-<div id="pag-preview" class="page-preview"></div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-<input type="checkbox" id="pag-menu" checked> Mostrar link no rodapé
-</label>
-</div>
-<div class="form-group">
-<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-<input type="checkbox" id="pag-ativo" checked> Página ativa
-</label>
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" onclick="alternarPreviewPagina()">👁️ Preview</button>
-<button class="btn btn-secondary" data-close-modal="modal-pagina">Cancelar</button>
-<button class="btn btn-primary" id="btn-salvar-pagina">💾 Salvar Página</button>
-</div>
-</div>
-</div>
-
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 <script>
-// ============================================
-// CONFIGURAÇÃO SUPABASE
-// ============================================
 const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1508,7 +1367,6 @@ pedidos: [],
 mensagens: [],
 gateways: [],
 politicas: [],
-paginas: [],
 config: {},
 pagination: {
 produtos: { page: 1, perPage: 20, total: 0 },
@@ -1516,9 +1374,6 @@ pedidos:  { page: 1, perPage: 10, total: 0 },
 mensagens:{ page: 1, perPage: 10, total: 0 }
 }
 };
-// ============================================
-// HELPERS
-// ============================================
 function formatarPreco(valor) {
 const num = parseFloat(valor || 0);
 return Number.isFinite(num) ? num.toFixed(2).replace('.', ',') : '0,00';
@@ -1552,9 +1407,6 @@ function fecharModal(id) {
 const modal = document.getElementById(id);
 if (modal) modal.classList.remove('active');
 }
-// ============================================
-// AUTENTICAÇÃO
-// ============================================
 async function verificarAuth() {
 try {
 const { data: { session } } = await supabaseClient.auth.getSession();
@@ -1576,12 +1428,9 @@ console.error('Erro ao sair:', error);
 window.location.href = 'login.html';
 }
 }
-// ============================================
-// NAVEGAÇÃO
-// ============================================
 function navegarPara(view) {
 document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
-document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+document.querySelectorAll('.sidebar-item[data-view]').forEach(s => s.classList.remove('active'));
 const viewEl = document.getElementById('view-' + view);
 if (viewEl) viewEl.classList.add('active');
 const sidebarItem = document.querySelector(`.sidebar-item[data-view="${view}"]`);
@@ -1596,7 +1445,6 @@ banners:   carregarBanners,
 pedidos:   () => carregarPedidos(true),
 mensagens: () => carregarMensagens(true),
 gateways:  carregarGateways,
-paginas:   carregarPaginas,
 conteudo:  carregarConfiguracoes,
 politicas: carregarPoliticas,
 contato:   carregarContato,
@@ -1607,9 +1455,6 @@ if (loaders[view]) loaders[view]();
 function toggleSidebar() {
 document.getElementById('sidebar').classList.toggle('open');
 }
-// ============================================
-// TESTE DE CONEXÃO
-// ============================================
 async function testarConexao() {
 const container = document.getElementById('connection-status');
 container.innerHTML = '<div class="alert-box alert-info"><span class="spinner-inline"></span> Testando conexão com Supabase...</div>';
@@ -1646,9 +1491,6 @@ showToast('⚠️ Veja o diagnóstico no topo do Dashboard', 'error');
 container.innerHTML = '<div class="alert-box alert-warning">❌ Erro geral: ' + escapeHTML(error.message) + '</div>';
 }
 }
-// ============================================
-// DASHBOARD
-// ============================================
 async function carregarDashboard() {
 try {
 const [produtos, pedidos, mensagens, banners, gateways] = await Promise.all([
@@ -1696,9 +1538,6 @@ console.error('Erro ao carregar dashboard:', error);
 showToast('Erro ao carregar dashboard', 'error');
 }
 }
-// ============================================
-// UPLOAD DE IMAGENS
-// ============================================
 function comprimirImagem(file, maxWidth, quality = 0.75) {
 return new Promise((resolve, reject) => {
 const reader = new FileReader();
@@ -1745,9 +1584,6 @@ throw new Error(msg);
 const { data: { publicUrl } } = supabaseClient.storage.from(bucket).getPublicUrl(fileName);
 return publicUrl;
 }
-// ============================================
-// PRODUTOS
-// ============================================
 async function carregarProdutos(resetPage = false) {
 const container = document.getElementById('lista-produtos');
 const paginationId = 'pagination-produtos';
@@ -1951,9 +1787,6 @@ carregarProdutos();
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// ============================================
-// CATEGORIAS
-// ============================================
 async function carregarCategorias() {
 const container = document.getElementById('lista-categorias');
 container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
@@ -2060,9 +1893,6 @@ carregarCategorias();
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// ============================================
-// BANNERS
-// ============================================
 async function carregarBanners() {
 const container = document.getElementById('lista-banners');
 container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
@@ -2178,9 +2008,6 @@ carregarBanners();
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// ============================================
-// PEDIDOS
-// ============================================
 async function carregarPedidos(resetPage = false) {
 const container = document.getElementById('lista-pedidos');
 const paginationId = 'pagination-pedidos';
@@ -2223,6 +2050,7 @@ ${statusBadge}
 <option value="entregue" ${p.status === 'entregue' ? 'selected' : ''}>Entregue</option>
 <option value="cancelado" ${p.status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
 </select>
+<button class="btn btn-sm btn-danger" data-action="delete-order" data-id="${escapeHTML(p.id)}" title="Excluir pedido">🗑️</button>
 </div>
 </div>
 <div class="order-details">
@@ -2291,9 +2119,18 @@ showToast('✅ Status atualizado!');
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// ============================================
-// MENSAGENS
-// ============================================
+// 🆕 NOVA FUNÇÃO: Excluir pedido
+async function excluirPedido(id) {
+if (!confirm('Excluir este pedido permanentemente? Esta ação não pode ser desfeita.')) return;
+try {
+const { error } = await supabaseClient.from('pedidos').delete().eq('id', id);
+if (error) throw error;
+showToast('✅ Pedido excluído!');
+carregarPedidos();
+} catch (e) {
+showToast('Erro ao excluir pedido: ' + e.message, 'error');
+}
+}
 async function carregarMensagens(resetPage = false) {
 const container = document.getElementById('lista-mensagens');
 const paginationId = 'pagination-mensagens';
@@ -2376,9 +2213,6 @@ carregarMensagens();
 showToast('Erro: ' + e.message, 'error');
 }
 }
-// ============================================
-// GATEWAYS DE PAGAMENTO
-// ============================================
 async function carregarGateways() {
 const container = document.getElementById('lista-gateways');
 if (!container) return;
@@ -2540,9 +2374,6 @@ carregarGateways();
 showToast('Erro no teste: ' + e.message, 'error');
 }
 }
-// ============================================
-// POLÍTICAS
-// ============================================
 async function carregarPoliticas() {
 const container = document.getElementById('lista-politicas');
 container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
@@ -2627,214 +2458,6 @@ btn.disabled = false;
 btn.textContent = '💾 Salvar Política';
 }
 }
-// ============================================
-// 🆕 PÁGINAS - CRIADOR
-// ============================================
-async function carregarPaginas() {
-const container = document.getElementById('lista-paginas');
-container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
-try {
-const { data, error } = await supabaseClient
-.from('paginas')
-.select('*')
-.order('criado_em', { ascending: false });
-if (error) throw error;
-state.paginas = data || [];
-if (state.paginas.length === 0) {
-container.innerHTML = '<div class="empty-state"><div class="icon">📄</div><h3>Nenhuma página criada</h3><p>Clique em "Nova Página" para começar.</p></div>';
-return;
-}
-container.innerHTML = `
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Título</th>
-<th>URL</th>
-<th>Menu</th>
-<th>Status</th>
-<th>Atualizada</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody>
-${state.paginas.map(p => `
-<tr>
-<td><strong>${escapeHTML(p.titulo)}</strong></td>
-<td><code style="background: var(--bg-light); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">pagina.html?s=${escapeHTML(p.slug)}</code></td>
-<td>${p.mostrar_menu ? '🔗 Sim' : '—'}</td>
-<td>
-<label class="toggle-switch">
-<input type="checkbox" ${p.ativo ? 'checked' : ''} data-action="toggle-page" data-id="${escapeHTML(p.id)}">
-<span class="toggle-slider"></span>
-</label>
-</td>
-<td>${formatarData(p.atualizado_em || p.criado_em)}</td>
-<td style="white-space: nowrap;">
-<a href="pagina.html?s=${escapeHTML(p.slug)}" target="_blank" rel="noopener" class="btn btn-sm btn-secondary" title="Ver página">👁️</a>
-<button class="btn btn-sm btn-secondary" data-action="copy-page-link" data-slug="${escapeHTML(p.slug)}" title="Copiar link">📋</button>
-<button class="btn btn-sm btn-secondary" data-action="edit-page" data-id="${escapeHTML(p.id)}" title="Editar">✏️</button>
-<button class="btn btn-sm btn-danger" data-action="delete-page" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.titulo)}" title="Excluir">🗑️</button>
-</td>
-</tr>
-`).join('')}
-</tbody>
-</table>
-</div>
-`;
-} catch (error) {
-console.error('Erro ao carregar páginas:', error);
-container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar páginas</h3></div>';
-}
-}
-function resetFormPagina() {
-document.getElementById('modal-pagina-titulo').textContent = 'Nova Página';
-document.getElementById('pag-id').value = '';
-document.getElementById('pag-titulo').value = '';
-document.getElementById('pag-slug').value = '';
-document.getElementById('pag-slug').dataset.manual = '';
-document.getElementById('pag-meta').value = '';
-document.getElementById('pag-conteudo').value = '';
-document.getElementById('pag-menu').checked = true;
-document.getElementById('pag-ativo').checked = true;
-document.getElementById('pag-conteudo').style.display = 'block';
-const preview = document.getElementById('pag-preview');
-if (preview) { preview.style.display = 'none'; preview.innerHTML = ''; }
-}
-function abrirModalPagina() {
-resetFormPagina();
-document.getElementById('modal-pagina').classList.add('active');
-}
-function editarPagina(id) {
-const p = state.paginas.find(pg => pg.id === id);
-if (!p) return;
-resetFormPagina();
-document.getElementById('modal-pagina-titulo').textContent = 'Editar Página';
-document.getElementById('pag-id').value = p.id;
-document.getElementById('pag-titulo').value = p.titulo;
-document.getElementById('pag-slug').value = p.slug;
-document.getElementById('pag-slug').dataset.manual = '1';
-document.getElementById('pag-meta').value = p.meta_description || '';
-document.getElementById('pag-conteudo').value = p.conteudo;
-document.getElementById('pag-menu').checked = !!p.mostrar_menu;
-document.getElementById('pag-ativo').checked = !!p.ativo;
-document.getElementById('modal-pagina').classList.add('active');
-}
-async function salvarPagina() {
-const id = document.getElementById('pag-id').value;
-const titulo = document.getElementById('pag-titulo').value.trim();
-const slug = document.getElementById('pag-slug').value.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-const meta = document.getElementById('pag-meta').value.trim();
-const conteudo = document.getElementById('pag-conteudo').value.trim();
-const mostrarMenu = document.getElementById('pag-menu').checked;
-const ativo = document.getElementById('pag-ativo').checked;
-if (!titulo || !slug || !conteudo) {
-showToast('Preencha título, slug e conteúdo!', 'error');
-return;
-}
-const btn = document.getElementById('btn-salvar-pagina');
-btn.disabled = true;
-btn.textContent = 'Salvando...';
-try {
-let query = supabaseClient.from('paginas').select('id').eq('slug', slug);
-if (id) query = query.neq('id', id);
-const { data: existente } = await query.maybeSingle();
-if (existente) {
-showToast('Já existe uma página com esse slug!', 'error');
-return;
-}
-const pagina = { titulo, slug, meta_description: meta, conteudo, mostrar_menu: mostrarMenu, ativo };
-if (id) {
-const { error } = await supabaseClient.from('paginas').update({ ...pagina, atualizado_em: new Date().toISOString() }).eq('id', id);
-if (error) throw error;
-} else {
-const { error } = await supabaseClient.from('paginas').insert([pagina]);
-if (error) throw error;
-}
-showToast('✅ Página salva!');
-fecharModal('modal-pagina');
-carregarPaginas();
-} catch (e) {
-showToast('Erro: ' + e.message, 'error');
-} finally {
-btn.disabled = false;
-btn.textContent = '💾 Salvar Página';
-}
-}
-async function togglePagina(id, ativo) {
-try {
-const { error } = await supabaseClient.from('paginas').update({ ativo }).eq('id', id);
-if (error) throw error;
-showToast(ativo ? 'Página ativada!' : 'Página desativada!');
-carregarPaginas();
-} catch (e) {
-showToast('Erro: ' + e.message, 'error');
-}
-}
-async function excluirPagina(id, titulo) {
-if (!confirm(`Excluir a página "${titulo}"?`)) return;
-try {
-const { error } = await supabaseClient.from('paginas').delete().eq('id', id);
-if (error) throw error;
-showToast('Página excluída!');
-carregarPaginas();
-} catch (e) {
-showToast('Erro: ' + e.message, 'error');
-}
-}
-async function copiarLinkPagina(slug) {
-const base = window.location.href.replace(/[^/]*$/, '');
-const url = base + 'pagina.html?s=' + slug;
-try {
-await navigator.clipboard.writeText(url);
-showToast('✅ Link copiado!\n' + url);
-} catch (e) {
-showToast('Link: ' + url);
-}
-}
-function inserirTagPagina(tag) {
-const ta = document.getElementById('pag-conteudo');
-const start = ta.selectionStart;
-const end = ta.selectionEnd;
-const texto = ta.value;
-const sel = texto.substring(start, end);
-let insercao = '';
-if (tag === 'link') {
-const url = prompt('URL do link:', 'https://');
-if (!url) return;
-insercao = `<a href="${url}">${sel || 'clique aqui'}</a>`;
-} else if (tag === 'img') {
-const url = prompt('URL da imagem:', 'https://');
-if (!url) return;
-insercao = `<img src="${url}" alt="" style="max-width:100%; border-radius:8px;">`;
-} else if (tag === 'h3') {
-insercao = `<h3>${sel || 'Título da seção'}</h3>`;
-} else if (tag === 'p') {
-insercao = `<p>${sel || 'Seu texto aqui...'}</p>`;
-} else if (tag === 'ul') {
-insercao = `<ul>\n  <li>${sel || 'Item 1'}</li>\n  <li>Item 2</li>\n</ul>`;
-} else {
-insercao = `<${tag}>${sel}</${tag}>`;
-}
-ta.value = texto.substring(0, start) + insercao + texto.substring(end);
-ta.focus();
-}
-function alternarPreviewPagina() {
-const ta = document.getElementById('pag-conteudo');
-const preview = document.getElementById('pag-preview');
-const mostrando = preview.style.display === 'block';
-if (mostrando) {
-preview.style.display = 'none';
-ta.style.display = 'block';
-} else {
-preview.innerHTML = ta.value;
-preview.style.display = 'block';
-ta.style.display = 'none';
-}
-}
-// ============================================
-// CONFIGURAÇÕES E CONTEÚDO
-// ============================================
 async function carregarConfiguracoes() {
 try {
 const { data, error } = await supabaseClient.from('configuracoes').select('*');
@@ -2934,9 +2557,6 @@ btn.disabled = false;
 btn.textContent = '💾 Salvar Configurações';
 }
 }
-// ============================================
-// PAGINAÇÃO
-// ============================================
 function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange) {
 const container = document.getElementById(containerId.replace('pagination-', 'lista-'));
 if (!container) return;
@@ -2976,9 +2596,6 @@ if (page >= 1 && page <= totalPages) onPageChange(page);
 });
 });
 }
-// ============================================
-// EVENT DELEGATION
-// ============================================
 document.addEventListener('click', async (e) => {
 const target = e.target.closest('[data-action], [data-close-modal]');
 if (!target) return;
@@ -3047,18 +2664,9 @@ break;
 case 'edit-policy':
 abrirModalPolitica(id);
 break;
-// 🆕 Ações de Páginas
-case 'new-page':
-abrirModalPagina();
-break;
-case 'edit-page':
-editarPagina(id);
-break;
-case 'delete-page':
-excluirPagina(id, name);
-break;
-case 'copy-page-link':
-copiarLinkPagina(target.dataset.slug);
+// 🆕 NOVO CASE: Excluir pedido
+case 'delete-order':
+excluirPedido(id);
 break;
 }
 });
@@ -3072,12 +2680,8 @@ toggleGateway(e.target.dataset.id, e.target.checked);
 if (e.target.dataset.action === 'update-order-status') {
 atualizarStatusPedido(e.target.dataset.id, e.target.value);
 }
-// 🆕 Toggle de páginas
-if (e.target.dataset.action === 'toggle-page') {
-togglePagina(e.target.dataset.id, e.target.checked);
-}
 });
-document.querySelectorAll('.sidebar-item').forEach(item => {
+document.querySelectorAll('.sidebar-item[data-view]').forEach(item => {
 item.addEventListener('click', () => {
 navegarPara(item.dataset.view);
 });
@@ -3110,18 +2714,6 @@ const id = document.getElementById('gw-id').value;
 testarGateway(id);
 });
 document.getElementById('btn-salvar-politica').addEventListener('click', salvarPolitica);
-// 🆕 Event listeners para Páginas
-document.getElementById('btn-salvar-pagina').addEventListener('click', salvarPagina);
-document.getElementById('pag-titulo').addEventListener('input', function() {
-const slugInput = document.getElementById('pag-slug');
-if (slugInput.dataset.manual === '1') return;
-slugInput.value = this.value.toLowerCase()
-.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-.replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-});
-document.getElementById('pag-slug').addEventListener('input', function() {
-this.dataset.manual = '1';
-});
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
 overlay.addEventListener('click', (e) => {
 if (e.target === overlay) overlay.classList.remove('active');
@@ -3132,13 +2724,10 @@ if (e.key === 'Escape') {
 document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
 }
 });
-// ============================================
-// INICIALIZAÇÃO
-// ============================================
 document.addEventListener('DOMContentLoaded', async () => {
 await verificarAuth();
 const savedView = localStorage.getItem('admin_current_view');
-const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'paginas', 'conteudo', 'politicas', 'contato', 'config'];
+const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'politicas', 'contato', 'config'];
 if (savedView && validViews.includes(savedView)) {
 navegarPara(savedView);
 } else {
