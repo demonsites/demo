@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criador de Páginas | S7TE Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a2a6e'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='55' font-weight='900' fill='%23fbbf24' text-anchor='middle'%3ES7%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+--cobalt-deep: #0a2a6e;
+--cobalt-main: #1a4fb8;
+--cobalt-bright: #2563eb;
+--gold: #fbbf24;
+--gold-dark: #f59e0b;
+--success: #10b981;
+--danger: #ef4444;
+--warning: #f59e0b;
+--purple: #8b5cf6;
+--orange: #f97316;
+--pink: #ec4899;
+--bg-light: #f8fafc;
+--text-dark: #0f172a;
+--text-gray: #64748b;
+--border: #e2e8f0;
+--radius: 8px;
+--transition: all 0.3s ease;
+--shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+--shadow-lg: 0 10px 25px -3px rgba(26,79,184,0.25);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--bg-light); color:var(--text-dark); line-height:1.6; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+input, select, textarea { font-family:inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline:3px solid var(--cobalt-bright); outline-offset:2px; }
+.admin-header { background:linear-gradient(135deg,var(--cobalt-deep),var(--cobalt-main)); color:#fff; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:1000; box-shadow:var(--shadow); }
+.header-left { display:flex; align-items:center; gap:16px; }
+.admin-logo { font-size:1.5rem; font-weight:900; color:#fff; text-decoration:none; }
+.admin-logo span { color:var(--gold); }
+.admin-badge { background:rgba(255,255,255,0.15); padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; text-transform:uppercase; }
+.header-right { display:flex; align-items:center; gap:12px; }
+.btn-header { padding:8px 16px; border-radius:var(--radius); font-weight:700; font-size:0.85rem; transition:var(--transition); display:flex; align-items:center; gap:6px; text-decoration:none; }
+.btn-back { background:rgba(255,255,255,0.15); color:#fff; }
+.btn-back:hover { background:rgba(255,255,255,0.25); }
+.page-wrapper { max-width:1400px; margin:0 auto; padding:32px; }
+.content-header { margin-bottom:32px; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+.content-header-text h1 { font-size:1.8rem; font-weight:900; color:var(--cobalt-deep); margin-bottom:4px; }
+.content-header-text p { color:var(--text-gray); font-size:0.95rem; }
+.card { background:#fff; border-radius:12px; border:1px solid var(--border); padding:24px; margin-bottom:24px; box-shadow:var(--shadow); }
+.alert-box { padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; font-size:0.9rem; line-height:1.6; }
+.alert-info { background:rgba(26,79,184,0.08); border-left:4px solid var(--cobalt-main); color:var(--cobalt-deep); }
+.btn { padding:12px 24px; border-radius:var(--radius); font-weight:700; font-size:0.9rem; transition:var(--transition); display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+.btn-primary { background:linear-gradient(135deg,var(--cobalt-main),var(--cobalt-bright)); color:#fff; }
+.btn-primary:hover { transform:translateY(-1px); box-shadow:var(--shadow-lg); }
+.btn-primary:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+.btn-gold { background:linear-gradient(135deg,var(--gold),var(--gold-dark)); color:var(--cobalt-deep); }
+.btn-gold:hover { transform:translateY(-1px); box-shadow:0 4px 15px rgba(251,191,36,0.4); }
+.btn-danger { background:var(--danger); color:#fff; }
+.btn-danger:hover { background:#dc2626; }
+.btn-secondary { background:var(--bg-light); color:var(--text-dark); border:1px solid var(--border); }
+.btn-secondary:hover { background:var(--border); }
+.btn-sm { padding:8px 16px; font-size:0.8rem; }
+.table-container { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); }
+table { width:100%; border-collapse:collapse; }
+th { background:var(--bg-light); padding:14px 16px; text-align:left; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-gray); border-bottom:2px solid var(--border); }
+td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:0.9rem; }
+tbody tr:hover { background:var(--bg-light); }
+
+/* 🆕 BADGES DE TIPO */
+.badge-tipo { padding:4px 12px; border-radius:20px; font-size:0.72rem; font-weight:700; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.badge-tipo.landing { background:rgba(139,92,246,0.12); color:var(--purple); }
+.badge-tipo.produtos { background:rgba(26,79,184,0.12); color:var(--cobalt-main); }
+.badge-tipo.institucional { background:rgba(10,42,110,0.12); color:var(--cobalt-deep); }
+.badge-tipo.faq { background:rgba(251,191,36,0.18); color:#92400e; }
+.badge-tipo.blog { background:rgba(16,185,129,0.12); color:var(--success); }
+.badge-tipo.contato { background:rgba(249,115,22,0.12); color:var(--orange); }
+.badge-tipo.politica { background:rgba(100,116,139,0.15); color:var(--text-gray); }
+.badge-tipo.promocao { background:rgba(239,68,68,0.12); color:var(--danger); }
+.badge-tipo.custom { background:rgba(148,163,184,0.15); color:var(--text-gray); }
+
+.badge-status { padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; text-transform:uppercase; }
+.badge-active { background:rgba(16,185,129,0.1); color:var(--success); }
+.badge-inactive { background:var(--bg-light); color:var(--text-gray); }
+.toggle-switch { position:relative; display:inline-block; width:52px; height:28px; vertical-align:middle; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--border); transition:var(--transition); border-radius:34px; }
+.toggle-slider:before { position:absolute; content:""; height:22px; width:22px; left:3px; bottom:3px; background:#fff; transition:var(--transition); border-radius:50%; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+input:checked + .toggle-slider { background:var(--success); }
+input:checked + .toggle-slider:before { transform:translateX(24px); }
+.empty-state { text-align:center; padding:60px 20px; color:var(--text-gray); }
+.empty-state .icon { font-size:4rem; margin-bottom:16px; opacity:0.5; }
+.empty-state h3 { color:var(--text-dark); margin-bottom:8px; }
+.loading { text-align:center; padding:40px; color:var(--text-gray); }
+.spinner-inline { width:24px; height:24px; border:3px solid var(--border); border-top-color:var(--cobalt-main); border-radius:50%; animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,42,110,0.7); backdrop-filter:blur(4px); z-index:2000; display:none; align-items:flex-start; justify-content:center; padding:40px 20px; overflow-y:auto; }
+.modal-overlay.active { display:flex; }
+.modal { background:#fff; border-radius:16px; width:100%; max-width:950px; box-shadow:0 25px 60px rgba(0,0,0,0.3); animation:modalIn 0.3s ease; }
+@keyframes modalIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+.modal-header { background:linear-gradient(135deg,var(--cobalt-deep),var(--cobalt-main)); color:#fff; padding:20px 24px; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; align-items:center; }
+.modal-header h3 { font-size:1.2rem; font-weight:800; }
+.modal-close { color:#fff; font-size:1.5rem; opacity:0.8; transition:var(--transition); line-height:1; padding:4px; }
+.modal-close:hover { opacity:1; transform:rotate(90deg); }
+.modal-body { padding:24px; }
+.modal-footer { padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
+.form-group { margin-bottom:20px; }
+.form-group label { display:block; font-size:0.85rem; font-weight:700; color:var(--text-dark); margin-bottom:6px; }
+.form-group label .req { color:var(--danger); }
+.form-input, .form-select, .form-textarea { width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:var(--radius); font-size:0.95rem; transition:var(--transition); background:#fff; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline:none; border-color:var(--cobalt-main); box-shadow:0 0 0 3px rgba(26,79,184,0.1); }
+.form-textarea { resize:vertical; min-height:100px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+/* 🆕 SELETOR DE TIPO DE PÁGINA */
+.tipo-selector {
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+gap:10px;
+margin-top:8px;
+}
+.tipo-card {
+padding:14px 12px;
+border:2px solid var(--border);
+border-radius:var(--radius);
+background:#fff;
+cursor:pointer;
+transition:var(--transition);
+text-align:center;
+position:relative;
+}
+.tipo-card:hover { border-color:var(--cobalt-main); transform:translateY(-2px); box-shadow:var(--shadow); }
+.tipo-card.selected { border-color:var(--cobalt-main); background:rgba(26,79,184,0.05); box-shadow:0 0 0 3px rgba(26,79,184,0.15); }
+.tipo-card.selected::after {
+content:'✓';
+position:absolute;
+top:6px; right:8px;
+background:var(--cobalt-main);
+color:#fff;
+width:20px; height:20px;
+border-radius:50%;
+font-size:0.75rem;
+font-weight:900;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.tipo-card .tipo-icon { font-size:1.8rem; margin-bottom:6px; display:block; }
+.tipo-card .tipo-nome { font-size:0.8rem; font-weight:700; color:var(--text-dark); display:block; }
+.tipo-card .tipo-desc { font-size:0.68rem; color:var(--text-gray); margin-top:3px; display:block; line-height:1.3; }
+.tipo-preview-msg {
+margin-top:10px;
+padding:10px 14px;
+background:rgba(16,185,129,0.08);
+border-left:3px solid var(--success);
+border-radius:4px;
+font-size:0.82rem;
+color:#065f46;
+display:none;
+}
+.tipo-preview-msg.visible { display:block; animation:fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+/* 🆕 FILTRO DE TIPOS NA LISTAGEM */
+.filtro-tipos {
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:16px;
+}
+.filtro-btn {
+padding:8px 16px;
+border-radius:20px;
+background:#fff;
+border:1.5px solid var(--border);
+font-size:0.82rem;
+font-weight:600;
+color:var(--text-gray);
+transition:var(--transition);
+display:flex;
+align-items:center;
+gap:6px;
+}
+.filtro-btn:hover { border-color:var(--cobalt-main); color:var(--cobalt-main); }
+.filtro-btn.active {
+background:var(--cobalt-main);
+color:#fff;
+border-color:var(--cobalt-main);
+}
+.filtro-btn .count {
+background:rgba(255,255,255,0.25);
+padding:1px 8px;
+border-radius:12px;
+font-size:0.72rem;
+font-weight:700;
+}
+.filtro-btn:not(.active) .count { background:var(--bg-light); color:var(--text-gray); }
+
+.editor-mode-toggle { display:inline-flex; background:var(--bg-light); border:2px solid var(--border); border-radius:var(--radius); padding:4px; margin-bottom:16px; gap:4px; }
+.editor-mode-toggle button { padding:8px 20px; border-radius:6px; font-size:0.85rem; font-weight:700; color:var(--text-gray); transition:var(--transition); background:transparent; display:flex; align-items:center; gap:6px; }
+.editor-mode-toggle button.active { background:var(--cobalt-main); color:#fff; box-shadow:0 2px 8px rgba(26,79,184,0.3); }
+.editor-mode-toggle button:hover:not(.active) { background:var(--border); color:var(--text-dark); }
+.editor-toolbar { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.editor-toolbar button { padding:6px 12px; background:var(--bg-light); border:1px solid var(--border); border-radius:4px; font-size:0.85rem; font-weight:600; cursor:pointer; transition:var(--transition); color:var(--text-dark); }
+.editor-toolbar button:hover { background:var(--cobalt-main); color:#fff; border-color:var(--cobalt-main); }
+.editor-visual { min-height:300px; padding:16px; border:2px solid var(--border); border-radius:var(--radius); background:#fff; line-height:1.7; font-size:0.95rem; outline:none; overflow-y:auto; }
+.editor-visual:focus { border-color:var(--cobalt-main); box-shadow:0 0 0 3px rgba(26,79,184,0.1); }
+.editor-visual h2 { font-size:1.5rem; color:var(--cobalt-deep); margin:16px 0 8px; font-weight:800; }
+.editor-visual h3 { font-size:1.25rem; color:var(--cobalt-deep); margin:14px 0 8px; font-weight:700; }
+.editor-visual h4 { font-size:1.1rem; color:var(--cobalt-deep); margin:12px 0 6px; font-weight:700; }
+.editor-visual p { margin-bottom:12px; }
+.editor-visual ul, .editor-visual ol { margin:0 0 12px 24px; }
+.editor-visual li { margin-bottom:4px; }
+.editor-visual img { max-width:100%; border-radius:8px; margin:12px 0; }
+.editor-visual a { color:var(--cobalt-main); font-weight:600; }
+.editor-visual blockquote { border-left:4px solid var(--gold); padding:12px 20px; background:var(--bg-light); border-radius:0 8px 8px 0; margin:16px 0; font-style:italic; }
+.editor-visual table { width:100%; border-collapse:collapse; margin:16px 0; }
+.editor-visual th, .editor-visual td { border:1px solid var(--border); padding:10px; text-align:left; }
+.editor-visual th { background:var(--bg-light); font-weight:700; }
+.editor-visual hr { border:none; border-top:2px solid var(--border); margin:20px 0; }
+.editor-visual:empty:before { content:"Comece a digitar aqui... ou use os botões da barra de ferramentas acima 👆"; color:var(--text-gray); font-style:italic; }
+.page-preview { display:none; border:2px solid var(--border); border-radius:8px; padding:24px; min-height:300px; background:#fff; line-height:1.7; }
+.page-preview h2, .page-preview h3, .page-preview h4 { color:var(--cobalt-deep); margin:16px 0 8px; }
+.page-preview p { margin-bottom:12px; }
+.page-preview ul, .page-preview ol { margin:0 0 12px 20px; }
+.page-preview img { max-width:100%; border-radius:8px; margin:12px 0; }
+.page-preview a { color:var(--cobalt-main); font-weight:600; }
+.page-preview blockquote { border-left:4px solid var(--gold); padding:12px 20px; background:var(--bg-light); border-radius:0 8px 8px 0; margin:16px 0; }
+.page-preview table { width:100%; border-collapse:collapse; margin:16px 0; }
+.page-preview th, .page-preview td { border:1px solid var(--border); padding:12px; text-align:left; }
+.page-preview th { background:var(--bg-light); font-weight:700; }
+.toast { position:fixed; bottom:24px; right:24px; padding:16px 24px; background:var(--success); color:#fff; border-radius:var(--radius); font-weight:700; box-shadow:0 10px 30px rgba(16,185,129,0.4); z-index:3000; opacity:0; transform:translateX(400px); transition:all 0.4s cubic-bezier(0.4,0,0.2,1); max-width:calc(100vw - 48px); white-space:pre-line; line-height:1.5; }
+.toast.show { opacity:1; transform:translateX(0); }
+.toast.error { background:var(--danger); box-shadow:0 10px 30px rgba(239,68,68,0.4); }
+.link-preview { display:inline-block; padding:4px 10px; background:var(--bg-light); border:1px solid var(--border); border-radius:4px; font-family:monospace; font-size:0.8rem; color:var(--cobalt-main); word-break:break-all; }
+.action-buttons { display:flex; gap:6px; flex-wrap:wrap; white-space:nowrap; }
+.mode-indicator { display:inline-block; margin-left:8px; padding:2px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; text-transform:uppercase; background:var(--cobalt-main); color:#fff; }
+@media (max-width:768px) {
+.admin-header { padding:0 16px; }
+.page-wrapper { padding:16px; }
+.form-row { grid-template-columns:1fr; }
+.content-header { flex-direction:column; }
+.tipo-selector { grid-template-columns:repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<header class="admin-header" role="banner">
+<div class="header-left">
+<a href="admin.html" class="admin-logo">S<span>7</span>TE</a>
+<span class="admin-badge">Páginas</span>
+</div>
+<div class="header-right">
+<a href="admin.html" class="btn-header btn-back">← <span>Voltar ao Painel</span></a>
+</div>
+</header>
+
+<main class="page-wrapper">
+<div class="content-header">
+<div class="content-header-text">
+<h1>📄 Criador de Páginas</h1>
+<p>Crie páginas com tipos específicos: Landing, Produtos, FAQ, Institucional e mais</p>
+</div>
+<button class="btn btn-gold" id="btn-nova-pagina">➕ Nova Página</button>
+</div>
+
+<div class="alert-box alert-info">
+<strong>💡 Tipos de Página:</strong> Cada tipo vem com um <strong>template inicial automático</strong> para você começar mais rápido.
+Escolha o tipo, personalize o conteúdo e pronto!
+</div>
+
+<!-- 🆕 FILTRO POR TIPO -->
+<div class="card">
+<div class="filtro-tipos" id="filtro-tipos"></div>
+<div id="lista-paginas" class="loading"><span class="spinner-inline"></span> Carregando páginas...</div>
+</div>
+</main>
+
+<!-- MODAL PÁGINA -->
+<div class="modal-overlay" id="modal-pagina" role="dialog" aria-labelledby="modal-pagina-titulo">
+<div class="modal">
+<div class="modal-header">
+<h3 id="modal-pagina-titulo">Nova Página</h3>
+<button class="modal-close" id="btn-fechar-modal" aria-label="Fechar">×</button>
+</div>
+<div class="modal-body">
+<input type="hidden" id="pag-id">
+
+<!-- 🆕 SELETOR DE TIPO -->
+<div class="form-group">
+<label>Tipo de Página <span class="req">*</span></label>
+<div class="tipo-selector" id="tipo-selector"></div>
+<div class="tipo-preview-msg" id="tipo-preview-msg"></div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>Título da Página <span class="req">*</span></label>
+<input type="text" class="form-input" id="pag-titulo" placeholder="Ex: Sobre Nós">
+</div>
+<div class="form-group">
+<label>Slug (URL) <span class="req">*</span></label>
+<input type="text" class="form-input" id="pag-slug" placeholder="ex: sobre-nos">
+<small style="color:var(--text-gray); font-size:0.8rem;">Gerado automaticamente. Letras minúsculas e hífens.</small>
+</div>
+</div>
+<div class="form-group">
+<label>Descrição para o Google (SEO)</label>
+<input type="text" class="form-input" id="pag-meta" placeholder="Descrição que aparece nos resultados de busca..." maxlength="160">
+<small style="color:var(--text-gray); font-size:0.8rem;">Máximo 160 caracteres</small>
+</div>
+
+<div class="form-group">
+<label>Conteúdo <span class="req">*</span> <span class="mode-indicator" id="mode-indicator">Modo Manual</span></label>
+<div class="editor-mode-toggle" role="tablist">
+<button type="button" id="btn-mode-manual" class="active" data-mode="manual">📝 Manual</button>
+<button type="button" id="btn-mode-html" data-mode="html">&lt;/&gt; HTML</button>
+</div>
+<div class="editor-toolbar" id="editor-toolbar">
+<button type="button" data-cmd="formatBlock" data-value="h2" title="Título H2">H2</button>
+<button type="button" data-cmd="formatBlock" data-value="h3" title="Título H3">H3</button>
+<button type="button" data-cmd="formatBlock" data-value="h4" title="Título H4">H4</button>
+<button type="button" data-cmd="formatBlock" data-value="p" title="Parágrafo">¶</button>
+<span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
+<button type="button" data-cmd="bold" title="Negrito"><b>B</b></button>
+<button type="button" data-cmd="italic" title="Itálico"><i>I</i></button>
+<button type="button" data-cmd="underline" title="Sublinhado"><u>U</u></button>
+<span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
+<button type="button" data-cmd="insertUnorderedList" title="Lista">• Lista</button>
+<button type="button" data-cmd="insertOrderedList" title="Lista numerada">1. Lista</button>
+<span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
+<button type="button" data-action="insertLink" title="Link">🔗 Link</button>
+<button type="button" data-action="insertImage" title="Imagem">🖼️ Imagem</button>
+<button type="button" data-action="insertTable" title="Tabela">📊 Tabela</button>
+<button type="button" data-action="insertBlockquote" title="Citação">❝ Citação</button>
+<button type="button" data-action="insertHR" title="Linha horizontal">— HR</button>
+<span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
+<button type="button" data-cmd="removeFormat" title="Limpar formatação">🧹 Limpar</button>
+<button type="button" data-cmd="undo" title="Desfazer">↶</button>
+<button type="button" data-cmd="redo" title="Refazer">↷</button>
+</div>
+<div id="editor-visual" class="editor-visual" contenteditable="true" spellcheck="true"></div>
+<textarea class="form-textarea" id="pag-conteudo" style="display:none; min-height:300px; font-family:'Courier New',monospace; font-size:0.85rem;" placeholder="<h3>Título da seção</h3>&#10;<p>Seu texto aqui...</p>"></textarea>
+<div id="pag-preview" class="page-preview"></div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+<input type="checkbox" id="pag-menu" checked> Mostrar link no rodapé
+</label>
+</div>
+<div class="form-group">
+<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+<input type="checkbox" id="pag-ativo" checked> Página ativa
+</label>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" id="btn-preview">👁️ Preview</button>
+<button class="btn btn-secondary" id="btn-cancelar">Cancelar</button>
+<button class="btn btn-primary" id="btn-salvar-pagina">💾 Salvar Página</button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let paginas = [];
+let currentMode = 'manual';
+let tipoSelecionado = 'custom';
+let filtroAtual = 'todos';
+
+// 🆕 DEFINIÇÃO DOS TIPOS DE PÁGINA
+const TIPOS_PAGINA = {
+landing: {
+nome: 'Landing Page',
+icone: '🎯',
+desc: 'Página de conversão e vendas',
+template: `<h2>🚀 Título Impactante da Sua Oferta</h2>
+<p>Subtítulo que explica o principal benefício do seu produto ou serviço em uma frase clara e direta.</p>
+<h3>✨ Benefícios</h3>
+<ul>
+<li><strong>Benefício 1:</strong> Descreva o que o cliente ganha</li>
+<li><strong>Benefício 2:</strong> Mostre o diferencial</li>
+<li><strong>Benefício 3:</strong> Destaque a garantia ou suporte</li>
+</ul>
+<h3>🎯 Por que escolher a gente?</h3>
+<p>Texto persuasivo explicando por que sua solução é a melhor escolha. Use depoimentos, números e provas sociais.</p>
+<blockquote>"Depoimento de cliente satisfeito que reforça a qualidade do produto."</blockquote>
+<h3>🛒 Pronto para começar?</h3>
+<p><a href="index.html">👉 Comprar Agora</a></p>`
+},
+produtos: {
+nome: 'Produtos',
+icone: '🛍️',
+desc: 'Vitrine e catálogo',
+template: `<h2>🛍️ Nossos Produtos</h2>
+<p>Conheça nossa linha completa de produtos com qualidade garantida.</p>
+<h3>⭐ Destaques</h3>
+<ul>
+<li>Produto 1 - Descrição breve</li>
+<li>Produto 2 - Descrição breve</li>
+<li>Produto 3 - Descrição breve</li>
+</ul>
+<h3>💎 Qualidade Garantida</h3>
+<p>Todos os nossos produtos passam por rigoroso controle de qualidade.</p>
+<p><a href="index.html">Ver catálogo completo →</a></p>`
+},
+institucional: {
+nome: 'Institucional',
+icone: '🏢',
+desc: 'Sobre nós, história',
+template: `<h2>🏢 Nossa História</h2>
+<p>Conte aqui a história da sua empresa: quando foi fundada, por quem e qual era o sonho inicial.</p>
+<h3>💎 Nossos Valores</h3>
+<ul>
+<li><strong>Qualidade:</strong> Compromisso com a excelência</li>
+<li><strong>Confiança:</strong> Transparência em tudo</li>
+<li><strong>Inovação:</strong> Sempre buscando o melhor</li>
+</ul>
+<h3>🎯 Nossa Missão</h3>
+<p>Descreva a missão da sua empresa e o impacto que deseja causar.</p>
+<h3>👥 Nossa Equipe</h3>
+<p>Apresente brevemente a equipe ou os fundadores.</p>`
+},
+faq: {
+nome: 'FAQ',
+icone: '❓',
+desc: 'Perguntas frequentes',
+template: `<h2>❓ Perguntas Frequentes</h2>
+<p>Reunimos as dúvidas mais comuns dos nossos clientes. Se não encontrar sua resposta, entre em contato.</p>
+<h3>📦 Entrega e Frete</h3>
+<h4>Qual o prazo de entrega?</h4>
+<p>O prazo de entrega é de X a Y dias úteis após a confirmação do pagamento.</p>
+<h4>Qual o valor do frete?</h4>
+<p>O frete é grátis para compras acima de R$ 500. Para valores menores, consulte no checkout.</p>
+<h3>💳 Pagamento</h3>
+<h4>Quais formas de pagamento são aceitas?</h4>
+<p>Aceitamos cartão de crédito, PIX e boleto bancário.</p>
+<h3>🔄 Trocas e Devoluções</h3>
+<h4>Posso trocar meu produto?</h4>
+<p>Sim, você tem até 7 dias após o recebimento para solicitar troca ou devolução.</p>`
+},
+blog: {
+nome: 'Blog',
+icone: '📝',
+desc: 'Artigos e novidades',
+template: `<h2>📝 Título do Artigo</h2>
+<p style="color: #64748b; font-size: 0.9em;">Publicado em XX/XX/XXXX por Nome do Autor</p>
+<p>Introdução do artigo. Apresente o tema e o que o leitor vai aprender.</p>
+<h3>📌 Tópico Principal 1</h3>
+<p>Desenvolva o primeiro ponto do artigo com detalhes e exemplos.</p>
+<h3>📌 Tópico Principal 2</h3>
+<p>Continue desenvolvendo o conteúdo com informações relevantes.</p>
+<h3>✅ Conclusão</h3>
+<p>Resuma os pontos principais e faça uma chamada para ação.</p>`
+},
+contato: {
+nome: 'Contato',
+icone: '📞',
+desc: 'Fale conosco',
+template: `<h2>📞 Fale Conosco</h2>
+<p>Estamos aqui para ajudar! Escolha o canal que preferir.</p>
+<h3>💬 Canais de Atendimento</h3>
+<ul>
+<li><strong>WhatsApp:</strong> (XX) XXXXX-XXXX</li>
+<li><strong>E-mail:</strong> contato@suaempresa.com.br</li>
+<li><strong>Telefone:</strong> (XX) XXXX-XXXX</li>
+</ul>
+<h3>🕐 Horário de Atendimento</h3>
+<p>Segunda a Sexta: 8h às 18h<br>Sábado: 9h às 13h</p>
+<h3>📍 Endereço</h3>
+<p>Rua Exemplo, 123 - Bairro - Cidade/UF - CEP</p>`
+},
+politica: {
+nome: 'Política',
+icone: '📋',
+desc: 'Termos e privacidade',
+template: `<h2>📋 Política de [Nome]</h2>
+<p style="color: #64748b; font-size: 0.9em;">Última atualização: XX/XX/XXXX</p>
+<h3>1. Objetivo</h3>
+<p>Descreva o objetivo desta política.</p>
+<h3>2. Condições</h3>
+<p>Liste as condições e regras principais.</p>
+<h3>3. Direitos do Cliente</h3>
+<p>Explique os direitos garantidos ao cliente.</p>
+<h3>4. Contato</h3>
+<p>Para dúvidas sobre esta política, entre em contato pelo e-mail X.</p>`
+},
+promocao: {
+nome: 'Promoção',
+icone: '🔥',
+desc: 'Ofertas especiais',
+template: `<h2>🔥 PROMOÇÃO IMPERDÍVEL!</h2>
+<p style="font-size: 1.2em;"><strong>Até XX% OFF em produtos selecionados!</strong></p>
+<h3>⏰ Ofertas por Tempo Limitado</h3>
+<p>Aproveite antes que acabe! Promoção válida até XX/XX/XXXX.</p>
+<h3>🎁 Produtos em Destaque</h3>
+<ul>
+<li>Produto 1 - De R$ XXX por <strong>R$ XXX</strong></li>
+<li>Produto 2 - De R$ XXX por <strong>R$ XXX</strong></li>
+<li>Produto 3 - De R$ XXX por <strong>R$ XXX</strong></li>
+</ul>
+<h3>🛒 Como Aproveitar</h3>
+<ol>
+<li>Escolha seus produtos favoritos</li>
+<li>Adicione ao carrinho</li>
+<li>Finalize sua compra com desconto</li>
+</ol>
+<p><a href="index.html">👉 Aproveitar Agora</a></p>`
+},
+custom: {
+nome: 'Personalizada',
+icone: '⚙️',
+desc: 'Página livre',
+template: `<h2>Título da Página</h2>
+<p>Comece a escrever seu conteúdo aqui. Use a barra de ferramentas acima para formatar.</p>`
+}
+};
+
+function escapeHTML(str) {
+if (str === null || str === undefined) return '';
+return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function formatarData(data) {
+if (!data) return '-';
+return new Date(data).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function showToast(msg, type='success') {
+const toast = document.getElementById('toast');
+if (!toast) return;
+toast.textContent = msg;
+toast.className = 'toast show' + (type==='error' ? ' error':'');
+clearTimeout(toast._timer);
+toast._timer = setTimeout(() => toast.classList.remove('show'), type==='error'?8000:3500);
+}
+function sanitizarHTML(html) {
+return html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,'').replace(/\son\w+\s*=\s*"[^"]*"/gi,'').replace(/\son\w+\s*=\s*'[^']*'/gi,'').replace(/javascript\s*:/gi,'');
+}
+
+// 🆕 Renderiza os cards de tipo
+function renderizarSeletorTipo() {
+const container = document.getElementById('tipo-selector');
+container.innerHTML = Object.entries(TIPOS_PAGINA).map(([key, tipo]) => `
+<div class="tipo-card ${key === tipoSelecionado ? 'selected' : ''}" data-tipo="${key}" role="button" tabindex="0">
+<span class="tipo-icon">${tipo.icone}</span>
+<span class="tipo-nome">${tipo.nome}</span>
+<span class="tipo-desc">${tipo.desc}</span>
+</div>
+`).join('');
+
+container.querySelectorAll('.tipo-card').forEach(card => {
+card.addEventListener('click', () => selecionarTipo(card.dataset.tipo));
+card.addEventListener('keydown', (e) => {
+if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selecionarTipo(card.dataset.tipo); }
+});
+});
+}
+
+// 🆕 Seleciona tipo e aplica template
+function selecionarTipo(tipo) {
+if (!TIPOS_PAGINA[tipo]) return;
+tipoSelecionado = tipo;
+renderizarSeletorTipo();
+
+const msgEl = document.getElementById('tipo-preview-msg');
+const isEdicao = document.getElementById('pag-id').value !== '';
+
+if (!isEdicao) {
+// Nova página: aplica o template automaticamente
+const template = TIPOS_PAGINA[tipo].template;
+setEditorContent(template);
+msgEl.innerHTML = `✨ Template de <strong>${TIPOS_PAGINA[tipo].nome}</strong> carregado! Personalize conforme necessário.`;
+msgEl.classList.add('visible');
+
+// Sugere título se estiver vazio
+const tituloInput = document.getElementById('pag-titulo');
+if (!tituloInput.value) {
+tituloInput.placeholder = `Ex: ${TIPOS_PAGINA[tipo].nome}`;
+}
+} else {
+msgEl.innerHTML = `📌 Tipo alterado para <strong>${TIPOS_PAGINA[tipo].nome}</strong>. O conteúdo não foi modificado.`;
+msgEl.classList.add('visible');
+setTimeout(() => msgEl.classList.remove('visible'), 3000);
+}
+}
+
+// 🆕 Renderiza filtro de tipos
+function renderizarFiltro() {
+const container = document.getElementById('filtro-tipos');
+const total = paginas.length;
+let html = `<button class="filtro-btn ${filtroAtual==='todos'?'active':''}" data-filtro="todos">📄 Todas <span class="count">${total}</span></button>`;
+
+Object.entries(TIPOS_PAGINA).forEach(([key, tipo]) => {
+const count = paginas.filter(p => (p.tipo || 'custom') === key).length;
+if (count > 0) {
+html += `<button class="filtro-btn ${filtroAtual===key?'active':''}" data-filtro="${key}">${tipo.icone} ${tipo.nome} <span class="count">${count}</span></button>`;
+}
+});
+container.innerHTML = html;
+
+container.querySelectorAll('.filtro-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+filtroAtual = btn.dataset.filtro;
+renderizarFiltro();
+renderizarListaPaginas();
+});
+});
+}
+
+// 🆕 Renderiza a lista (com filtro)
+function renderizarListaPaginas() {
+const container = document.getElementById('lista-paginas');
+const filtradas = filtroAtual === 'todos' ? paginas : paginas.filter(p => (p.tipo || 'custom') === filtroAtual);
+
+if (filtradas.length === 0) {
+container.innerHTML = `<div class="empty-state"><div class="icon">📄</div><h3>Nenhuma página encontrada</h3><p>Clique em "Nova Página" para criar.</p></div>`;
+return;
+}
+
+container.innerHTML = `
+<div class="table-container">
+<table>
+<thead><tr><th>Título</th><th>Tipo</th><th>URL</th><th>Menu</th><th>Status</th><th>Atualizada</th><th>Ações</th></tr></thead>
+<tbody>
+${filtradas.map(p => {
+const tipo = TIPOS_PAGINA[p.tipo || 'custom'] || TIPOS_PAGINA.custom;
+return `
+<tr>
+<td><strong>${escapeHTML(p.titulo)}</strong></td>
+<td><span class="badge-tipo ${p.tipo || 'custom'}">${tipo.icone} ${tipo.nome}</span></td>
+<td><code class="link-preview">pagina.html?s=${escapeHTML(p.slug)}</code></td>
+<td>${p.mostrar_menu ? '🔗 Sim' : '—'}</td>
+<td>
+<label class="toggle-switch"><input type="checkbox" ${p.ativo?'checked':''} data-action="toggle-page" data-id="${escapeHTML(p.id)}"><span class="toggle-slider"></span></label>
+<span class="badge-status ${p.ativo?'badge-active':'badge-inactive'}" style="margin-left:8px">${p.ativo?'Ativa':'Inativa'}</span>
+</td>
+<td>${formatarData(p.atualizado_em || p.criado_em)}</td>
+<td>
+<div class="action-buttons">
+<a href="pagina.html?s=${escapeHTML(p.slug)}" target="_blank" rel="noopener" class="btn btn-sm btn-secondary" title="Ver página">👁️</a>
+<button class="btn btn-sm btn-secondary" data-action="copy-link" data-slug="${escapeHTML(p.slug)}" title="Copiar link">📋</button>
+<button class="btn btn-sm btn-secondary" data-action="edit-page" data-id="${escapeHTML(p.id)}" title="Editar">✏️</button>
+<button class="btn btn-sm btn-danger" data-action="delete-page" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.titulo)}" title="Excluir">🗑️</button>
+</div>
+</td>
+</tr>`;
+}).join('')}
+</tbody>
+</table>
+</div>`;
+}
+
+async function verificarAuth() {
+try {
+const { data: { session } } = await supabaseClient.auth.getSession();
+if (!session) window.location.href = 'login.html';
+} catch (error) { console.error(error); window.location.href = 'login.html'; }
+}
+
+async function carregarPaginas() {
+const container = document.getElementById('lista-paginas');
+container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+try {
+const { data, error } = await supabaseClient.from('paginas').select('*').order('criado_em', { ascending: false });
+if (error) throw error;
+paginas = data || [];
+renderizarFiltro();
+renderizarListaPaginas();
+} catch (error) {
+console.error('Erro ao carregar páginas:', error);
+container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar páginas</h3><p>${escapeHTML(error.message)}</p></div>`;
+}
+}
+
+function getEditorContent() {
+return currentMode === 'manual' ? document.getElementById('editor-visual').innerHTML : document.getElementById('pag-conteudo').value;
+}
+function setEditorContent(html) {
+document.getElementById('editor-visual').innerHTML = html || '';
+document.getElementById('pag-conteudo').value = html || '';
+}
+function switchMode(newMode) {
+if (newMode === currentMode) return;
+const currentContent = getEditorContent();
+const visual = document.getElementById('editor-visual');
+const htmlTa = document.getElementById('pag-conteudo');
+const btnManual = document.getElementById('btn-mode-manual');
+const btnHtml = document.getElementById('btn-mode-html');
+const toolbar = document.getElementById('editor-toolbar');
+const indicator = document.getElementById('mode-indicator');
+
+if (newMode === 'manual') {
+htmlTa.style.display = 'none'; visual.style.display = 'block';
+visual.innerHTML = currentContent; visual.focus();
+btnManual.classList.add('active'); btnHtml.classList.remove('active');
+toolbar.style.display = 'flex'; indicator.textContent = 'Modo Manual';
+} else {
+visual.innerHTML = currentContent;
+htmlTa.style.display = 'block'; visual.style.display = 'none';
+htmlTa.value = visual.innerHTML; htmlTa.focus();
+btnHtml.classList.add('active'); btnManual.classList.remove('active');
+toolbar.style.display = 'none'; indicator.textContent = 'Modo HTML';
+}
+currentMode = newMode;
+}
+
+function resetForm() {
+document.getElementById('modal-pagina-titulo').textContent = 'Nova Página';
+document.getElementById('pag-id').value = '';
+document.getElementById('pag-titulo').value = '';
+document.getElementById('pag-slug').value = '';
+document.getElementById('pag-slug').dataset.manual = '';
+document.getElementById('pag-meta').value = '';
+document.getElementById('pag-menu').checked = true;
+document.getElementById('pag-ativo').checked = true;
+document.getElementById('pag-preview').style.display = 'none';
+document.getElementById('btn-preview').textContent = '👁️ Preview';
+document.getElementById('tipo-preview-msg').classList.remove('visible');
+tipoSelecionado = 'custom';
+renderizarSeletorTipo();
+setEditorContent(TIPOS_PAGINA.custom.template);
+switchMode('manual');
+}
+
+function abrirModal() { resetForm(); document.getElementById('modal-pagina').classList.add('active'); }
+function fecharModal() { document.getElementById('modal-pagina').classList.remove('active'); }
+
+function editarPagina(id) {
+const p = paginas.find(pg => pg.id === id);
+if (!p) return;
+resetForm();
+document.getElementById('modal-pagina-titulo').textContent = 'Editar Página';
+document.getElementById('pag-id').value = p.id;
+document.getElementById('pag-titulo').value = p.titulo;
+document.getElementById('pag-slug').value = p.slug;
+document.getElementById('pag-slug').dataset.manual = '1';
+document.getElementById('pag-meta').value = p.meta_description || '';
+setEditorContent(p.conteudo);
+document.getElementById('pag-menu').checked = !!p.mostrar_menu;
+document.getElementById('pag-ativo').checked = !!p.ativo;
+tipoSelecionado = p.tipo || 'custom';
+renderizarSeletorTipo();
+document.getElementById('modal-pagina').classList.add('active');
+}
+
+async function salvarPagina() {
+const id = document.getElementById('pag-id').value;
+const titulo = document.getElementById('pag-titulo').value.trim();
+const slug = document.getElementById('pag-slug').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+const meta = document.getElementById('pag-meta').value.trim();
+const conteudo = getEditorContent().trim();
+const mostrarMenu = document.getElementById('pag-menu').checked;
+const ativo = document.getElementById('pag-ativo').checked;
+
+if (!titulo || !slug || !conteudo) { showToast('Preencha título, slug e conteúdo!', 'error'); return; }
+
+const btn = document.getElementById('btn-salvar-pagina');
+btn.disabled = true; btn.textContent = 'Salvando...';
+
+try {
+let query = supabaseClient.from('paginas').select('id').eq('slug', slug);
+if (id) query = query.neq('id', id);
+const { data: existente } = await query.maybeSingle();
+if (existente) { showToast('Já existe uma página com esse slug!', 'error'); btn.disabled = false; btn.textContent = '💾 Salvar Página'; return; }
+
+const pagina = { titulo, slug, meta_description: meta, conteudo, mostrar_menu: mostrarMenu, ativo, tipo: tipoSelecionado };
+
+if (id) {
+const { error } = await supabaseClient.from('paginas').update({ ...pagina, atualizado_em: new Date().toISOString() }).eq('id', id);
+if (error) throw error;
+} else {
+const { error } = await supabaseClient.from('paginas').insert([pagina]);
+if (error) throw error;
+}
+showToast('✅ Página salva com sucesso!');
+fecharModal();
+carregarPaginas();
+} catch (e) {
+console.error(e); showToast('Erro: ' + e.message, 'error');
+} finally { btn.disabled = false; btn.textContent = '💾 Salvar Página'; }
+}
+
+async function togglePagina(id, ativo) {
+try {
+const { error } = await supabaseClient.from('paginas').update({ ativo, atualizado_em: new Date().toISOString() }).eq('id', id);
+if (error) throw error;
+showToast(ativo ? '✅ Página ativada!' : '⏸️ Página desativada!');
+carregarPaginas();
+} catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+async function excluirPagina(id, titulo) {
+if (!confirm(`Excluir a página "${titulo}"?\n\nEsta ação não pode ser desfeita!`)) return;
+try {
+const { error } = await supabaseClient.from('paginas').delete().eq('id', id);
+if (error) throw error;
+showToast('🗑️ Página excluída!');
+carregarPaginas();
+} catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+async function copiarLink(slug) {
+const base = window.location.href.replace(/[^/]*$/, '');
+const url = base + 'pagina.html?s=' + slug;
+try { await navigator.clipboard.writeText(url); showToast('✅ Link copiado!\n' + url); }
+catch (e) { const i = document.createElement('input'); i.value = url; document.body.appendChild(i); i.select(); document.execCommand('copy'); document.body.removeChild(i); showToast('✅ Link copiado!\n' + url); }
+}
+
+function execCommand(cmd, value = null) {
+document.getElementById('editor-visual').focus();
+if (cmd === 'formatBlock') document.execCommand('formatBlock', false, '<' + value + '>');
+else document.execCommand(cmd, false, value);
+}
+function inserirLink() {
+const url = prompt('URL do link:', 'https://'); if (!url) return;
+document.getElementById('editor-visual').focus();
+const sel = window.getSelection().toString();
+if (sel) document.execCommand('createLink', false, url);
+else document.execCommand('insertHTML', false, `<a href="${url}">clique aqui</a>`);
+}
+function inserirImagem() {
+const url = prompt('URL da imagem:', 'https://'); if (!url) return;
+const alt = prompt('Texto alternativo (alt):', 'Imagem');
+document.getElementById('editor-visual').focus();
+document.execCommand('insertHTML', false, `<img src="${url}" alt="${alt || ''}" style="max-width:100%; border-radius:8px;">`);
+}
+function inserirTabela() {
+document.getElementById('editor-visual').focus();
+document.execCommand('insertHTML', false, `<table><thead><tr><th>Coluna 1</th><th>Coluna 2</th><th>Coluna 3</th></tr></thead><tbody><tr><td>Dado 1</td><td>Dado 2</td><td>Dado 3</td></tr><tr><td>Dado 4</td><td>Dado 5</td><td>Dado 6</td></tr></tbody></table><p><br></p>`);
+}
+function inserirBlockquote() { document.getElementById('editor-visual').focus(); document.execCommand('formatBlock', false, 'blockquote'); }
+function inserirHR() { document.getElementById('editor-visual').focus(); document.execCommand('insertHTML', false, '<hr><p><br></p>'); }
+function alternarPreview() {
+const conteudo = getEditorContent();
+const preview = document.getElementById('pag-preview');
+const btn = document.getElementById('btn-preview');
+const mostrando = preview.style.display === 'block';
+if (mostrando) {
+preview.style.display = 'none'; btn.textContent = '👁️ Preview';
+document.getElementById('editor-visual').style.display = currentMode === 'manual' ? 'block' : 'none';
+document.getElementById('pag-conteudo').style.display = currentMode === 'html' ? 'block' : 'none';
+} else {
+preview.innerHTML = sanitizarHTML(conteudo);
+preview.style.display = 'block'; btn.textContent = '✏️ Voltar a Editar';
+document.getElementById('editor-visual').style.display = 'none';
+document.getElementById('pag-conteudo').style.display = 'none';
+}
+}
+
+document.getElementById('pag-titulo').addEventListener('input', function() {
+const slugInput = document.getElementById('pag-slug');
+if (slugInput.dataset.manual === '1') return;
+slugInput.value = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+});
+document.getElementById('pag-slug').addEventListener('input', function() { this.dataset.manual = '1'; });
+document.getElementById('btn-mode-manual').addEventListener('click', () => switchMode('manual'));
+document.getElementById('btn-mode-html').addEventListener('click', () => switchMode('html'));
+document.querySelectorAll('.editor-toolbar button').forEach(btn => {
+btn.addEventListener('click', () => {
+if (btn.dataset.cmd) execCommand(btn.dataset.cmd, btn.dataset.value || null);
+else if (btn.dataset.action === 'insertLink') inserirLink();
+else if (btn.dataset.action === 'insertImage') inserirImagem();
+else if (btn.dataset.action === 'insertTable') inserirTabela();
+else if (btn.dataset.action === 'insertBlockquote') inserirBlockquote();
+else if (btn.dataset.action === 'insertHR') inserirHR();
+});
+});
+document.getElementById('editor-visual').addEventListener('input', () => { document.getElementById('pag-conteudo').value = document.getElementById('editor-visual').innerHTML; });
+document.getElementById('pag-conteudo').addEventListener('input', () => { document.getElementById('editor-visual').innerHTML = document.getElementById('pag-conteudo').value; });
+document.addEventListener('click', (e) => {
+const target = e.target.closest('[data-action]');
+if (!target) return;
+const action = target.dataset.action;
+switch (action) {
+case 'edit-page': editarPagina(target.dataset.id); break;
+case 'delete-page': excluirPagina(target.dataset.id, target.dataset.name); break;
+case 'copy-link': copiarLink(target.dataset.slug); break;
+}
+});
+document.addEventListener('change', (e) => { if (e.target.dataset.action === 'toggle-page') togglePagina(e.target.dataset.id, e.target.checked); });
+document.getElementById('btn-nova-pagina').addEventListener('click', abrirModal);
+document.getElementById('btn-fechar-modal').addEventListener('click', fecharModal);
+document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
+document.getElementById('btn-salvar-pagina').addEventListener('click', salvarPagina);
+document.getElementById('btn-preview').addEventListener('click', alternarPreview);
+document.getElementById('modal-pagina').addEventListener('click', (e) => { if (e.target.id === 'modal-pagina') fecharModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharModal(); });
+document.addEventListener('DOMContentLoaded', async () => {
+await verificarAuth();
+await carregarPaginas();
+});
+</script>
+</body>
+</html>
