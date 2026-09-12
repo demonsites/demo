@@ -48,7 +48,6 @@
             overflow: hidden;
         }
 
-        /* Formas decorativas animadas */
         body::before {
             content: '';
             position: absolute;
@@ -364,7 +363,6 @@
             font-size: 0.8rem;
         }
 
-        /* Modo recuperação de senha */
         .recovery-mode .login-logo .admin-badge {
             background: var(--text-gray);
             color: white;
@@ -398,7 +396,6 @@
                 <span id="success-text">Login realizado com sucesso!</span>
             </div>
 
-            <!-- FORMULÁRIO DE LOGIN -->
             <form id="login-form">
                 <div class="form-group">
                     <label>E-mail <span class="req">*</span></label>
@@ -445,7 +442,6 @@
                 </button>
             </form>
 
-            <!-- FORMULÁRIO DE RECUPERAÇÃO -->
             <form id="recovery-form" style="display: none;">
                 <div class="form-group">
                     <label>E-mail cadastrado <span class="req">*</span></label>
@@ -475,7 +471,6 @@
             <div class="divider">ou</div>
 
             <div class="back-link">
-                <!-- CORRIGIDO: Link relativo é mais seguro no GitHub Pages -->
                 <a href="index.html">← Voltar para a loja</a>
             </div>
 
@@ -490,17 +485,11 @@
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURAÇÃO SUPABASE
-        // ============================================
         const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
         
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ============================================
-        // HELPERS
-        // ============================================
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -536,23 +525,21 @@
             document.getElementById('success-message').classList.remove('show');
         }
 
-        // ============================================
-        // VERIFICAR SESSÃO EXISTENTE
-        // ============================================
+        // 🔴 CORREÇÃO: verificação de sessão mais robusta com retry
         async function verificarSessao() {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    window.location.href = 'admin.html';
+                
+                if (session && session.user && session.user.email) {
+                    // Aguardar a sessão estabilizar antes de redirecionar
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    window.location.replace('admin.html');
                 }
             } catch (error) {
                 console.error('Erro ao verificar sessão:', error);
             }
         }
 
-        // ============================================
-        // TOGGLE SENHA
-        // ============================================
         function togglePassword() {
             const senhaInput = document.getElementById('senha');
             const toggleBtn = document.getElementById('toggle-btn');
@@ -568,9 +555,7 @@
             }
         }
 
-        // ============================================
-        // LOGIN
-        // ============================================
+        // 🔴 CORREÇÃO PRINCIPAL: usar onAuthStateChange para garantir que a sessão foi criada
         async function fazerLogin(event) {
             event.preventDefault();
 
@@ -601,12 +586,42 @@
                 });
 
                 if (error) throw error;
+                
+                if (!data || !data.session || !data.user) {
+                    throw new Error('Falha ao criar sessão');
+                }
 
                 mostrarSucesso('Login realizado! Redirecionando...');
 
-                setTimeout(() => {
-                    window.location.href = 'admin.html';
-                }, 800);
+                // 🔴 CORREÇÃO: usar onAuthStateChange para aguardar a sessão estar pronta
+                const authPromise = new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error('Timeout ao aguardar sessão'));
+                    }, 5000);
+
+                    const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
+                        if (event === 'SIGNED_IN' && session && session.user) {
+                            clearTimeout(timeout);
+                            listener.subscription.unsubscribe();
+                            resolve(session);
+                        }
+                    });
+                });
+
+                try {
+                    await authPromise;
+                    // Aguardar mais 400ms para garantir persistência no localStorage
+                    await new Promise(r => setTimeout(r, 400));
+                } catch (e) {
+                    // Fallback: mesmo sem o listener, redireciona se temos sessão
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (!session || !session.user) {
+                        throw new Error('Sessão não foi criada corretamente');
+                    }
+                }
+
+                // 🔴 CORREÇÃO: usar location.replace para evitar histórico quebrado
+                window.location.replace('admin.html');
 
             } catch (error) {
                 console.error('Erro no login:', error);
@@ -621,6 +636,8 @@
                     mensagemErro = 'Muitas tentativas. Aguarde alguns minutos.';
                 } else if (error.message.includes('network') || error.message.includes('fetch')) {
                     mensagemErro = 'Erro de conexão. Verifique sua internet.';
+                } else if (error.message.includes('Falha ao criar sessão')) {
+                    mensagemErro = 'Erro ao criar sessão. Tente novamente.';
                 }
 
                 mostrarErro(mensagemErro);
@@ -633,9 +650,6 @@
             }
         }
 
-        // ============================================
-        // RECUPERAÇÃO DE SENHA
-        // ============================================
         function mostrarRecuperacao() {
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('recovery-form').style.display = 'block';
@@ -679,7 +693,6 @@
             btnText.innerHTML = '<div class="spinner"></div> Enviando...';
 
             try {
-                // CORRIGIDO: Usa o caminho exato da página atual para evitar erro 404 no GitHub Pages
                 const currentUrl = window.location.origin + window.location.pathname;
                 
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
@@ -700,15 +713,12 @@
             }
         }
 
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            verificarSessao();
-            document.getElementById('email').focus();
-
+        document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('login-form').addEventListener('submit', fazerLogin);
             document.getElementById('recovery-form').addEventListener('submit', recuperarSenha);
+            
+            await verificarSessao();
+            document.getElementById('email').focus();
         });
     </script>
 </body>
