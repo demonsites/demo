@@ -1451,25 +1451,59 @@ function fecharModal(id) {
 const modal = document.getElementById(id);
 if (modal) modal.classList.remove('active');
 }
+
+// 🔴 CORREÇÃO PRINCIPAL: verificarAuth com retry e getUser()
 async function verificarAuth() {
-try {
-const { data: { session } } = await supabaseClient.auth.getSession();
-if (!session) {
-window.location.href = 'login.html';
+    try {
+        // 1) Verificar sessão inicial
+        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+        
+        if (sessionError) {
+            console.error('Erro na sessão:', sessionError);
+            window.location.replace('login.html');
+            return;
+        }
+        
+        // 2) Se não tem sessão, fazer retry uma vez após delay (corrige race condition)
+        if (!session || !session.user) {
+            console.warn('Sessão não encontrada, tentando novamente em 600ms...');
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            const { data: { session: retrySession } } = await supabaseClient.auth.getSession();
+            
+            if (!retrySession || !retrySession.user) {
+                window.location.replace('login.html');
+                return;
+            }
+        }
+        
+        // 3) Verificação robusta: getUser() faz chamada real ao servidor Supabase
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        
+        if (userError || !user) {
+            console.error('Usuário não autenticado:', userError);
+            // Limpar qualquer sessão inválida antes de redirecionar
+            await supabaseClient.auth.signOut();
+            window.location.replace('login.html');
+            return;
+        }
+        
+        console.log('✅ Autenticação confirmada:', user.email);
+        
+    } catch (error) {
+        console.error('Erro ao verificar auth:', error);
+        window.location.replace('login.html');
+    }
 }
-} catch (error) {
-console.error('Erro ao verificar auth:', error);
-window.location.href = 'login.html';
-}
-}
+
 async function sair() {
 try {
 await supabaseClient.auth.signOut();
 localStorage.removeItem('admin_current_view');
-window.location.href = 'login.html';
+window.location.replace('login.html');
 } catch (error) {
 console.error('Erro ao sair:', error);
-window.location.href = 'login.html';
+window.location.replace('login.html');
 }
 }
 function navegarPara(view) {
@@ -2580,7 +2614,6 @@ async function salvarConfig() {
 const btn = document.getElementById('btn-salvar-config');
 btn.disabled = true;
 btn.textContent = 'Salvando...';
-// ADICIONADAS AS CHAVES DE TIPOGRAFIA AQUI
 const chaves = [
 'logo_texto', 'frete_gratis_acima', 'valor_frete', 'desconto_pix_percent', 'parcelas_max',
 'font_family_base', 'font_size_base', 'font_size_h1', 'font_size_h2', 'font_size_h3',
