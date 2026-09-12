@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin | E07 IMPORTS </title>
+    <title>Login Admin | S7TE</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Acesso restrito ao painel administrativo.">
     
@@ -330,7 +330,7 @@
             text-align: center;
             margin-top: 24px;
         }
-        .back-link a {
+        .back-link a, .back-link button {
             color: var(--text-gray);
             text-decoration: none;
             font-size: 0.9rem;
@@ -340,7 +340,7 @@
             align-items: center;
             gap: 6px;
         }
-        .back-link a:hover {
+        .back-link a:hover, .back-link button:hover {
             color: var(--cobalt-main);
         }
 
@@ -406,6 +406,7 @@
                         <span class="icon">📧</span>
                         <input 
                             type="email" 
+                            inputmode="email"
                             class="form-input" 
                             id="email" 
                             placeholder="admin@s7te.com.br"
@@ -452,6 +453,7 @@
                         <span class="icon">📧</span>
                         <input 
                             type="email" 
+                            inputmode="email"
                             class="form-input" 
                             id="recovery-email" 
                             placeholder="admin@s7te.com.br"
@@ -473,8 +475,8 @@
             <div class="divider">ou</div>
 
             <div class="back-link">
-                <a href="https://demonsites.github.io/sete
-                    ">← Voltar para a loja</a>
+                <!-- CORRIGIDO: Link relativo é mais seguro no GitHub Pages -->
+                <a href="index.html">← Voltar para a loja</a>
             </div>
 
             <div class="security-info">
@@ -541,7 +543,6 @@
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
-                    // Já está logado, redireciona direto para o admin
                     window.location.href = 'admin.html';
                 }
             } catch (error) {
@@ -603,7 +604,6 @@
 
                 mostrarSucesso('Login realizado! Redirecionando...');
 
-                // Redireciona após pequeno delay
                 setTimeout(() => {
                     window.location.href = 'admin.html';
                 }, 800);
@@ -628,7 +628,6 @@
                 btn.disabled = false;
                 btnText.textContent = 'Entrar';
 
-                // Limpa senha e foca
                 document.getElementById('senha').value = '';
                 document.getElementById('senha').focus();
             }
@@ -680,8 +679,11 @@
             btnText.innerHTML = '<div class="spinner"></div> Enviando...';
 
             try {
+                // CORRIGIDO: Usa o caminho exato da página atual para evitar erro 404 no GitHub Pages
+                const currentUrl = window.location.origin + window.location.pathname;
+                
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/login.html'
+                    redirectTo: currentUrl
                 });
 
                 if (error) throw error;
@@ -703,11 +705,8 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             verificarSessao();
-            
-            // Foca no campo de email
             document.getElementById('email').focus();
 
-            // Event listeners
             document.getElementById('login-form').addEventListener('submit', fazerLogin);
             document.getElementById('recovery-form').addEventListener('submit', recuperarSenha);
         });
