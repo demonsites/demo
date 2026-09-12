@@ -475,8 +475,8 @@
             <div class="divider">ou</div>
 
             <div class="back-link">
-                <!-- CORRIGIDO: Link relativo é mais seguro no GitHub Pages -->
-                <a href="admin.html">← Voltar para a loja</a>
+                <!-- CORRIGIDO: Aponta para a loja (index.html) e não para o admin -->
+                <a href="index.html">← Voltar para a loja</a>
             </div>
 
             <div class="security-info">
@@ -543,7 +543,8 @@
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
-                    window.location.href = 'admin.html';
+                    // CORRIGIDO: Substitui 'login.html' por 'admin.html' no caminho atual, garantindo que funcione em qualquer subpasta do GitHub Pages
+                    window.location.href = window.location.pathname.replace('login.html', 'admin.html');
                 }
             } catch (error) {
                 console.error('Erro ao verificar sessão:', error);
@@ -605,7 +606,8 @@
                 mostrarSucesso('Login realizado! Redirecionando...');
 
                 setTimeout(() => {
-                    window.location.href = 'admin.html';
+                    // CORRIGIDO: Substitui 'login.html' por 'admin.html' no caminho atual
+                    window.location.href = window.location.pathname.replace('login.html', 'admin.html');
                 }, 800);
 
             } catch (error) {
@@ -679,7 +681,6 @@
             btnText.innerHTML = '<div class="spinner"></div> Enviando...';
 
             try {
-                // CORRIGIDO: Usa o caminho exato da página atual para evitar erro 404 no GitHub Pages
                 const currentUrl = window.location.origin + window.location.pathname;
                 
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
