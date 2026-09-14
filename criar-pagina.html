@@ -42,10 +42,12 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .admin-logo { font-size:1.5rem; font-weight:900; color:#fff; text-decoration:none; letter-spacing:-0.02em; }
 .admin-logo span { color:var(--gold); }
 .admin-badge { background:rgba(255,255,255,0.15); padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; text-transform:uppercase; }
-.header-right { display:flex; align-items:center; gap:12px; }
-.btn-header { padding:8px 16px; border-radius:var(--radius); font-weight:700; font-size:0.85rem; transition:var(--transition); display:flex; align-items:center; gap:6px; text-decoration:none; cursor:pointer; }
+.header-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.btn-header { padding:8px 14px; border-radius:var(--radius); font-weight:700; font-size:0.82rem; transition:var(--transition); display:flex; align-items:center; gap:6px; text-decoration:none; cursor:pointer; white-space:nowrap; }
 .btn-back { background:rgba(255,255,255,0.15); color:#fff; }
 .btn-back:hover { background:rgba(255,255,255,0.25); }
+.btn-github { background:linear-gradient(135deg,#24292e,#40464e); color:#fff; }
+.btn-github:hover { background:linear-gradient(135deg,#40464e,#24292e); }
 .page-wrapper { max-width:1400px; margin:0 auto; padding:32px; }
 .content-header { margin-bottom:32px; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
 .content-header-text h1 { font-size:1.8rem; font-weight:900; color:var(--cobalt-deep); margin-bottom:4px; }
@@ -53,6 +55,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .card { background:#fff; border-radius:12px; border:1px solid var(--border); padding:24px; margin-bottom:24px; box-shadow:var(--shadow); }
 .alert-box { padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; font-size:0.9rem; line-height:1.6; }
 .alert-info { background:rgba(26,79,184,0.08); border-left:4px solid var(--cobalt-main); color:var(--cobalt-deep); }
+.alert-warning { background:rgba(251,191,36,0.15); border-left:4px solid var(--gold-dark); color:#92400e; }
 .btn { padding:12px 24px; border-radius:var(--radius); font-weight:700; font-size:0.9rem; transition:var(--transition); display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
 .btn-primary { background:linear-gradient(135deg,var(--cobalt-main),var(--cobalt-bright)); color:#fff; }
 .btn-primary:hover { transform:translateY(-1px); box-shadow:var(--shadow-lg); }
@@ -69,7 +72,6 @@ table { width:100%; border-collapse:collapse; }
 th { background:var(--bg-light); padding:14px 16px; text-align:left; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-gray); border-bottom:2px solid var(--border); }
 td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:0.9rem; }
 tbody tr:hover { background:var(--bg-light); }
-
 .badge-tipo { padding:4px 12px; border-radius:20px; font-size:0.72rem; font-weight:700; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
 .badge-tipo.landing { background:rgba(139,92,246,0.12); color:var(--purple); }
 .badge-tipo.produtos { background:rgba(26,79,184,0.12); color:var(--cobalt-main); }
@@ -80,7 +82,6 @@ tbody tr:hover { background:var(--bg-light); }
 .badge-tipo.politica { background:rgba(100,116,139,0.15); color:var(--text-gray); }
 .badge-tipo.promocao { background:rgba(239,68,68,0.12); color:var(--danger); }
 .badge-tipo.custom { background:rgba(148,163,184,0.15); color:var(--text-gray); }
-
 .badge-status { padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; text-transform:uppercase; }
 .badge-active { background:rgba(16,185,129,0.1); color:var(--success); }
 .badge-inactive { background:var(--bg-light); color:var(--text-gray); }
@@ -105,7 +106,7 @@ input:checked + .toggle-slider:before { transform:translateX(24px); }
 .modal-close { color:#fff; font-size:1.5rem; opacity:0.8; transition:var(--transition); line-height:1; padding:4px; cursor:pointer; }
 .modal-close:hover { opacity:1; transform:rotate(90deg); }
 .modal-body { padding:24px; }
-.modal-footer { padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
+.modal-footer { padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; align-items:center; }
 .form-group { margin-bottom:20px; }
 .form-group label { display:block; font-size:0.85rem; font-weight:700; color:var(--text-dark); margin-bottom:6px; }
 .form-group label .req { color:var(--danger); }
@@ -113,90 +114,23 @@ input:checked + .toggle-slider:before { transform:translateX(24px); }
 .form-input:focus, .form-select:focus, .form-textarea:focus { outline:none; border-color:var(--cobalt-main); box-shadow:0 0 0 3px rgba(26,79,184,0.1); }
 .form-textarea { resize:vertical; min-height:100px; }
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-
-.tipo-selector {
-display:grid;
-grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
-gap:10px;
-margin-top:8px;
-}
-.tipo-card {
-padding:14px 12px;
-border:2px solid var(--border);
-border-radius:var(--radius);
-background:#fff;
-cursor:pointer;
-transition:var(--transition);
-text-align:center;
-position:relative;
-}
+.tipo-selector { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:10px; margin-top:8px; }
+.tipo-card { padding:14px 12px; border:2px solid var(--border); border-radius:var(--radius); background:#fff; cursor:pointer; transition:var(--transition); text-align:center; position:relative; }
 .tipo-card:hover { border-color:var(--cobalt-main); transform:translateY(-2px); box-shadow:var(--shadow); }
 .tipo-card.selected { border-color:var(--cobalt-main); background:rgba(26,79,184,0.05); box-shadow:0 0 0 3px rgba(26,79,184,0.15); }
-.tipo-card.selected::after {
-content:'✓';
-position:absolute;
-top:6px; right:8px;
-background:var(--cobalt-main);
-color:#fff;
-width:20px; height:20px;
-border-radius:50%;
-font-size:0.75rem;
-font-weight:900;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+.tipo-card.selected::after { content:'✓'; position:absolute; top:6px; right:8px; background:var(--cobalt-main); color:#fff; width:20px; height:20px; border-radius:50%; font-size:0.75rem; font-weight:900; display:flex; align-items:center; justify-content:center; }
 .tipo-card .tipo-icon { font-size:1.8rem; margin-bottom:6px; display:block; }
 .tipo-card .tipo-nome { font-size:0.8rem; font-weight:700; color:var(--text-dark); display:block; }
 .tipo-card .tipo-desc { font-size:0.68rem; color:var(--text-gray); margin-top:3px; display:block; line-height:1.3; }
-.tipo-preview-msg {
-margin-top:10px;
-padding:10px 14px;
-background:rgba(16,185,129,0.08);
-border-left:3px solid var(--success);
-border-radius:4px;
-font-size:0.82rem;
-color:#065f46;
-display:none;
-}
+.tipo-preview-msg { margin-top:10px; padding:10px 14px; background:rgba(16,185,129,0.08); border-left:3px solid var(--success); border-radius:4px; font-size:0.82rem; color:#065f46; display:none; }
 .tipo-preview-msg.visible { display:block; animation:fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-
-.filtro-tipos {
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-bottom:16px;
-}
-.filtro-btn {
-padding:8px 16px;
-border-radius:20px;
-background:#fff;
-border:1.5px solid var(--border);
-font-size:0.82rem;
-font-weight:600;
-color:var(--text-gray);
-transition:var(--transition);
-display:flex;
-align-items:center;
-gap:6px;
-cursor:pointer;
-}
+.filtro-tipos { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.filtro-btn { padding:8px 16px; border-radius:20px; background:#fff; border:1.5px solid var(--border); font-size:0.82rem; font-weight:600; color:var(--text-gray); transition:var(--transition); display:flex; align-items:center; gap:6px; cursor:pointer; }
 .filtro-btn:hover { border-color:var(--cobalt-main); color:var(--cobalt-main); }
-.filtro-btn.active {
-background:var(--cobalt-main);
-color:#fff;
-border-color:var(--cobalt-main);
-}
-.filtro-btn .count {
-background:rgba(255,255,255,0.25);
-padding:1px 8px;
-border-radius:12px;
-font-size:0.72rem;
-font-weight:700;
-}
+.filtro-btn.active { background:var(--cobalt-main); color:#fff; border-color:var(--cobalt-main); }
+.filtro-btn .count { background:rgba(255,255,255,0.25); padding:1px 8px; border-radius:12px; font-size:0.72rem; font-weight:700; }
 .filtro-btn:not(.active) .count { background:var(--bg-light); color:var(--text-gray); }
-
 .editor-mode-toggle { display:inline-flex; background:var(--bg-light); border:2px solid var(--border); border-radius:var(--radius); padding:4px; margin-bottom:16px; gap:4px; }
 .editor-mode-toggle button { padding:8px 20px; border-radius:6px; font-size:0.85rem; font-weight:700; color:var(--text-gray); transition:var(--transition); background:transparent; display:flex; align-items:center; gap:6px; }
 .editor-mode-toggle button.active { background:var(--cobalt-main); color:#fff; box-shadow:0 2px 8px rgba(26,79,184,0.3); }
@@ -236,92 +170,30 @@ font-weight:700;
 .link-preview { display:inline-block; padding:4px 10px; background:var(--bg-light); border:1px solid var(--border); border-radius:4px; font-family:monospace; font-size:0.8rem; color:var(--cobalt-main); word-break:break-all; }
 .action-buttons { display:flex; gap:6px; flex-wrap:wrap; white-space:nowrap; }
 .mode-indicator { display:inline-block; margin-left:8px; padding:2px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; text-transform:uppercase; background:var(--cobalt-main); color:#fff; }
-
-/* 🆕 Modal de upload de imagem */
-.image-upload-modal {
-position:fixed;
-top:0; left:0;
-width:100%; height:100%;
-background:rgba(10,42,110,0.8);
-backdrop-filter:blur(4px);
-z-index:3500;
-display:none;
-align-items:center;
-justify-content:center;
-padding:20px;
-}
+.image-upload-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,42,110,0.8); backdrop-filter:blur(4px); z-index:3500; display:none; align-items:center; justify-content:center; padding:20px; }
 .image-upload-modal.active { display:flex; }
-.image-upload-box {
-background:#fff;
-border-radius:16px;
-padding:32px;
-max-width:500px;
-width:100%;
-box-shadow:0 25px 60px rgba(0,0,0,0.3);
-animation:modalIn 0.3s ease;
-}
-.image-upload-box h3 {
-font-size:1.2rem;
-font-weight:800;
-color:var(--cobalt-deep);
-margin-bottom:20px;
-}
-.upload-options {
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-bottom:20px;
-}
-.upload-option {
-padding:20px;
-border:2px solid var(--border);
-border-radius:var(--radius);
-background:var(--bg-light);
-cursor:pointer;
-transition:var(--transition);
-text-align:center;
-font-size:0.9rem;
-font-weight:600;
-}
-.upload-option:hover {
-border-color:var(--cobalt-main);
-background:rgba(26,79,184,0.05);
-transform:translateY(-2px);
-}
+.image-upload-box { background:#fff; border-radius:16px; padding:32px; max-width:500px; width:100%; box-shadow:0 25px 60px rgba(0,0,0,0.3); animation:modalIn 0.3s ease; }
+.image-upload-box h3 { font-size:1.2rem; font-weight:800; color:var(--cobalt-deep); margin-bottom:20px; }
+.upload-options { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.upload-option { padding:20px; border:2px solid var(--border); border-radius:var(--radius); background:var(--bg-light); cursor:pointer; transition:var(--transition); text-align:center; font-size:0.9rem; font-weight:600; }
+.upload-option:hover { border-color:var(--cobalt-main); background:rgba(26,79,184,0.05); transform:translateY(-2px); }
 .upload-option .icon { font-size:2rem; margin-bottom:8px; display:block; }
-.upload-progress {
-display:none;
-margin:16px 0;
-padding:16px;
-background:var(--bg-light);
-border-radius:var(--radius);
-}
+.upload-progress { display:none; margin:16px 0; padding:16px; background:var(--bg-light); border-radius:var(--radius); }
 .upload-progress.visible { display:block; }
-.progress-bar {
-height:8px;
-background:var(--border);
-border-radius:4px;
-overflow:hidden;
-margin:8px 0;
-}
-.progress-fill {
-height:100%;
-background:linear-gradient(90deg,var(--cobalt-main),var(--cobalt-bright));
-width:0%;
-transition:width 0.3s ease;
-}
-.progress-text {
-font-size:0.85rem;
-color:var(--text-gray);
-text-align:center;
-}
+.progress-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin:8px 0; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--cobalt-main),var(--cobalt-bright)); width:0%; transition:width 0.3s ease; }
+.progress-text { font-size:0.85rem; color:var(--text-gray); text-align:center; }
+.gh-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; background:rgba(16,185,129,0.1); color:var(--success); margin-right:auto; }
+.gh-status-badge.off { background:rgba(239,68,68,0.1); color:var(--danger); }
+.gh-status-badge::before { content:''; width:8px; height:8px; border-radius:50%; background:currentColor; }
 @media (max-width:768px) {
-.admin-header { padding:0 16px; }
+.admin-header { padding:0 12px; height:auto; min-height:64px; flex-wrap:wrap; gap:8px; padding-top:10px; padding-bottom:10px; }
 .page-wrapper { padding:16px; }
 .form-row { grid-template-columns:1fr; }
 .content-header { flex-direction:column; }
 .tipo-selector { grid-template-columns:repeat(2, 1fr); }
 .upload-options { grid-template-columns:1fr; }
+.btn-header span { display:none; }
 }
 </style>
 </head>
@@ -332,7 +204,13 @@ text-align:center;
 <span class="admin-badge">Páginas</span>
 </div>
 <div class="header-right">
-<a href="#" onclick="voltarAoPainel(event); return false;" class="btn-header btn-back">← <span>Voltar ao Painel</span></a>
+<button class="btn-header btn-github" id="btn-gh-config" title="Configurar publicação no GitHub Pages">
+⚙️ <span>GitHub</span>
+</button>
+<button class="btn-header btn-back" id="btn-gh-todas" title="Publica todas as páginas ativas no GitHub">
+🚀 <span>Publicar Todas</span>
+</button>
+<a href="#" onclick="voltarAoPainel(event); return false;" class="btn-header btn-back">← <span>Painel</span></a>
 </div>
 </header>
 
@@ -340,14 +218,15 @@ text-align:center;
 <div class="content-header">
 <div class="content-header-text">
 <h1>📄 Criador de Páginas</h1>
-<p>Crie páginas com tipos específicos: Landing, Produtos, FAQ, Institucional e mais</p>
+<p>Crie páginas institucionais e publique direto no GitHub Pages</p>
 </div>
 <button class="btn btn-gold" id="btn-nova-pagina">➕ Nova Página</button>
 </div>
 
 <div class="alert-box alert-info">
-<strong>💡 Tipos de Página:</strong> Cada tipo vem com um <strong>template inicial automático</strong> para você começar mais rápido.
-Escolha o tipo, personalize o conteúdo e pronto!
+<strong>💡 Como funciona:</strong> Cada tipo de página vem com um <strong>template inicial</strong>.
+Ao salvar, a página fica no Supabase (backup) e, se o GitHub estiver configurado, é <strong>publicada automaticamente</strong>
+na pasta <code>paginas/</code> do repositório — visível em <code>https://USUARIO.github.io/REPO/paginas/slug.html</code>.
 </div>
 
 <div class="card">
@@ -356,7 +235,7 @@ Escolha o tipo, personalize o conteúdo e pronto!
 </div>
 </main>
 
-<div class="modal-overlay" id="modal-pagina" role="dialog" aria-labelledby="modal-pagina-titulo">
+<div class="modal-overlay" id="modal-pagina" role="dialog">
 <div class="modal">
 <div class="modal-header">
 <h3 id="modal-pagina-titulo">Nova Página</h3>
@@ -364,13 +243,11 @@ Escolha o tipo, personalize o conteúdo e pronto!
 </div>
 <div class="modal-body">
 <input type="hidden" id="pag-id">
-
 <div class="form-group">
 <label>Tipo de Página <span class="req">*</span></label>
 <div class="tipo-selector" id="tipo-selector"></div>
 <div class="tipo-preview-msg" id="tipo-preview-msg"></div>
 </div>
-
 <div class="form-row">
 <div class="form-group">
 <label>Título da Página <span class="req">*</span></label>
@@ -387,41 +264,39 @@ Escolha o tipo, personalize o conteúdo e pronto!
 <input type="text" class="form-input" id="pag-meta" placeholder="Descrição que aparece nos resultados de busca..." maxlength="160">
 <small style="color:var(--text-gray); font-size:0.8rem;">Máximo 160 caracteres</small>
 </div>
-
 <div class="form-group">
 <label>Conteúdo <span class="req">*</span> <span class="mode-indicator" id="mode-indicator">Modo Manual</span></label>
 <div class="editor-mode-toggle" role="tablist">
-<button type="button" id="btn-mode-manual" class="active" data-mode="manual">📝 Manual</button>
-<button type="button" id="btn-mode-html" data-mode="html">&lt;/&gt; HTML</button>
+<button type="button" id="btn-mode-manual" class="active">📝 Manual</button>
+<button type="button" id="btn-mode-html">&lt;/&gt; HTML</button>
 </div>
 <div class="editor-toolbar" id="editor-toolbar">
-<button type="button" data-cmd="formatBlock" data-value="h2" title="Título H2">H2</button>
-<button type="button" data-cmd="formatBlock" data-value="h3" title="Título H3">H3</button>
-<button type="button" data-cmd="formatBlock" data-value="h4" title="Título H4">H4</button>
-<button type="button" data-cmd="formatBlock" data-value="p" title="Parágrafo">¶</button>
+<button type="button" data-cmd="formatBlock" data-value="h2">H2</button>
+<button type="button" data-cmd="formatBlock" data-value="h3">H3</button>
+<button type="button" data-cmd="formatBlock" data-value="h4">H4</button>
+<button type="button" data-cmd="formatBlock" data-value="p">¶</button>
 <span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
-<button type="button" data-cmd="bold" title="Negrito"><b>B</b></button>
-<button type="button" data-cmd="italic" title="Itálico"><i>I</i></button>
-<button type="button" data-cmd="underline" title="Sublinhado"><u>U</u></button>
+<button type="button" data-cmd="bold"><b>B</b></button>
+<button type="button" data-cmd="italic"><i>I</i></button>
+<button type="button" data-cmd="underline"><u>U</u></button>
 <span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
-<button type="button" data-cmd="insertUnorderedList" title="Lista">• Lista</button>
-<button type="button" data-cmd="insertOrderedList" title="Lista numerada">1. Lista</button>
+<button type="button" data-cmd="insertUnorderedList">• Lista</button>
+<button type="button" data-cmd="insertOrderedList">1. Lista</button>
 <span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
-<button type="button" data-action="insertLink" title="Link">🔗 Link</button>
-<button type="button" data-action="insertImage" title="Imagem">🖼️ Imagem</button>
-<button type="button" data-action="insertTable" title="Tabela">📊 Tabela</button>
-<button type="button" data-action="insertBlockquote" title="Citação">❝ Citação</button>
-<button type="button" data-action="insertHR" title="Linha horizontal">— HR</button>
+<button type="button" data-action="insertLink">🔗 Link</button>
+<button type="button" data-action="insertImage">🖼️ Imagem</button>
+<button type="button" data-action="insertTable">📊 Tabela</button>
+<button type="button" data-action="insertBlockquote">❝ Citação</button>
+<button type="button" data-action="insertHR">— HR</button>
 <span style="border-left:1px solid var(--border); height:28px; margin:0 4px;"></span>
-<button type="button" data-cmd="removeFormat" title="Limpar formatação">🧹 Limpar</button>
-<button type="button" data-cmd="undo" title="Desfazer">↶</button>
-<button type="button" data-cmd="redo" title="Refazer">↷</button>
+<button type="button" data-cmd="removeFormat">🧹 Limpar</button>
+<button type="button" data-cmd="undo">↶</button>
+<button type="button" data-cmd="redo">↷</button>
 </div>
 <div id="editor-visual" class="editor-visual" contenteditable="true" spellcheck="true"></div>
-<textarea class="form-textarea" id="pag-conteudo" style="display:none; min-height:300px; font-family:'Courier New',monospace; font-size:0.85rem;" placeholder="<h3>Título da seção</h3>&#10;<p>Seu texto aqui...</p>"></textarea>
+<textarea class="form-textarea" id="pag-conteudo" style="display:none; min-height:300px; font-family:'Courier New',monospace; font-size:0.85rem;"></textarea>
 <div id="pag-preview" class="page-preview"></div>
 </div>
-
 <div class="form-row">
 <div class="form-group">
 <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
@@ -436,14 +311,17 @@ Escolha o tipo, personalize o conteúdo e pronto!
 </div>
 </div>
 <div class="modal-footer">
+<label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;margin-right:auto;color:var(--text-gray);cursor:pointer;">
+<input type="checkbox" id="gh-auto" checked> 🚀 Publicar ao salvar
+</label>
 <button class="btn btn-secondary" id="btn-preview">👁️ Preview</button>
+<button class="btn btn-gold" id="btn-gh-publicar">🚀 Publicar Agora</button>
 <button class="btn btn-secondary" id="btn-cancelar">Cancelar</button>
 <button class="btn btn-primary" id="btn-salvar-pagina">💾 Salvar Página</button>
 </div>
 </div>
 </div>
 
-<!-- 🆕 MODAL DE UPLOAD DE IMAGEM -->
 <div class="image-upload-modal" id="image-upload-modal">
 <div class="image-upload-box">
 <h3>🖼️ Inserir Imagem</h3>
@@ -461,9 +339,7 @@ URL Externa
 </div>
 <div class="upload-progress" id="upload-progress">
 <div class="progress-text" id="progress-text">Comprimindo imagem...</div>
-<div class="progress-bar">
-<div class="progress-fill" id="progress-fill"></div>
-</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 </div>
 <div style="display:flex; gap:8px; justify-content:flex-end;">
 <button class="btn btn-secondary" id="btn-cancel-upload">Cancelar</button>
@@ -475,40 +351,301 @@ URL Externa
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
 <script>
+// ========== SUPABASE ==========
 const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ========== ESTADO ==========
 let paginas = [];
 let currentMode = 'manual';
 let tipoSelecionado = 'custom';
 let filtroAtual = 'todos';
 
-function voltarAoPainel(event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
+// ========== GITHUB CONFIG ==========
+const GH_CFG_KEY = 'gh_publish_config';
+const GH_TOKEN_KEY = 'gh_publish_token';
+
+function ghCfg()   { try { return JSON.parse(localStorage.getItem(GH_CFG_KEY)) || {}; } catch (e) { return {}; } }
+function ghToken() { return localStorage.getItem(GH_TOKEN_KEY) || ''; }
+function ghPronto(){ const c = ghCfg(); return !!(c.owner && c.repo && ghToken()); }
+
+function ghHeaders() {
+    return {
+        'Authorization': 'Bearer ' + ghToken(),
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+    };
+}
+
+function utf8Base64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+}
+
+function apiUrl(path) {
+    const c = ghCfg();
+    return `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path}`;
+}
+
+async function ghGetSha(path) {
+    const r = await fetch(apiUrl(path), { headers: ghHeaders() });
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error('GitHub HTTP ' + r.status);
+    const j = await r.json();
+    return j.sha || null;
+}
+
+async function ghPutFile(path, conteudo, mensagem) {
+    const sha = await ghGetSha(path);
+    const body = { message: mensagem, content: utf8Base64(conteudo), branch: ghCfg().branch || 'main' };
+    if (sha) body.sha = sha;
+    const r = await fetch(apiUrl(path), { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error('GitHub HTTP ' + r.status + ': ' + (j.message || 'erro ao gravar'));
     }
+    return r.json();
+}
+
+async function ghDeleteFile(path, mensagem) {
+    const sha = await ghGetSha(path);
+    if (!sha) return;
+    const r = await fetch(apiUrl(path), {
+        method: 'DELETE', headers: ghHeaders(),
+        body: JSON.stringify({ message: mensagem, sha, branch: ghCfg().branch || 'main' })
+    });
+    if (!r.ok && r.status !== 404) throw new Error('GitHub HTTP ' + r.status);
+}
+
+async function ghLerIndice() {
+    try {
+        const r = await fetch(apiUrl('paginas/index.json'), { headers: ghHeaders() });
+        if (!r.ok) return [];
+        const j = await r.json();
+        return JSON.parse(atob(j.content)) || [];
+    } catch (e) { return []; }
+}
+
+// ========== TEMPLATE DA PÁGINA PUBLICADA ==========
+function templatePagina(p) {
+    const cfg = ghCfg();
+    const loja = cfg.storeName || 'E07 IMPORTS';
+    const ano = new Date().getFullYear();
+    const e = escapeHTML;
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${e(p.titulo)} | ${e(loja)}</title>
+<meta name="description" content="${e(p.meta_description || p.titulo)}">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#0a2a6e;--main:#1a4fb8;--gold:#fbbf24;--bg:#f8fafc;--txt:#0f172a;--gray:#64748b;--border:#e2e8f0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.7}
+a{color:var(--main);text-decoration:none}
+header{background:linear-gradient(135deg,var(--deep),#1a4fb8);padding:14px 0;position:sticky;top:0;z-index:10;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.logo{color:#fff;font-weight:900;font-size:1.3rem;letter-spacing:-.02em;display:inline-block;text-decoration:none}
+.logo b{color:var(--gold);font-weight:900}
+.crumb{padding:18px 0;font-size:.85rem;color:var(--gray)}
+article{background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:48px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+article h2{color:var(--deep);font-size:1.6rem;margin:20px 0 10px;font-weight:800}
+article h3{color:var(--deep);font-size:1.25rem;margin:18px 0 8px;font-weight:700}
+article h4{color:var(--deep);font-size:1.05rem;margin:14px 0 6px;font-weight:700}
+article p{margin-bottom:12px}
+article ul,article ol{margin:0 0 14px 24px}
+article li{margin-bottom:6px}
+article img{max-width:100%;border-radius:8px;margin:12px 0}
+article blockquote{border-left:4px solid var(--gold);background:var(--bg);padding:12px 20px;border-radius:0 8px 8px 0;margin:16px 0;font-style:italic}
+article table{width:100%;border-collapse:collapse;margin:16px 0}
+article th,article td{border:1px solid var(--border);padding:10px;text-align:left}
+article th{background:var(--bg);font-weight:700}
+article hr{border:none;border-top:2px solid var(--border);margin:20px 0}
+footer{background:var(--deep);color:#cbd5e1;padding:28px 0;text-align:center;font-size:.85rem}
+footer a{color:var(--gold)}
+@media(max-width:600px){article{padding:20px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="../index.html">${e(loja).replace('7','<b>7</b>')}</a></div></header>
+<div class="wrap"><div class="crumb"><a href="../index.html">Home</a> / <strong>${e(p.titulo)}</strong></div></div>
+<div class="wrap"><article>${p.conteudo}</article></div>
+<footer><div class="wrap">&copy; ${ano} ${e(loja)} &middot; <a href="../index.html">Voltar para o in&iacute;cio</a></div></footer>
+</body>
+</html>`;
+}
+
+// ========== PUBLICAÇÃO ==========
+async function publicarPagina(p) {
+    if (!ghPronto()) { abrirModalConfig(); throw new Error('Configure o GitHub primeiro (botão ⚙️ GitHub).'); }
+    await ghPutFile(`paginas/${p.slug}.html`, templatePagina(p), `Publish: ${p.titulo}`);
+}
+
+async function atualizarIndice(listaPaginas) {
+    const lista = listaPaginas
+        .filter(p => p.ativo)
+        .map(p => ({
+            titulo: p.titulo,
+            slug: p.slug,
+            tipo: p.tipo || 'custom',
+            mostrar_menu: !!p.mostrar_menu,
+            url: `paginas/${p.slug}.html`,
+            atualizado_em: p.atualizado_em || new Date().toISOString()
+        }));
+    await ghPutFile('paginas/index.json', JSON.stringify(lista, null, 2), 'Update pages index');
+}
+
+function getFormPagina() {
+    const titulo = document.getElementById('pag-titulo').value.trim();
+    const slug = document.getElementById('pag-slug').value.trim().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+    const conteudo = getEditorContent().trim();
+    if (!titulo || !slug || !conteudo) throw new Error('Preencha título, slug e conteúdo antes de publicar.');
+    return {
+        titulo, slug, conteudo,
+        meta_description: document.getElementById('pag-meta').value.trim(),
+        tipo: tipoSelecionado,
+        mostrar_menu: document.getElementById('pag-menu').checked,
+        ativo: document.getElementById('pag-ativo').checked
+    };
+}
+
+async function publicarFormAtual() {
+    const p = getFormPagina();
+    await publicarPagina(p);
+    // recarrega lista do supabase para montar índice correto
+    await carregarPaginas();
+    await atualizarIndice(paginas);
+}
+
+async function publicarTodas() {
+    if (!ghPronto()) { abrirModalConfig(); throw new Error('Configure o GitHub primeiro.'); }
+    const btn = document.getElementById('btn-gh-todas');
+    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Publicando...';
+    try {
+        await carregarPaginas();
+        const ativas = paginas.filter(p => p.ativo);
+        for (const p of ativas) await publicarPagina(p);
+
+        // remover páginas que existem no GH mas não no supabase
+        const antigo = await ghLerIndice();
+        const slugsAtuais = new Set(ativas.map(p => p.slug));
+        for (const item of antigo) {
+            if (!slugsAtuais.has(item.slug)) {
+                try { await ghDeleteFile(`paginas/${item.slug}.html`, `Remove: ${item.slug}`); } catch (e) {}
+            }
+        }
+        await atualizarIndice(paginas);
+        showToast(`🚀 ${ativas.length} página(s) publicada(s) no GitHub!`);
+    } catch (e) {
+        showToast('Erro ao publicar: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+
+// ========== MODAL DE CONFIG GITHUB ==========
+function abrirModalConfig() {
+    let m = document.getElementById('gh-config-modal');
+    if (!m) {
+        m = document.createElement('div');
+        m.id = 'gh-config-modal';
+        m.className = 'modal-overlay';
+        m.innerHTML = `
+        <div class="modal" style="max-width:560px">
+            <div class="modal-header"><h3>⚙️ Publicação no GitHub Pages</h3><button class="modal-close" data-gh-close>&times;</button></div>
+            <div class="modal-body">
+                <div class="alert-box alert-warning" style="margin-bottom:16px">
+                    <strong>🔐 Segurança:</strong> crie um <strong>Fine-grained token</strong> com permissão
+                    <strong>Contents: Read and write</strong> apenas neste repositório. O token fica salvo
+                    <strong>somente neste navegador</strong>.
+                </div>
+                <div class="form-group"><label>Usuário / Owner <span class="req">*</span></label>
+                    <input class="form-input" id="gh-owner" placeholder="seu-usuario"></div>
+                <div class="form-group"><label>Repositório <span class="req">*</span></label>
+                    <input class="form-input" id="gh-repo" placeholder="e07-imports"></div>
+                <div class="form-group"><label>Branch</label>
+                    <input class="form-input" id="gh-branch" placeholder="main" value="main"></div>
+                <div class="form-group"><label>Nome da loja (cabeçalho das páginas)</label>
+                    <input class="form-input" id="gh-store" placeholder="E07 IMPORTS"></div>
+                <div class="form-group"><label>Personal Access Token <span class="req">*</span></label>
+                    <input class="form-input" id="gh-token" type="password" placeholder="github_pat_..."></div>
+                <div class="alert-box alert-info">
+                    <strong>💡 Como criar o token:</strong><br>
+                    1. GitHub → foto → Settings → Developer settings<br>
+                    2. Personal access tokens → Fine-grained tokens → Generate new token<br>
+                    3. Permissions → Repository → <strong>Contents: Read and write</strong><br>
+                    4. Repository access → Only select repositories → escolha este repo
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="gh-limpar">🗑️ Remover token</button>
+                <button class="btn btn-secondary" data-gh-close>Cancelar</button>
+                <button class="btn btn-primary" id="gh-salvar-cfg">💾 Salvar e Testar</button>
+            </div>
+        </div>`;
+        document.body.appendChild(m);
+        m.addEventListener('click', e => {
+            if (e.target === m || e.target.hasAttribute('data-gh-close')) m.classList.remove('active');
+        });
+        document.getElementById('gh-salvar-cfg').addEventListener('click', async () => {
+            const cfg = {
+                owner: document.getElementById('gh-owner').value.trim(),
+                repo: document.getElementById('gh-repo').value.trim(),
+                branch: document.getElementById('gh-branch').value.trim() || 'main',
+                storeName: document.getElementById('gh-store').value.trim() || 'E07 IMPORTS'
+            };
+            const tok = document.getElementById('gh-token').value.trim();
+            if (!cfg.owner || !cfg.repo) { showToast('Preencha owner e repositório!', 'error'); return; }
+            localStorage.setItem(GH_CFG_KEY, JSON.stringify(cfg));
+            if (tok) localStorage.setItem(GH_TOKEN_KEY, tok);
+            try {
+                const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}`, { headers: ghHeaders() });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                showToast('✅ Conexão com o GitHub OK!');
+                m.classList.remove('active');
+            } catch (e) { showToast('Falha ao conectar: ' + e.message, 'error'); }
+        });
+        document.getElementById('gh-limpar').addEventListener('click', () => {
+            localStorage.removeItem(GH_TOKEN_KEY);
+            document.getElementById('gh-token').value = '';
+            showToast('🗑️ Token removido deste navegador.');
+        });
+    }
+    const c = ghCfg();
+    document.getElementById('gh-owner').value = c.owner || '';
+    document.getElementById('gh-repo').value = c.repo || '';
+    document.getElementById('gh-branch').value = c.branch || 'main';
+    document.getElementById('gh-store').value = c.storeName || 'E07 IMPORTS';
+    document.getElementById('gh-token').value = ghToken();
+    m.classList.add('active');
+}
+
+// ========== HELPERS ==========
+function voltarAoPainel(event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
     if (window.history.length > 1) {
         const referrer = document.referrer || '';
-        if (referrer.includes('admin') || referrer.includes('.html')) {
-            window.history.back();
-            return;
-        }
+        if (referrer.includes('admin') || referrer.includes('.html')) { window.history.back(); return; }
     }
     const currentPath = window.location.pathname;
     const lastSlash = currentPath.lastIndexOf('/');
     const currentDir = lastSlash > 0 ? currentPath.substring(0, lastSlash + 1) : '/';
-    const tentativas = [
-        currentDir + 'admin.html',
-        './admin.html',
-        '../admin.html',
-        'admin.html',
-    ];
-    window.location.href = tentativas[0];
+    window.location.href = currentDir + 'admin.html';
 }
 
-// 🆕 FUNÇÕES DE UPLOAD E COMPRESSÃO DE IMAGEM
 function comprimirImagem(file, maxWidth = 1400, quality = 0.75) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -516,16 +653,11 @@ function comprimirImagem(file, maxWidth = 1400, quality = 0.75) {
             const img = new Image();
             img.onload = () => {
                 let w = img.width, h = img.height;
-                if (w > maxWidth) {
-                    h = (maxWidth / w) * h;
-                    w = maxWidth;
-                }
+                if (w > maxWidth) { h = (maxWidth / w) * h; w = maxWidth; }
                 const canvas = document.createElement('canvas');
-                canvas.width = w;
-                canvas.height = h;
+                canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
                 ctx.drawImage(img, 0, 0, w, h);
                 canvas.toBlob(blob => {
                     if (!blob) return reject(new Error('Falha ao comprimir'));
@@ -544,55 +676,33 @@ async function uploadImagemPagina(file) {
     const progressEl = document.getElementById('upload-progress');
     const progressText = document.getElementById('progress-text');
     const progressFill = document.getElementById('progress-fill');
-    
     progressEl.classList.add('visible');
     progressText.textContent = '🗜️ Comprimindo imagem...';
     progressFill.style.width = '30%';
-    
     try {
         const comprimida = await comprimirImagem(file, 1400, 0.75);
         const fileName = `pag-${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
-        
-        progressText.textContent = '📤 Enviando para o servidor...';
+        progressText.textContent = '📤 Enviando...';
         progressFill.style.width = '60%';
-        
         const { error } = await supabaseClient.storage
-            .from('paginas')
-            .upload(fileName, comprimida, { 
-                contentType: 'image/jpeg',
-                cacheControl: '31536000'
-            });
-        
+            .from('paginas').upload(fileName, comprimida, { contentType: 'image/jpeg', cacheControl: '31536000' });
         if (error) {
             let msg = error.message;
-            if (msg.toLowerCase().includes('bucket not found')) {
-                msg = 'Bucket "paginas" não encontrado. Crie-o no Supabase Storage.';
-            }
+            if (msg.toLowerCase().includes('bucket not found')) msg = 'Bucket "paginas" não encontrado no Supabase Storage.';
             throw new Error(msg);
         }
-        
-        progressText.textContent = '✅ Imagem enviada com sucesso!';
+        progressText.textContent = '✅ Imagem enviada!';
         progressFill.style.width = '100%';
-        
         const { data: { publicUrl } } = supabaseClient.storage.from('paginas').getPublicUrl(fileName);
-        
-        setTimeout(() => {
-            progressEl.classList.remove('visible');
-            progressFill.style.width = '0%';
-        }, 500);
-        
+        setTimeout(() => { progressEl.classList.remove('visible'); progressFill.style.width = '0%'; }, 500);
         return publicUrl;
     } catch (error) {
-        progressEl.classList.remove('visible');
-        progressFill.style.width = '0%';
+        progressEl.classList.remove('visible'); progressFill.style.width = '0%';
         throw error;
     }
 }
 
-function abrirModalImagem() {
-    document.getElementById('image-upload-modal').classList.add('active');
-}
-
+function abrirModalImagem() { document.getElementById('image-upload-modal').classList.add('active'); }
 function fecharModalImagem() {
     document.getElementById('image-upload-modal').classList.remove('active');
     document.getElementById('upload-progress').classList.remove('visible');
@@ -603,10 +713,8 @@ async function processarUploadImagem(file) {
     try {
         const url = await uploadImagemPagina(file);
         const alt = prompt('Texto alternativo (alt) para acessibilidade:', 'Imagem') || 'Imagem';
-        
         document.getElementById('editor-visual').focus();
         document.execCommand('insertHTML', false, `<img src="${url}" alt="${alt}" style="max-width:100%; border-radius:8px;">`);
-        
         showToast('✅ Imagem enviada e inserida!');
         fecharModalImagem();
     } catch (e) {
@@ -615,506 +723,449 @@ async function processarUploadImagem(file) {
     }
 }
 
+// ========== TIPOS DE PÁGINA ==========
 const TIPOS_PAGINA = {
-landing: {
-nome: 'Landing Page',
-icone: '🎯',
-desc: 'Página de conversão e vendas',
-template: `<h2>🚀 Título Impactante da Sua Oferta</h2>
-<p>Subtítulo que explica o principal benefício do seu produto ou serviço em uma frase clara e direta.</p>
-<h3>✨ Benefícios</h3>
-<ul>
-<li><strong>Benefício 1:</strong> Descreva o que o cliente ganha</li>
-<li><strong>Benefício 2:</strong> Mostre o diferencial</li>
-<li><strong>Benefício 3:</strong> Destaque a garantia ou suporte</li>
-</ul>
-<h3>🎯 Por que escolher a gente?</h3>
-<p>Texto persuasivo explicando por que sua solução é a melhor escolha. Use depoimentos, números e provas sociais.</p>
-<blockquote>"Depoimento de cliente satisfeito que reforça a qualidade do produto."</blockquote>
-<h3>🛒 Pronto para começar?</h3>
-<p><a href="index.html">👉 Comprar Agora</a></p>`
-},
-produtos: {
-nome: 'Produtos',
-icone: '🛍️',
-desc: 'Vitrine e catálogo',
-template: `<h2>🛍️ Nossos Produtos</h2>
-<p>Conheça nossa linha completa de produtos com qualidade garantida.</p>
-<h3>⭐ Destaques</h3>
-<ul>
-<li>Produto 1 - Descrição breve</li>
-<li>Produto 2 - Descrição breve</li>
-<li>Produto 3 - Descrição breve</li>
-</ul>
-<h3>💎 Qualidade Garantida</h3>
-<p>Todos os nossos produtos passam por rigoroso controle de qualidade.</p>
-<p><a href="index.html">Ver catálogo completo →</a></p>`
-},
-institucional: {
-nome: 'Institucional',
-icone: '🏢',
-desc: 'Sobre nós, história',
-template: `<h2>🏢 Nossa História</h2>
-<p>Conte aqui a história da sua empresa: quando foi fundada, por quem e qual era o sonho inicial.</p>
-<h3>💎 Nossos Valores</h3>
-<ul>
-<li><strong>Qualidade:</strong> Compromisso com a excelência</li>
-<li><strong>Confiança:</strong> Transparência em tudo</li>
-<li><strong>Inovação:</strong> Sempre buscando o melhor</li>
-</ul>
-<h3>🎯 Nossa Missão</h3>
-<p>Descreva a missão da sua empresa e o impacto que deseja causar.</p>
-<h3>👥 Nossa Equipe</h3>
-<p>Apresente brevemente a equipe ou os fundadores.</p>`
-},
-faq: {
-nome: 'FAQ',
-icone: '❓',
-desc: 'Perguntas frequentes',
-template: `<h2>❓ Perguntas Frequentes</h2>
-<p>Reunimos as dúvidas mais comuns dos nossos clientes. Se não encontrar sua resposta, entre em contato.</p>
+    landing: { nome:'Landing Page', icone:'🎯', desc:'Página de conversão e vendas',
+        template:`<h2>🚀 Título Impactante da Sua Oferta</h2>
+<p>Subtítulo que explica o principal benefício do seu produto ou serviço.</p>
+<h3>✨ Benefícios</h3><ul><li><strong>Benefício 1:</strong> O que o cliente ganha</li><li><strong>Benefício 2:</strong> O diferencial</li><li><strong>Benefício 3:</strong> A garantia</li></ul>
+<h3>🎯 Por que escolher a gente?</h3><p>Texto persuasivo com prova social.</p>
+<blockquote>"Depoimento de cliente satisfeito."</blockquote>
+<h3>🛒 Pronto para começar?</h3><p><a href="../index.html">👉 Comprar Agora</a></p>` },
+    produtos: { nome:'Produtos', icone:'🛍️', desc:'Vitrine e catálogo',
+        template:`<h2>🛍️ Nossos Produtos</h2><p>Linha completa com qualidade garantida.</p>
+<h3>⭐ Destaques</h3><ul><li>Produto 1</li><li>Produto 2</li><li>Produto 3</li></ul>
+<p><a href="../produtos.html">Ver catálogo completo →</a></p>` },
+    institucional: { nome:'Institucional', icone:'🏢', desc:'Sobre nós, história',
+        template:`<h2>🏢 Nossa História</h2><p>Conte aqui a história da sua empresa.</p>
+<h3>💎 Nossos Valores</h3><ul><li><strong>Qualidade:</strong> Excelência</li><li><strong>Confiança:</strong> Transparência</li><li><strong>Inovação:</strong> Sempre melhor</li></ul>
+<h3>🎯 Nossa Missão</h3><p>Impacto que deseja causar.</p>` },
+    faq: { nome:'FAQ', icone:'❓', desc:'Perguntas frequentes',
+        template:`<h2>❓ Perguntas Frequentes</h2>
 <h3>📦 Entrega e Frete</h3>
-<h4>Qual o prazo de entrega?</h4>
-<p>O prazo de entrega é de X a Y dias úteis após a confirmação do pagamento.</p>
-<h4>Qual o valor do frete?</h4>
-<p>O frete é grátis para compras acima de R$ 500. Para valores menores, consulte no checkout.</p>
+<h4>Qual o prazo de entrega?</h4><p>X a Y dias úteis.</p>
+<h4>Qual o valor do frete?</h4><p>Grátis acima de R$ 500.</p>
 <h3>💳 Pagamento</h3>
-<h4>Quais formas de pagamento são aceitas?</h4>
-<p>Aceitamos cartão de crédito, PIX e boleto bancário.</p>
-<h3>🔄 Trocas e Devoluções</h3>
-<h4>Posso trocar meu produto?</h4>
-<p>Sim, você tem até 7 dias após o recebimento para solicitar troca ou devolução.</p>`
-},
-blog: {
-nome: 'Blog',
-icone: '📝',
-desc: 'Artigos e novidades',
-template: `<h2>📝 Título do Artigo</h2>
-<p style="color: #64748b; font-size: 0.9em;">Publicado em XX/XX/XXXX por Nome do Autor</p>
-<p>Introdução do artigo. Apresente o tema e o que o leitor vai aprender.</p>
-<h3>📌 Tópico Principal 1</h3>
-<p>Desenvolva o primeiro ponto do artigo com detalhes e exemplos.</p>
-<h3>📌 Tópico Principal 2</h3>
-<p>Continue desenvolvendo o conteúdo com informações relevantes.</p>
-<h3>✅ Conclusão</h3>
-<p>Resuma os pontos principais e faça uma chamada para ação.</p>`
-},
-contato: {
-nome: 'Contato',
-icone: '📞',
-desc: 'Fale conosco',
-template: `<h2>📞 Fale Conosco</h2>
-<p>Estamos aqui para ajudar! Escolha o canal que preferir.</p>
+<h4>Formas aceitas?</h4><p>Cartão, PIX e boleto.</p>
+<h3>🔄 Trocas</h3>
+<h4>Posso trocar?</h4><p>Sim, em até 7 dias.</p>` },
+    blog: { nome:'Blog', icone:'📝', desc:'Artigos e novidades',
+        template:`<h2>📝 Título do Artigo</h2>
+<p style="color:#64748b; font-size:0.9em;">Publicado em XX/XX/XXXX</p>
+<p>Introdução do artigo.</p>
+<h3>📌 Tópico 1</h3><p>Desenvolva o primeiro ponto.</p>
+<h3>📌 Tópico 2</h3><p>Continue desenvolvendo.</p>
+<h3>✅ Conclusão</h3><p>Resumo e chamada para ação.</p>` },
+    contato: { nome:'Contato', icone:'📞', desc:'Fale conosco',
+        template:`<h2>📞 Fale Conosco</h2>
 <h3>💬 Canais de Atendimento</h3>
-<ul>
-<li><strong>WhatsApp:</strong> (XX) XXXXX-XXXX</li>
-<li><strong>E-mail:</strong> contato@suaempresa.com.br</li>
-<li><strong>Telefone:</strong> (XX) XXXX-XXXX</li>
-</ul>
-<h3>🕐 Horário de Atendimento</h3>
-<p>Segunda a Sexta: 8h às 18h<br>Sábado: 9h às 13h</p>
-<h3>📍 Endereço</h3>
-<p>Rua Exemplo, 123 - Bairro - Cidade/UF - CEP</p>`
-},
-politica: {
-nome: 'Política',
-icone: '📋',
-desc: 'Termos e privacidade',
-template: `<h2>📋 Política de [Nome]</h2>
-<p style="color: #64748b; font-size: 0.9em;">Última atualização: XX/XX/XXXX</p>
-<h3>1. Objetivo</h3>
-<p>Descreva o objetivo desta política.</p>
-<h3>2. Condições</h3>
-<p>Liste as condições e regras principais.</p>
-<h3>3. Direitos do Cliente</h3>
-<p>Explique os direitos garantidos ao cliente.</p>
-<h3>4. Contato</h3>
-<p>Para dúvidas sobre esta política, entre em contato pelo e-mail X.</p>`
-},
-promocao: {
-nome: 'Promoção',
-icone: '🔥',
-desc: 'Ofertas especiais',
-template: `<h2>🔥 PROMOÇÃO IMPERDÍVEL!</h2>
-<p style="font-size: 1.2em;"><strong>Até XX% OFF em produtos selecionados!</strong></p>
-<h3>⏰ Ofertas por Tempo Limitado</h3>
-<p>Aproveite antes que acabe! Promoção válida até XX/XX/XXXX.</p>
-<h3>🎁 Produtos em Destaque</h3>
-<ul>
-<li>Produto 1 - De R$ XXX por <strong>R$ XXX</strong></li>
-<li>Produto 2 - De R$ XXX por <strong>R$ XXX</strong></li>
-<li>Produto 3 - De R$ XXX por <strong>R$ XXX</strong></li>
-</ul>
-<h3>🛒 Como Aproveitar</h3>
-<ol>
-<li>Escolha seus produtos favoritos</li>
-<li>Adicione ao carrinho</li>
-<li>Finalize sua compra com desconto</li>
-</ol>
-<p><a href="index.html">👉 Aproveitar Agora</a></p>`
-},
-custom: {
-nome: 'Personalizada',
-icone: '⚙️',
-desc: 'Página livre',
-template: `<h2>Título da Página</h2>
-<p>Comece a escrever seu conteúdo aqui. Use a barra de ferramentas acima para formatar.</p>`
-}
+<ul><li><strong>WhatsApp:</strong> (XX) XXXXX-XXXX</li><li><strong>E-mail:</strong> contato@empresa.com.br</li></ul>
+<h3>🕐 Horário</h3><p>Segunda a Sexta: 8h às 18h</p>
+<h3>📍 Endereço</h3><p>Rua Exemplo, 123 - Cidade/UF</p>` },
+    politica: { nome:'Política', icone:'📋', desc:'Termos e privacidade',
+        template:`<h2>📋 Política de [Nome]</h2>
+<p style="color:#64748b; font-size:0.9em;">Última atualização: XX/XX/XXXX</p>
+<h3>1. Objetivo</h3><p>Descreva o objetivo.</p>
+<h3>2. Condições</h3><p>Liste as regras.</p>
+<h3>3. Direitos</h3><p>Explique os direitos.</p>
+<h3>4. Contato</h3><p>Dúvidas? Fale conosco.</p>` },
+    promocao: { nome:'Promoção', icone:'🔥', desc:'Ofertas especiais',
+        template:`<h2>🔥 PROMOÇÃO IMPERDÍVEL!</h2>
+<p style="font-size:1.2em"><strong>Até XX% OFF em produtos selecionados!</strong></p>
+<h3>⏰ Tempo Limitado</h3><p>Válida até XX/XX/XXXX.</p>
+<h3>🎁 Destaques</h3><ul><li>Produto 1 - <strong>R$ XXX</strong></li><li>Produto 2 - <strong>R$ XXX</strong></li></ul>
+<p><a href="../produtos.html">👉 Aproveitar Agora</a></p>` },
+    custom: { nome:'Personalizada', icone:'⚙️', desc:'Página livre',
+        template:`<h2>Título da Página</h2><p>Comece a escrever seu conteúdo aqui.</p>` }
 };
 
 function escapeHTML(str) {
-if (str === null || str === undefined) return '';
-return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function formatarData(data) {
-if (!data) return '-';
-return new Date(data).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    if (!data) return '-';
+    return new Date(data).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
 function showToast(msg, type='success') {
-const toast = document.getElementById('toast');
-if (!toast) return;
-toast.textContent = msg;
-toast.className = 'toast show' + (type==='error' ? ' error':'');
-clearTimeout(toast._timer);
-toast._timer = setTimeout(() => toast.classList.remove('show'), type==='error'?8000:3500);
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.className = 'toast show' + (type==='error' ? ' error':'');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), type==='error'?8000:3500);
 }
 function sanitizarHTML(html) {
-return html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,'').replace(/\son\w+\s*=\s*"[^"]*"/gi,'').replace(/\son\w+\s*=\s*'[^']*'/gi,'').replace(/javascript\s*:/gi,'');
+    return html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,'')
+               .replace(/\son\w+\s*=\s*"[^"]*"/gi,'')
+               .replace(/\son\w+\s*=\s*'[^']*'/gi,'')
+               .replace(/javascript\s*:/gi,'');
 }
 
+// ========== RENDERIZAÇÃO ==========
 function renderizarSeletorTipo() {
-const container = document.getElementById('tipo-selector');
-container.innerHTML = Object.entries(TIPOS_PAGINA).map(([key, tipo]) => `
-<div class="tipo-card ${key === tipoSelecionado ? 'selected' : ''}" data-tipo="${key}" role="button" tabindex="0">
-<span class="tipo-icon">${tipo.icone}</span>
-<span class="tipo-nome">${tipo.nome}</span>
-<span class="tipo-desc">${tipo.desc}</span>
-</div>
-`).join('');
-
-container.querySelectorAll('.tipo-card').forEach(card => {
-card.addEventListener('click', () => selecionarTipo(card.dataset.tipo));
-card.addEventListener('keydown', (e) => {
-if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selecionarTipo(card.dataset.tipo); }
-});
-});
+    const container = document.getElementById('tipo-selector');
+    container.innerHTML = Object.entries(TIPOS_PAGINA).map(([key, tipo]) => `
+        <div class="tipo-card ${key === tipoSelecionado ? 'selected' : ''}" data-tipo="${key}" role="button" tabindex="0">
+            <span class="tipo-icon">${tipo.icone}</span>
+            <span class="tipo-nome">${tipo.nome}</span>
+            <span class="tipo-desc">${tipo.desc}</span>
+        </div>`).join('');
+    container.querySelectorAll('.tipo-card').forEach(card => {
+        card.addEventListener('click', () => selecionarTipo(card.dataset.tipo));
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selecionarTipo(card.dataset.tipo); }
+        });
+    });
 }
 
 function selecionarTipo(tipo) {
-if (!TIPOS_PAGINA[tipo]) return;
-tipoSelecionado = tipo;
-renderizarSeletorTipo();
-
-const msgEl = document.getElementById('tipo-preview-msg');
-const isEdicao = document.getElementById('pag-id').value !== '';
-
-if (!isEdicao) {
-const template = TIPOS_PAGINA[tipo].template;
-setEditorContent(template);
-msgEl.innerHTML = `✨ Template de <strong>${TIPOS_PAGINA[tipo].nome}</strong> carregado! Personalize conforme necessário.`;
-msgEl.classList.add('visible');
-
-const tituloInput = document.getElementById('pag-titulo');
-if (!tituloInput.value) {
-tituloInput.placeholder = `Ex: ${TIPOS_PAGINA[tipo].nome}`;
-}
-} else {
-msgEl.innerHTML = `📌 Tipo alterado para <strong>${TIPOS_PAGINA[tipo].nome}</strong>. O conteúdo não foi modificado.`;
-msgEl.classList.add('visible');
-setTimeout(() => msgEl.classList.remove('visible'), 3000);
-}
+    if (!TIPOS_PAGINA[tipo]) return;
+    tipoSelecionado = tipo;
+    renderizarSeletorTipo();
+    const msgEl = document.getElementById('tipo-preview-msg');
+    const isEdicao = document.getElementById('pag-id').value !== '';
+    if (!isEdicao) {
+        setEditorContent(TIPOS_PAGINA[tipo].template);
+        msgEl.innerHTML = `✨ Template de <strong>${TIPOS_PAGINA[tipo].nome}</strong> carregado!`;
+        msgEl.classList.add('visible');
+        const tituloInput = document.getElementById('pag-titulo');
+        if (!tituloInput.value) tituloInput.placeholder = `Ex: ${TIPOS_PAGINA[tipo].nome}`;
+    } else {
+        msgEl.innerHTML = `📌 Tipo alterado para <strong>${TIPOS_PAGINA[tipo].nome}</strong>. Conteúdo preservado.`;
+        msgEl.classList.add('visible');
+        setTimeout(() => msgEl.classList.remove('visible'), 3000);
+    }
 }
 
 function renderizarFiltro() {
-const container = document.getElementById('filtro-tipos');
-const total = paginas.length;
-let html = `<button class="filtro-btn ${filtroAtual==='todos'?'active':''}" data-filtro="todos">📄 Todas <span class="count">${total}</span></button>`;
-
-Object.entries(TIPOS_PAGINA).forEach(([key, tipo]) => {
-const count = paginas.filter(p => (p.tipo || 'custom') === key).length;
-if (count > 0) {
-html += `<button class="filtro-btn ${filtroAtual===key?'active':''}" data-filtro="${key}">${tipo.icone} ${tipo.nome} <span class="count">${count}</span></button>`;
-}
-});
-container.innerHTML = html;
-
-container.querySelectorAll('.filtro-btn').forEach(btn => {
-btn.addEventListener('click', () => {
-filtroAtual = btn.dataset.filtro;
-renderizarFiltro();
-renderizarListaPaginas();
-});
-});
+    const container = document.getElementById('filtro-tipos');
+    const total = paginas.length;
+    let html = `<button class="filtro-btn ${filtroAtual==='todos'?'active':''}" data-filtro="todos">📄 Todas <span class="count">${total}</span></button>`;
+    Object.entries(TIPOS_PAGINA).forEach(([key, tipo]) => {
+        const count = paginas.filter(p => (p.tipo || 'custom') === key).length;
+        if (count > 0) html += `<button class="filtro-btn ${filtroAtual===key?'active':''}" data-filtro="${key}">${tipo.icone} ${tipo.nome} <span class="count">${count}</span></button>`;
+    });
+    container.innerHTML = html;
+    container.querySelectorAll('.filtro-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            filtroAtual = btn.dataset.filtro;
+            renderizarFiltro();
+            renderizarListaPaginas();
+        });
+    });
 }
 
 function renderizarListaPaginas() {
-const container = document.getElementById('lista-paginas');
-const filtradas = filtroAtual === 'todos' ? paginas : paginas.filter(p => (p.tipo || 'custom') === filtroAtual);
+    const container = document.getElementById('lista-paginas');
+    const filtradas = filtroAtual === 'todos' ? paginas : paginas.filter(p => (p.tipo || 'custom') === filtroAtual);
+    if (filtradas.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">📄</div><h3>Nenhuma página encontrada</h3><p>Clique em "Nova Página" para criar.</p></div>`;
+        return;
+    }
+    const ghOk = ghPronto();
+    const cfg = ghCfg();
+    const baseGh = ghOk ? `https://${cfg.owner}.github.io/${cfg.repo}/` : '';
 
-if (filtradas.length === 0) {
-container.innerHTML = `<div class="empty-state"><div class="icon">📄</div><h3>Nenhuma página encontrada</h3><p>Clique em "Nova Página" para criar.</p></div>`;
-return;
+    container.innerHTML = `
+        <div class="table-container">
+        <table>
+        <thead><tr><th>Título</th><th>Tipo</th><th>URL</th><th>Menu</th><th>Status</th><th>Atualizada</th><th>Ações</th></tr></thead>
+        <tbody>
+        ${filtradas.map(p => {
+            const tipo = TIPOS_PAGINA[p.tipo || 'custom'] || TIPOS_PAGINA.custom;
+            const urlLocal = `paginas/${escapeHTML(p.slug)}.html`;
+            const urlGh = ghOk ? baseGh + urlLocal : '';
+            return `
+            <tr>
+                <td><strong>${escapeHTML(p.titulo)}</strong></td>
+                <td><span class="badge-tipo ${p.tipo || 'custom'}">${tipo.icone} ${tipo.nome}</span></td>
+                <td><code class="link-preview">${urlLocal}</code></td>
+                <td>${p.mostrar_menu ? '🔗 Sim' : '—'}</td>
+                <td>
+                    <label class="toggle-switch"><input type="checkbox" ${p.ativo?'checked':''} data-action="toggle-page" data-id="${escapeHTML(p.id)}"><span class="toggle-slider"></span></label>
+                    <span class="badge-status ${p.ativo?'badge-active':'badge-inactive'}" style="margin-left:8px">${p.ativo?'Ativa':'Inativa'}</span>
+                </td>
+                <td>${formatarData(p.atualizado_em || p.criado_em)}</td>
+                <td>
+                <div class="action-buttons">
+                    ${urlGh ? `<a href="${urlGh}" target="_blank" rel="noopener" class="btn btn-sm btn-secondary" title="Ver publicada no GitHub">🌐</a>` : ''}
+                    <button class="btn btn-sm btn-secondary" data-action="copy-link" data-slug="${escapeHTML(p.slug)}" title="Copiar link">📋</button>
+                    <button class="btn btn-sm btn-gold" data-action="publish-page" data-id="${escapeHTML(p.id)}" title="Republicar no GitHub">🚀</button>
+                    <button class="btn btn-sm btn-secondary" data-action="edit-page" data-id="${escapeHTML(p.id)}" title="Editar">✏️</button>
+                    <button class="btn btn-sm btn-danger" data-action="delete-page" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.titulo)}" title="Excluir">🗑️</button>
+                </div>
+                </td>
+            </tr>`;
+        }).join('')}
+        </tbody>
+        </table>
+        </div>`;
 }
 
-container.innerHTML = `
-<div class="table-container">
-<table>
-<thead><tr><th>Título</th><th>Tipo</th><th>URL</th><th>Menu</th><th>Status</th><th>Atualizada</th><th>Ações</th></tr></thead>
-<tbody>
-${filtradas.map(p => {
-const tipo = TIPOS_PAGINA[p.tipo || 'custom'] || TIPOS_PAGINA.custom;
-return `
-<tr>
-<td><strong>${escapeHTML(p.titulo)}</strong></td>
-<td><span class="badge-tipo ${p.tipo || 'custom'}">${tipo.icone} ${tipo.nome}</span></td>
-<td><code class="link-preview">pagina.html?s=${escapeHTML(p.slug)}</code></td>
-<td>${p.mostrar_menu ? '🔗 Sim' : '—'}</td>
-<td>
-<label class="toggle-switch"><input type="checkbox" ${p.ativo?'checked':''} data-action="toggle-page" data-id="${escapeHTML(p.id)}"><span class="toggle-slider"></span></label>
-<span class="badge-status ${p.ativo?'badge-active':'badge-inactive'}" style="margin-left:8px">${p.ativo?'Ativa':'Inativa'}</span>
-</td>
-<td>${formatarData(p.atualizado_em || p.criado_em)}</td>
-<td>
-<div class="action-buttons">
-<a href="pagina.html?s=${escapeHTML(p.slug)}" target="_blank" rel="noopener" class="btn btn-sm btn-secondary" title="Ver página">👁️</a>
-<button class="btn btn-sm btn-secondary" data-action="copy-link" data-slug="${escapeHTML(p.slug)}" title="Copiar link">📋</button>
-<button class="btn btn-sm btn-secondary" data-action="edit-page" data-id="${escapeHTML(p.id)}" title="Editar">✏️</button>
-<button class="btn btn-sm btn-danger" data-action="delete-page" data-id="${escapeHTML(p.id)}" data-name="${escapeHTML(p.titulo)}" title="Excluir">🗑️</button>
-</div>
-</td>
-</tr>`;
-}).join('')}
-</tbody>
-</table>
-</div>`;
-}
-
+// ========== CRUD SUPABASE ==========
 async function verificarAuth() {
-try {
-const { data: { session } } = await supabaseClient.auth.getSession();
-if (!session) window.location.href = 'login.html';
-} catch (error) { console.error(error); window.location.href = 'login.html'; }
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) window.location.href = 'login.html';
+    } catch (error) { window.location.href = 'login.html'; }
 }
 
 async function carregarPaginas() {
-const container = document.getElementById('lista-paginas');
-container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
-try {
-const { data, error } = await supabaseClient.from('paginas').select('*').order('criado_em', { ascending: false });
-if (error) throw error;
-paginas = data || [];
-renderizarFiltro();
-renderizarListaPaginas();
-} catch (error) {
-console.error('Erro ao carregar páginas:', error);
-container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar páginas</h3><p>${escapeHTML(error.message)}</p></div>`;
-}
+    const container = document.getElementById('lista-paginas');
+    container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+    try {
+        const { data, error } = await supabaseClient.from('paginas').select('*').order('criado_em', { ascending: false });
+        if (error) throw error;
+        paginas = data || [];
+        renderizarFiltro();
+        renderizarListaPaginas();
+    } catch (error) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar páginas</h3><p>${escapeHTML(error.message)}</p></div>`;
+    }
 }
 
 function getEditorContent() {
-return currentMode === 'manual' ? document.getElementById('editor-visual').innerHTML : document.getElementById('pag-conteudo').value;
+    return currentMode === 'manual' ? document.getElementById('editor-visual').innerHTML : document.getElementById('pag-conteudo').value;
 }
 function setEditorContent(html) {
-document.getElementById('editor-visual').innerHTML = html || '';
-document.getElementById('pag-conteudo').value = html || '';
+    document.getElementById('editor-visual').innerHTML = html || '';
+    document.getElementById('pag-conteudo').value = html || '';
 }
 function switchMode(newMode) {
-if (newMode === currentMode) return;
-const currentContent = getEditorContent();
-const visual = document.getElementById('editor-visual');
-const htmlTa = document.getElementById('pag-conteudo');
-const btnManual = document.getElementById('btn-mode-manual');
-const btnHtml = document.getElementById('btn-mode-html');
-const toolbar = document.getElementById('editor-toolbar');
-const indicator = document.getElementById('mode-indicator');
-
-if (newMode === 'manual') {
-htmlTa.style.display = 'none'; visual.style.display = 'block';
-visual.innerHTML = currentContent; visual.focus();
-btnManual.classList.add('active'); btnHtml.classList.remove('active');
-toolbar.style.display = 'flex'; indicator.textContent = 'Modo Manual';
-} else {
-visual.innerHTML = currentContent;
-htmlTa.style.display = 'block'; visual.style.display = 'none';
-htmlTa.value = visual.innerHTML; htmlTa.focus();
-btnHtml.classList.add('active'); btnManual.classList.remove('active');
-toolbar.style.display = 'none'; indicator.textContent = 'Modo HTML';
-}
-currentMode = newMode;
+    if (newMode === currentMode) return;
+    const currentContent = getEditorContent();
+    const visual = document.getElementById('editor-visual');
+    const htmlTa = document.getElementById('pag-conteudo');
+    const btnManual = document.getElementById('btn-mode-manual');
+    const btnHtml = document.getElementById('btn-mode-html');
+    const toolbar = document.getElementById('editor-toolbar');
+    const indicator = document.getElementById('mode-indicator');
+    if (newMode === 'manual') {
+        htmlTa.style.display = 'none'; visual.style.display = 'block';
+        visual.innerHTML = currentContent; visual.focus();
+        btnManual.classList.add('active'); btnHtml.classList.remove('active');
+        toolbar.style.display = 'flex'; indicator.textContent = 'Modo Manual';
+    } else {
+        htmlTa.style.display = 'block'; visual.style.display = 'none';
+        htmlTa.value = currentContent; htmlTa.focus();
+        btnHtml.classList.add('active'); btnManual.classList.remove('active');
+        toolbar.style.display = 'none'; indicator.textContent = 'Modo HTML';
+    }
+    currentMode = newMode;
 }
 
 function resetForm() {
-document.getElementById('modal-pagina-titulo').textContent = 'Nova Página';
-document.getElementById('pag-id').value = '';
-document.getElementById('pag-titulo').value = '';
-document.getElementById('pag-slug').value = '';
-document.getElementById('pag-slug').dataset.manual = '';
-document.getElementById('pag-meta').value = '';
-document.getElementById('pag-menu').checked = true;
-document.getElementById('pag-ativo').checked = true;
-document.getElementById('pag-preview').style.display = 'none';
-document.getElementById('btn-preview').textContent = '👁️ Preview';
-document.getElementById('tipo-preview-msg').classList.remove('visible');
-tipoSelecionado = 'custom';
-renderizarSeletorTipo();
-setEditorContent(TIPOS_PAGINA.custom.template);
-switchMode('manual');
+    document.getElementById('modal-pagina-titulo').textContent = 'Nova Página';
+    document.getElementById('pag-id').value = '';
+    document.getElementById('pag-titulo').value = '';
+    document.getElementById('pag-slug').value = '';
+    document.getElementById('pag-slug').dataset.manual = '';
+    document.getElementById('pag-meta').value = '';
+    document.getElementById('pag-menu').checked = true;
+    document.getElementById('pag-ativo').checked = true;
+    document.getElementById('pag-preview').style.display = 'none';
+    document.getElementById('btn-preview').textContent = '👁️ Preview';
+    document.getElementById('tipo-preview-msg').classList.remove('visible');
+    tipoSelecionado = 'custom';
+    renderizarSeletorTipo();
+    setEditorContent(TIPOS_PAGINA.custom.template);
+    switchMode('manual');
 }
 
 function abrirModal() { resetForm(); document.getElementById('modal-pagina').classList.add('active'); }
 function fecharModal() { document.getElementById('modal-pagina').classList.remove('active'); }
 
 function editarPagina(id) {
-const p = paginas.find(pg => pg.id === id);
-if (!p) return;
-resetForm();
-document.getElementById('modal-pagina-titulo').textContent = 'Editar Página';
-document.getElementById('pag-id').value = p.id;
-document.getElementById('pag-titulo').value = p.titulo;
-document.getElementById('pag-slug').value = p.slug;
-document.getElementById('pag-slug').dataset.manual = '1';
-document.getElementById('pag-meta').value = p.meta_description || '';
-setEditorContent(p.conteudo);
-document.getElementById('pag-menu').checked = !!p.mostrar_menu;
-document.getElementById('pag-ativo').checked = !!p.ativo;
-tipoSelecionado = p.tipo || 'custom';
-renderizarSeletorTipo();
-document.getElementById('modal-pagina').classList.add('active');
+    const p = paginas.find(pg => pg.id === id);
+    if (!p) return;
+    resetForm();
+    document.getElementById('modal-pagina-titulo').textContent = 'Editar Página';
+    document.getElementById('pag-id').value = p.id;
+    document.getElementById('pag-titulo').value = p.titulo;
+    document.getElementById('pag-slug').value = p.slug;
+    document.getElementById('pag-slug').dataset.manual = '1';
+    document.getElementById('pag-meta').value = p.meta_description || '';
+    setEditorContent(p.conteudo);
+    document.getElementById('pag-menu').checked = !!p.mostrar_menu;
+    document.getElementById('pag-ativo').checked = !!p.ativo;
+    tipoSelecionado = p.tipo || 'custom';
+    renderizarSeletorTipo();
+    document.getElementById('modal-pagina').classList.add('active');
 }
 
 async function salvarPagina() {
-const id = document.getElementById('pag-id').value;
-const titulo = document.getElementById('pag-titulo').value.trim();
-const slug = document.getElementById('pag-slug').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
-const meta = document.getElementById('pag-meta').value.trim();
-const conteudo = getEditorContent().trim();
-const mostrarMenu = document.getElementById('pag-menu').checked;
-const ativo = document.getElementById('pag-ativo').checked;
+    const id = document.getElementById('pag-id').value;
+    const titulo = document.getElementById('pag-titulo').value.trim();
+    const slug = document.getElementById('pag-slug').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+    const meta = document.getElementById('pag-meta').value.trim();
+    const conteudo = getEditorContent().trim();
+    const mostrarMenu = document.getElementById('pag-menu').checked;
+    const ativo = document.getElementById('pag-ativo').checked;
+    if (!titulo || !slug || !conteudo) { showToast('Preencha título, slug e conteúdo!', 'error'); return; }
 
-if (!titulo || !slug || !conteudo) { showToast('Preencha título, slug e conteúdo!', 'error'); return; }
+    const btn = document.getElementById('btn-salvar-pagina');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    try {
+        let query = supabaseClient.from('paginas').select('id').eq('slug', slug);
+        if (id) query = query.neq('id', id);
+        const { data: existente } = await query.maybeSingle();
+        if (existente) { showToast('Já existe uma página com esse slug!', 'error'); return; }
 
-const btn = document.getElementById('btn-salvar-pagina');
-btn.disabled = true; btn.textContent = 'Salvando...';
+        const pagina = { titulo, slug, meta_description: meta, conteudo, mostrar_menu: mostrarMenu, ativo, tipo: tipoSelecionado };
+        if (id) {
+            const { error } = await supabaseClient.from('paginas').update({ ...pagina, atualizado_em: new Date().toISOString() }).eq('id', id);
+            if (error) throw error;
+        } else {
+            const { error } = await supabaseClient.from('paginas').insert([pagina]);
+            if (error) throw error;
+        }
 
-try {
-let query = supabaseClient.from('paginas').select('id').eq('slug', slug);
-if (id) query = query.neq('id', id);
-const { data: existente } = await query.maybeSingle();
-if (existente) { showToast('Já existe uma página com esse slug!', 'error'); btn.disabled = false; btn.textContent = '💾 Salvar Página'; return; }
-
-const pagina = { titulo, slug, meta_description: meta, conteudo, mostrar_menu: mostrarMenu, ativo, tipo: tipoSelecionado };
-
-if (id) {
-const { error } = await supabaseClient.from('paginas').update({ ...pagina, atualizado_em: new Date().toISOString() }).eq('id', id);
-if (error) throw error;
-} else {
-const { error } = await supabaseClient.from('paginas').insert([pagina]);
-if (error) throw error;
+        // 🚀 PUBLICAR NO GITHUB (se checkbox marcado e GH configurado)
+        const autoPublish = document.getElementById('gh-auto').checked;
+        if (autoPublish && ghPronto()) {
+            showToast('💾 Salvo no Supabase. Publicando no GitHub...');
+            try {
+                await publicarPagina({ titulo, slug, meta_description: meta, conteudo, mostrar_menu: mostrarMenu, ativo, tipo: tipoSelecionado });
+                await carregarPaginas();
+                await atualizarIndice(paginas);
+                showToast('✅ Salvo e publicado no GitHub!');
+            } catch (e) {
+                showToast('⚠️ Salvo no Supabase, mas falhou no GitHub: ' + e.message, 'error');
+                await carregarPaginas();
+            }
+        } else {
+            showToast('✅ Página salva no Supabase!');
+            await carregarPaginas();
+        }
+        fecharModal();
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false; btn.textContent = '💾 Salvar Página';
+    }
 }
-showToast('✅ Página salva com sucesso!');
-fecharModal();
-carregarPaginas();
-} catch (e) {
-console.error(e); showToast('Erro: ' + e.message, 'error');
-} finally { btn.disabled = false; btn.textContent = '💾 Salvar Página'; }
+
+async function republicarPagina(id) {
+    const p = paginas.find(pg => pg.id === id);
+    if (!p) return;
+    if (!ghPronto()) { abrirModalConfig(); return; }
+    try {
+        showToast('🚀 Publicando...');
+        await publicarPagina(p);
+        showToast('✅ Página republicada!');
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    }
 }
 
 async function togglePagina(id, ativo) {
-try {
-const { error } = await supabaseClient.from('paginas').update({ ativo, atualizado_em: new Date().toISOString() }).eq('id', id);
-if (error) throw error;
-showToast(ativo ? '✅ Página ativada!' : '⏸️ Página desativada!');
-carregarPaginas();
-} catch (e) { showToast('Erro: ' + e.message, 'error'); }
-}
-async function excluirPagina(id, titulo) {
-if (!confirm(`Excluir a página "${titulo}"?\n\nEsta ação não pode ser desfeita!`)) return;
-try {
-const { error } = await supabaseClient.from('paginas').delete().eq('id', id);
-if (error) throw error;
-showToast('🗑️ Página excluída!');
-carregarPaginas();
-} catch (e) { showToast('Erro: ' + e.message, 'error'); }
-}
-async function copiarLink(slug) {
-const base = window.location.href.replace(/[^/]*$/, '');
-const url = base + 'pagina.html?s=' + slug;
-try { await navigator.clipboard.writeText(url); showToast('✅ Link copiado!\n' + url); }
-catch (e) { const i = document.createElement('input'); i.value = url; document.body.appendChild(i); i.select(); document.execCommand('copy'); document.body.removeChild(i); showToast('✅ Link copiado!\n' + url); }
+    try {
+        const { error } = await supabaseClient.from('paginas').update({ ativo, atualizado_em: new Date().toISOString() }).eq('id', id);
+        if (error) throw error;
+        showToast(ativo ? '✅ Página ativada!' : '⏸️ Página desativada!');
+        await carregarPaginas();
+        if (ghPronto()) await atualizarIndice(paginas);
+    } catch (e) { showToast('Erro: ' + e.message, 'error'); }
 }
 
+async function excluirPagina(id, titulo) {
+    if (!confirm(`Excluir a página "${titulo}"?\n\nEsta ação não pode ser desfeita!`)) return;
+    try {
+        const p = paginas.find(pg => pg.id === id);
+        const { error } = await supabaseClient.from('paginas').delete().eq('id', id);
+        if (error) throw error;
+        showToast('🗑️ Página excluída!');
+        // remove também do GitHub
+        if (ghPronto() && p) {
+            try { await ghDeleteFile(`paginas/${p.slug}.html`, `Remove: ${p.slug}`); } catch (e) {}
+        }
+        await carregarPaginas();
+        if (ghPronto()) await atualizarIndice(paginas);
+    } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+async function copiarLink(slug) {
+    const cfg = ghCfg();
+    const url = (cfg.owner && cfg.repo)
+        ? `https://${cfg.owner}.github.io/${cfg.repo}/paginas/${slug}.html`
+        : window.location.href.replace(/[^/]*$/, '') + `paginas/${slug}.html`;
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast('✅ Link copiado!\n' + url);
+    } catch (e) {
+        const i = document.createElement('input');
+        i.value = url; document.body.appendChild(i); i.select();
+        document.execCommand('copy'); document.body.removeChild(i);
+        showToast('✅ Link copiado!\n' + url);
+    }
+}
+
+// ========== EDITOR ==========
 function execCommand(cmd, value = null) {
-document.getElementById('editor-visual').focus();
-if (cmd === 'formatBlock') document.execCommand('formatBlock', false, '<' + value + '>');
-else document.execCommand(cmd, false, value);
+    document.getElementById('editor-visual').focus();
+    if (cmd === 'formatBlock') document.execCommand('formatBlock', false, '<' + value + '>');
+    else document.execCommand(cmd, false, value);
 }
 function inserirLink() {
-const url = prompt('URL do link:', 'https://'); if (!url) return;
-document.getElementById('editor-visual').focus();
-const sel = window.getSelection().toString();
-if (sel) document.execCommand('createLink', false, url);
-else document.execCommand('insertHTML', false, `<a href="${url}">clique aqui</a>`);
+    const url = prompt('URL do link:', 'https://'); if (!url) return;
+    document.getElementById('editor-visual').focus();
+    const sel = window.getSelection().toString();
+    if (sel) document.execCommand('createLink', false, url);
+    else document.execCommand('insertHTML', false, `<a href="${url}">clique aqui</a>`);
 }
-// 🆕 MODIFICADO: Abre modal de escolha ao invés de pedir URL direto
-function inserirImagem() {
-abrirModalImagem();
-}
+function inserirImagem() { abrirModalImagem(); }
 function inserirImagemUrl() {
-const url = prompt('URL da imagem:', 'https://'); if (!url) return;
-const alt = prompt('Texto alternativo (alt):', 'Imagem');
-document.getElementById('editor-visual').focus();
-document.execCommand('insertHTML', false, `<img src="${url}" alt="${alt || ''}" style="max-width:100%; border-radius:8px;">`);
-fecharModalImagem();
+    const url = prompt('URL da imagem:', 'https://'); if (!url) return;
+    const alt = prompt('Texto alternativo (alt):', 'Imagem');
+    document.getElementById('editor-visual').focus();
+    document.execCommand('insertHTML', false, `<img src="${url}" alt="${alt || ''}" style="max-width:100%; border-radius:8px;">`);
+    fecharModalImagem();
 }
 function inserirTabela() {
-document.getElementById('editor-visual').focus();
-document.execCommand('insertHTML', false, `<table><thead><tr><th>Coluna 1</th><th>Coluna 2</th><th>Coluna 3</th></tr></thead><tbody><tr><td>Dado 1</td><td>Dado 2</td><td>Dado 3</td></tr><tr><td>Dado 4</td><td>Dado 5</td><td>Dado 6</td></tr></tbody></table><p><br></p>`);
+    document.getElementById('editor-visual').focus();
+    document.execCommand('insertHTML', false, `<table><thead><tr><th>Col 1</th><th>Col 2</th><th>Col 3</th></tr></thead><tbody><tr><td>Dado</td><td>Dado</td><td>Dado</td></tr><tr><td>Dado</td><td>Dado</td><td>Dado</td></tr></tbody></table><p><br></p>`);
 }
 function inserirBlockquote() { document.getElementById('editor-visual').focus(); document.execCommand('formatBlock', false, 'blockquote'); }
 function inserirHR() { document.getElementById('editor-visual').focus(); document.execCommand('insertHTML', false, '<hr><p><br></p>'); }
 function alternarPreview() {
-const conteudo = getEditorContent();
-const preview = document.getElementById('pag-preview');
-const btn = document.getElementById('btn-preview');
-const mostrando = preview.style.display === 'block';
-if (mostrando) {
-preview.style.display = 'none'; btn.textContent = '👁️ Preview';
-document.getElementById('editor-visual').style.display = currentMode === 'manual' ? 'block' : 'none';
-document.getElementById('pag-conteudo').style.display = currentMode === 'html' ? 'block' : 'none';
-} else {
-preview.innerHTML = sanitizarHTML(conteudo);
-preview.style.display = 'block'; btn.textContent = '✏️ Voltar a Editar';
-document.getElementById('editor-visual').style.display = 'none';
-document.getElementById('pag-conteudo').style.display = 'none';
-}
+    const conteudo = getEditorContent();
+    const preview = document.getElementById('pag-preview');
+    const btn = document.getElementById('btn-preview');
+    if (preview.style.display === 'block') {
+        preview.style.display = 'none'; btn.textContent = '👁️ Preview';
+        document.getElementById('editor-visual').style.display = currentMode === 'manual' ? 'block' : 'none';
+        document.getElementById('pag-conteudo').style.display = currentMode === 'html' ? 'block' : 'none';
+    } else {
+        preview.innerHTML = sanitizarHTML(conteudo);
+        preview.style.display = 'block'; btn.textContent = '✏️ Voltar a Editar';
+        document.getElementById('editor-visual').style.display = 'none';
+        document.getElementById('pag-conteudo').style.display = 'none';
+    }
 }
 
+// ========== EVENT LISTENERS ==========
 document.getElementById('pag-titulo').addEventListener('input', function() {
-const slugInput = document.getElementById('pag-slug');
-if (slugInput.dataset.manual === '1') return;
-slugInput.value = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+    const slugInput = document.getElementById('pag-slug');
+    if (slugInput.dataset.manual === '1') return;
+    slugInput.value = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^\w-]/g,'');
 });
 document.getElementById('pag-slug').addEventListener('input', function() { this.dataset.manual = '1'; });
 document.getElementById('btn-mode-manual').addEventListener('click', () => switchMode('manual'));
 document.getElementById('btn-mode-html').addEventListener('click', () => switchMode('html'));
 document.querySelectorAll('.editor-toolbar button').forEach(btn => {
-btn.addEventListener('click', () => {
-if (btn.dataset.cmd) execCommand(btn.dataset.cmd, btn.dataset.value || null);
-else if (btn.dataset.action === 'insertLink') inserirLink();
-else if (btn.dataset.action === 'insertImage') inserirImagem();
-else if (btn.dataset.action === 'insertTable') inserirTabela();
-else if (btn.dataset.action === 'insertBlockquote') inserirBlockquote();
-else if (btn.dataset.action === 'insertHR') inserirHR();
-});
+    btn.addEventListener('click', () => {
+        if (btn.dataset.cmd) execCommand(btn.dataset.cmd, btn.dataset.value || null);
+        else if (btn.dataset.action === 'insertLink') inserirLink();
+        else if (btn.dataset.action === 'insertImage') inserirImagem();
+        else if (btn.dataset.action === 'insertTable') inserirTabela();
+        else if (btn.dataset.action === 'insertBlockquote') inserirBlockquote();
+        else if (btn.dataset.action === 'insertHR') inserirHR();
+    });
 });
 
-// 🆕 Event listeners do modal de upload de imagem
-document.getElementById('opt-upload-device').addEventListener('click', () => {
-    document.getElementById('file-image-input').click();
-});
-document.getElementById('opt-upload-url').addEventListener('click', () => {
-    inserirImagemUrl();
-});
+document.getElementById('opt-upload-device').addEventListener('click', () => document.getElementById('file-image-input').click());
+document.getElementById('opt-upload-url').addEventListener('click', inserirImagemUrl);
 document.getElementById('file-image-input').addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) {
         processarUploadImagem(e.target.files[0]);
@@ -1122,39 +1173,46 @@ document.getElementById('file-image-input').addEventListener('change', (e) => {
     }
 });
 document.getElementById('btn-cancel-upload').addEventListener('click', fecharModalImagem);
-document.getElementById('image-upload-modal').addEventListener('click', (e) => {
-    if (e.target.id === 'image-upload-modal') fecharModalImagem();
-});
+document.getElementById('image-upload-modal').addEventListener('click', (e) => { if (e.target.id === 'image-upload-modal') fecharModalImagem(); });
 
 document.getElementById('editor-visual').addEventListener('input', () => { document.getElementById('pag-conteudo').value = document.getElementById('editor-visual').innerHTML; });
 document.getElementById('pag-conteudo').addEventListener('input', () => { document.getElementById('editor-visual').innerHTML = document.getElementById('pag-conteudo').value; });
+
 document.addEventListener('click', (e) => {
-const target = e.target.closest('[data-action]');
-if (!target) return;
-const action = target.dataset.action;
-switch (action) {
-case 'edit-page': editarPagina(target.dataset.id); break;
-case 'delete-page': excluirPagina(target.dataset.id, target.dataset.name); break;
-case 'copy-link': copiarLink(target.dataset.slug); break;
-}
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.dataset.action;
+    switch (action) {
+        case 'edit-page': editarPagina(target.dataset.id); break;
+        case 'delete-page': excluirPagina(target.dataset.id, target.dataset.name); break;
+        case 'copy-link': copiarLink(target.dataset.slug); break;
+        case 'publish-page': republicarPagina(target.dataset.id); break;
+    }
 });
 document.addEventListener('change', (e) => { if (e.target.dataset.action === 'toggle-page') togglePagina(e.target.dataset.id, e.target.checked); });
+
 document.getElementById('btn-nova-pagina').addEventListener('click', abrirModal);
 document.getElementById('btn-fechar-modal').addEventListener('click', fecharModal);
 document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
 document.getElementById('btn-salvar-pagina').addEventListener('click', salvarPagina);
 document.getElementById('btn-preview').addEventListener('click', alternarPreview);
+document.getElementById('btn-gh-config').addEventListener('click', abrirModalConfig);
+document.getElementById('btn-gh-publicar').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-gh-publicar');
+    try { btn.disabled = true; btn.textContent = '🚀 Publicando...'; await publicarFormAtual(); showToast('🚀 Página publicada no GitHub!'); }
+    catch (e) { showToast('Erro: ' + e.message, 'error'); }
+    finally { btn.disabled = false; btn.innerHTML = '🚀 Publicar Agora'; }
+});
+document.getElementById('btn-gh-todas').addEventListener('click', publicarTodas);
+
 document.getElementById('modal-pagina').addEventListener('click', (e) => { if (e.target.id === 'modal-pagina') fecharModal(); });
-document.addEventListener('keydown', (e) => { 
-    if (e.key === 'Escape') {
-        fecharModal();
-        fecharModalImagem();
-    }
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { fecharModal(); fecharModalImagem(); const m = document.getElementById('gh-config-modal'); if (m) m.classList.remove('active'); }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-await verificarAuth();
-await carregarPaginas();
+    await verificarAuth();
+    await carregarPaginas();
 });
 </script>
 </body>
