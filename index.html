@@ -696,7 +696,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     border-left: 3px solid var(--gold);
 }
 
-/* 🆕 Destaque para card da landing */
 .landing-card {
     border-left: 4px solid var(--gold);
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.03), rgba(255,255,255,0.8));
@@ -710,6 +709,54 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     border-bottom: 1px dashed var(--border);
 }
 .landing-section-title:first-of-type { margin-top: 0; }
+
+/* 🆕 Tela de bloqueio de acesso */
+.access-denied-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--cobalt-deep), var(--cobalt-main));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+.access-denied-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+.access-denied-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+.access-denied-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--danger);
+    margin-bottom: 12px;
+}
+.access-denied-message {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+.access-denied-email {
+    background: var(--bg-light);
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    font-family: monospace;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 24px;
+    word-break: break-all;
+}
 
 @media (max-width: 1024px) {
     .admin-sidebar {
@@ -742,19 +789,37 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 </style>
 </head>
 <body>
+
+<!-- 🆕 TELA DE BLOQUEIO (inicialmente oculta) -->
+<div class="access-denied-screen" id="access-denied-screen" style="display: none;">
+    <div class="access-denied-card">
+        <div class="access-denied-icon">🚫</div>
+        <h1 class="access-denied-title">Acesso Negado</h1>
+        <p class="access-denied-message">
+            Este email não tem permissão para acessar o painel administrativo.<br>
+            Se você é o proprietário, adicione seu email na tabela <code>admins</code> do Supabase.
+        </p>
+        <div class="access-denied-email" id="access-denied-email"></div>
+        <button class="btn btn-danger" onclick="fazerLogoutForcado()" style="padding: 14px 32px; font-size: 1rem;">
+            🚪 Sair e voltar para o site
+        </button>
+    </div>
+</div>
+
 <header class="admin-header" role="banner">
     <div class="header-left">
         <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
         <div class="admin-logo"><span>Meganete</span>CPAINEL</div>
+        <span class="admin-badge" id="admin-email-badge" style="display:none;"></span>
     </div>
     <div class="header-right">
-        <a href="https://e07imports.com.br/" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-store" title="Ver Landing">
-            🏠 <span>Home site</span>
+        <a href="index.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-store" title="Ver Landing">
+            🏠 <span>Landing</span>
         </a>
-        <a href="https://e07imports.com.br/produtos-odontologicos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-odonto" title="Ver Odontológicos">
+        <a href="produtos-odontologicos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-odonto" title="Ver Odontológicos">
             🦷 <span>Odonto</span>
         </a>
-        <a href="https://e07imports.com.br/produtos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-catalogo" title="Ver Catálogo Geral">
+        <a href="produtos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-catalogo" title="Ver Catálogo Geral">
             📦 <span>Catálogo</span>
         </a>
         <button class="btn-header btn-logout" id="btn-logout" aria-label="Sair do painel">
@@ -1002,7 +1067,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                 <p>Edite os textos exibidos nas páginas</p>
             </div>
 
-            <!-- 🆕 NOVO CARD: LANDING PAGE -->
+            <!-- 🆕 CARD LANDING PAGE -->
             <div class="card landing-card">
                 <h2 class="card-title">🏠 Landing Page (E07 Imports)</h2>
                 <div class="alert-box alert-info" style="margin-bottom: 16px;">
@@ -1074,7 +1139,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                     </div>
                 </div>
             </div>
-            <!-- FIM DO CARD LANDING -->
 
             <div class="alert-box alert-warning">
                 <strong>💡 Importante:</strong> As configurações abaixo afetam 
@@ -1452,6 +1516,10 @@ const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// 🆕 EMAIL DO ADMIN AUTORIZADO (pode ter múltiplos via tabela admins)
+// Esta é uma camada extra de segurança em JavaScript
+const ADMIN_EMAIL_PRINCIPAL = 'admin@e07imports.com.br';
+
 const state = {
     produtos: [],
     categorias: [],
@@ -1461,6 +1529,7 @@ const state = {
     gateways: [],
     politicas: [],
     config: {},
+    userAdmin: null, // 🆕 dados do admin logado
     pagination: {
         produtos: { page: 1, perPage: 20, total: 0 },
         pedidos:  { page: 1, perPage: 10, total: 0 },
@@ -1506,42 +1575,111 @@ function fecharModal(id) {
     if (modal) modal.classList.remove('active');
 }
 
+// 🆕 Função para mostrar tela de acesso negado
+function mostrarAcessoNegado(email) {
+    const screen = document.getElementById('access-denied-screen');
+    const emailEl = document.getElementById('access-denied-email');
+    if (emailEl) emailEl.textContent = email || 'email desconhecido';
+    if (screen) screen.style.display = 'flex';
+    // Esconde o resto da página
+    document.querySelector('.admin-header').style.display = 'none';
+    document.querySelector('.admin-layout').style.display = 'none';
+}
+
+// 🆕 Função para fazer logout forçado (da tela de bloqueio)
+async function fazerLogoutForcado() {
+    try {
+        await supabaseClient.auth.signOut();
+    } catch (e) {
+        console.error('Erro ao fazer logout:', e);
+    }
+    localStorage.removeItem('admin_current_view');
+    window.location.replace('index.html');
+}
+
+// 🔒 VERIFICAÇÃO DE ADMIN COM VALIDAÇÃO NA TABELA admins
 async function verificarAuth() {
     try {
         const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
         if (sessionError) {
             console.error('Erro na sessão:', sessionError);
             window.location.replace('login.html');
-            return;
+            return false;
         }
         if (!session || !session.user) {
             await new Promise(resolve => setTimeout(resolve, 600));
             const { data: { session: retrySession } } = await supabaseClient.auth.getSession();
             if (!retrySession || !retrySession.user) {
                 window.location.replace('login.html');
-                return;
+                return false;
             }
         }
         const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
         if (userError || !user) {
             await supabaseClient.auth.signOut();
             window.location.replace('login.html');
-            return;
+            return false;
         }
-        console.log('✅ Autenticação confirmada:', user.email);
+        
+        // 🔒 VERIFICAÇÃO 1: Consulta tabela admins
+        let isAdmin = false;
+        let adminData = null;
+        try {
+            const { data, error } = await supabaseClient
+                .from('admins')
+                .select('id, email, nome, ativo')
+                .eq('email', user.email)
+                .eq('ativo', true)
+                .maybeSingle();
+            
+            if (!error && data) {
+                isAdmin = true;
+                adminData = data;
+            }
+        } catch (e) {
+            console.warn('Tabela admins não encontrada, usando verificação hardcoded:', e);
+        }
+        
+        // 🔒 VERIFICAÇÃO 2 (fallback): se a tabela não existir, valida contra email principal
+        if (!isAdmin && user.email === ADMIN_EMAIL_PRINCIPAL) {
+            isAdmin = true;
+            adminData = { email: user.email, nome: 'Administrador' };
+        }
+        
+        // ❌ Se não for admin, bloqueia
+        if (!isAdmin) {
+            console.warn('⛔ Acesso negado para:', user.email);
+            mostrarAcessoNegado(user.email);
+            return false;
+        }
+        
+        // ✅ Admin autorizado
+        state.userAdmin = adminData;
+        console.log('✅ Admin autenticado:', adminData.email, '-', adminData.nome);
+        
+        // Mostra email do admin no header
+        const emailBadge = document.getElementById('admin-email-badge');
+        if (emailBadge) {
+            emailBadge.textContent = '👤 ' + user.email;
+            emailBadge.style.display = 'inline-block';
+        }
+        
+        return true;
     } catch (error) {
         console.error('Erro ao verificar auth:', error);
         window.location.replace('login.html');
+        return false;
     }
 }
 
 async function sair() {
+    if (!confirm('Deseja realmente sair do painel?')) return;
     try {
         await supabaseClient.auth.signOut();
         localStorage.removeItem('admin_current_view');
-        window.location.replace('login.html');
+        window.location.replace('index.html');
     } catch (error) {
-        window.location.replace('login.html');
+        window.location.replace('index.html');
     }
 }
 
@@ -1589,6 +1727,14 @@ async function testarConexao() {
         const { data: gateways, error: errGw } = await supabaseClient.from('gateways').select('*');
         if (errGw) resultados.push('❌ gateways: ' + errGw.message);
         else resultados.push('✅ gateways: ' + gateways.filter(g => g.ativo).length + ' ativos');
+
+        // 🆕 Teste da tabela admins
+        const { data: admins, error: errAdmins } = await supabaseClient.from('admins').select('*');
+        if (errAdmins) {
+            resultados.push('⚠️ admins: tabela não existe (fallback ativo)');
+        } else {
+            resultados.push('✅ admins: ' + admins.filter(a => a.ativo).length + ' admin(s) ativo(s)');
+        }
 
         const allOk = resultados.every(r => !r.startsWith('❌'));
         container.innerHTML = '<div class="alert-box ' + (allOk ? 'alert-success' : 'alert-warning') + '"><strong>📊 Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
@@ -2450,14 +2596,13 @@ async function salvarConteudo() {
     const btn = document.getElementById('btn-salvar-conteudo');
     btn.disabled = true; btn.textContent = 'Salvando...';
     const chaves = [
-        // Conteúdo existente (páginas de produtos)
         'urgencia_texto', 'hero_badge', 'hero_titulo', 'hero_subtitulo', 'hero_botao_texto',
         'stat1_valor', 'stat1_label', 'stat2_valor', 'stat2_label',
         'stat3_valor', 'stat3_label', 'stat4_valor', 'stat4_label',
         'produtos_titulo', 'produtos_subtitulo',
         'newsletter_titulo', 'newsletter_subtitulo', 'newsletter_botao',
         'footer_sobre', 'footer_endereco', 'footer_email', 'footer_telefone', 'footer_copyright',
-        // 🆕 NOVOS CAMPOS DA LANDING (index.html)
+        // 🆕 LANDING PAGE
         'hero_titulo_landing',
         'card_odonto_titulo', 'card_odonto_desc', 'card_odonto_link',
         'card_geral_titulo', 'card_geral_desc', 'card_geral_link',
@@ -2637,8 +2782,18 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
 });
 
+// 🔒 INICIALIZAÇÃO COM VALIDAÇÃO DE ADMIN
 document.addEventListener('DOMContentLoaded', async () => {
-    await verificarAuth();
+    // Primeiro valida se é admin
+    const isAutorizado = await verificarAuth();
+    
+    // Se não for admin autorizado, PARA a execução
+    if (!isAutorizado) {
+        console.warn('⛔ Acesso bloqueado - execução interrompida');
+        return;
+    }
+    
+    // Se for admin, carrega o painel normalmente
     const savedView = localStorage.getItem('admin_current_view');
     const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'politicas', 'contato', 'config'];
     if (savedView && validViews.includes(savedView)) navegarPara(savedView);
