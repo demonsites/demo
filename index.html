@@ -710,6 +710,55 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 }
 .landing-section-title:first-of-type { margin-top: 0; }
 
+/* 🆕 Cards da Landing - Visualização no admin */
+.landing-card-preview {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition);
+    background: white;
+}
+.landing-card-preview:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+.landing-card-preview.inactive {
+    opacity: 0.5;
+    background: var(--bg-light);
+}
+.landing-card-preview.gold { border-left: 4px solid var(--gold); }
+.landing-card-preview.light { border-left: 4px solid var(--cobalt-main); }
+.landing-card-preview.blue { border-left: 4px solid var(--cobalt-bright); }
+.landing-card-preview.green { border-left: 4px solid var(--success); }
+.landing-card-preview.red { border-left: 4px solid var(--danger); }
+.landing-card-preview.purple { border-left: 4px solid #8b5cf6; }
+
+.lc-icon-preview {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; flex-shrink: 0;
+}
+.lc-icon-preview.gold { background: rgba(251,191,36,0.2); color: var(--gold-dark); }
+.lc-icon-preview.light { background: rgba(26,79,184,0.1); color: var(--cobalt-main); }
+.lc-icon-preview.blue { background: rgba(37,99,235,0.1); color: var(--cobalt-bright); }
+.lc-icon-preview.green { background: rgba(16,185,129,0.1); color: var(--success); }
+.lc-icon-preview.red { background: rgba(239,68,68,0.1); color: var(--danger); }
+.lc-icon-preview.purple { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+
+.lc-info { flex: 1; min-width: 0; }
+.lc-info h4 { font-size: 1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
+.lc-info p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 4px; }
+.lc-info .lc-link { font-size: 0.8rem; color: var(--cobalt-main); font-family: monospace; }
+.lc-ordem {
+    font-size: 0.85rem; font-weight: 700; color: var(--text-gray);
+    background: var(--bg-light); padding: 4px 10px; border-radius: 20px;
+}
+.lc-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
 /* 🆕 Tela de bloqueio de acesso */
 .access-denied-screen {
     position: fixed;
@@ -875,6 +924,11 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                 <span class="icon">📄</span>
                 <span>Páginas</span>
             </a>
+            <!-- 🆕 NOVO ITEM: Cards da Landing -->
+            <div class="sidebar-item" data-view="landing-cards" role="button" tabindex="0">
+                <span class="icon">🎴</span>
+                <span>Cards da Landing</span>
+            </div>
             <div class="sidebar-item" data-view="politicas" role="button" tabindex="0">
                 <span class="icon">📋</span>
                 <span>Políticas</span>
@@ -1224,6 +1278,32 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <button class="btn btn-primary" id="btn-salvar-conteudo">💾 Salvar Todo o Conteúdo</button>
         </div>
 
+        <!-- 🆕 CARDS DA LANDING -->
+        <div class="admin-view" id="view-landing-cards">
+            <div class="content-header">
+                <h1>🎴 Cards da Landing</h1>
+                <p>Gerencie os cards exibidos na página inicial (index.html)</p>
+            </div>
+            
+            <div class="alert-box alert-info">
+                <strong>💡 Dica:</strong> Os cards aparecem na ordem definida pelo campo "Ordem". 
+                Altere o número para reorganizar. Cards inativos não aparecem no site.
+            </div>
+
+            <div style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn btn-gold" data-action="new-landing-card">➕ Novo Card</button>
+                <button class="btn btn-secondary" data-action="preview-landing" style="border: 2px solid var(--cobalt-main); color: var(--cobalt-main);">
+                    👁️ Visualizar Landing
+                </button>
+            </div>
+
+            <div class="card">
+                <div id="lista-landing-cards" class="loading">
+                    <span class="spinner-inline"></span> Carregando cards...
+                </div>
+            </div>
+        </div>
+
         <!-- POLÍTICAS -->
         <div class="admin-view" id="view-politicas">
             <div class="content-header">
@@ -1509,6 +1589,85 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     </div>
 </div>
 
+<!-- 🆕 MODAL LANDING CARD -->
+<div class="modal-overlay" id="modal-landing-card" role="dialog" aria-labelledby="modal-lc-titulo">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modal-lc-titulo">Novo Card</h3>
+            <button class="modal-close" data-close-modal="modal-landing-card" aria-label="Fechar">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="lc-id">
+            <div class="form-group">
+                <label>Título <span class="req">*</span></label>
+                <input type="text" class="form-input" id="lc-titulo" placeholder="Ex: Eletrônicos">
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <input type="text" class="form-input" id="lc-descricao" placeholder="Ex: Fones, caixas de som e mais">
+            </div>
+            <div class="form-group">
+                <label>Link de destino <span class="req">*</span></label>
+                <input type="text" class="form-input" id="lc-link" placeholder="produtos.html?cat=eletronicos">
+                <small style="color: var(--text-gray); font-size: 0.8rem;">URL interna (ex: <code>produtos.html</code>) ou externa</small>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ícone</label>
+                    <select class="form-select" id="lc-icone">
+                        <option value="tooth">🦷 Dente</option>
+                        <option value="box">📦 Caixa</option>
+                        <option value="headphones">🎧 Fones</option>
+                        <option value="tools">🔧 Ferramentas</option>
+                        <option value="laptop">💻 Laptop</option>
+                        <option value="smartphone">📱 Celular</option>
+                        <option value="watch">⌚ Relógio</option>
+                        <option value="camera">📷 Câmera</option>
+                        <option value="game">🎮 Games</option>
+                        <option value="home">🏠 Casa</option>
+                        <option value="heart">❤️ Saúde</option>
+                        <option value="star">⭐ Destaque</option>
+                        <option value="gift">🎁 Presente</option>
+                        <option value="fire">🔥 Oferta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cor do card</label>
+                    <select class="form-select" id="lc-cor">
+                        <option value="gold">🟡 Dourado</option>
+                        <option value="light">⚪ Branco/Cinza</option>
+                        <option value="blue">🔵 Azul</option>
+                        <option value="green">🟢 Verde</option>
+                        <option value="red">🔴 Vermelho</option>
+                        <option value="purple">🟣 Roxo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ordem de exibição</label>
+                    <input type="number" class="form-input" id="lc-ordem" placeholder="1" min="0">
+                    <small style="color: var(--text-gray); font-size: 0.8rem;">Menor número = aparece primeiro</small>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div style="padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius); background: white;">
+                        <label class="toggle-switch" style="vertical-align: middle;">
+                            <input type="checkbox" id="lc-ativo" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span style="margin-left: 12px; font-weight: 600;">Ativo (aparece no site)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-close-modal="modal-landing-card">Cancelar</button>
+            <button class="btn btn-primary" id="btn-salvar-landing-card">💾 Salvar Card</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
 <script>
@@ -1701,6 +1860,7 @@ function navegarPara(view) {
         mensagens: () => carregarMensagens(true),
         gateways:  carregarGateways,
         conteudo:  carregarConfiguracoes,
+        'landing-cards': carregarLandingCards,  // 🆕
         politicas: carregarPoliticas,
         contato:   carregarContato,
         config:    carregarConfiguracoes
@@ -2710,6 +2870,154 @@ function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange)
     });
 }
 
+// 🆕 FUNÇÕES DOS CARDS DA LANDING
+const ICONES_MAP = {
+    tooth: '🦷', box: '📦', headphones: '🎧', tools: '🔧',
+    laptop: '💻', smartphone: '📱', watch: '⌚', camera: '📷',
+    game: '🎮', home: '🏠', heart: '❤️', star: '⭐',
+    gift: '🎁', fire: '🔥'
+};
+
+async function carregarLandingCards() {
+    const container = document.getElementById('lista-landing-cards');
+    container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+    try {
+        const { data, error } = await supabaseClient
+            .from('landing_cards')
+            .select('*')
+            .order('ordem', { ascending: true });
+        if (error) throw error;
+        
+        if (!data || data.length === 0) {
+            container.innerHTML = '<div class="empty-state"><div class="icon">🎴</div><h3>Nenhum card cadastrado</h3><p>Clique em "Novo Card" para começar.</p></div>';
+            return;
+        }
+        
+        container.innerHTML = data.map(card => `
+            <div class="landing-card-preview ${card.cor} ${!card.ativo ? 'inactive' : ''}">
+                <div class="lc-icon-preview ${card.cor}">
+                    ${ICONES_MAP[card.icone] || '📦'}
+                </div>
+                <div class="lc-info">
+                    <h4>${escapeHTML(card.titulo)}</h4>
+                    <p>${escapeHTML(card.descricao || '')}</p>
+                    <div class="lc-link">→ ${escapeHTML(card.link)}</div>
+                </div>
+                <div class="lc-ordem">#${card.ordem}</div>
+                <div class="lc-actions">
+                    <label class="toggle-switch" title="${card.ativo ? 'Desativar' : 'Ativar'}">
+                        <input type="checkbox" ${card.ativo ? 'checked' : ''} 
+                               data-action="toggle-landing-card" data-id="${escapeHTML(card.id)}">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <button class="btn btn-sm btn-secondary" data-action="edit-landing-card" data-id="${escapeHTML(card.id)}">✏️</button>
+                    <button class="btn btn-sm btn-danger" data-action="delete-landing-card" 
+                            data-id="${escapeHTML(card.id)}" data-name="${escapeHTML(card.titulo)}">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Erro:', error);
+        container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar</h3><p>' + escapeHTML(error.message) + '</p></div>';
+    }
+}
+
+function resetFormLandingCard() {
+    document.getElementById('modal-lc-titulo').textContent = 'Novo Card';
+    document.getElementById('lc-id').value = '';
+    document.getElementById('lc-titulo').value = '';
+    document.getElementById('lc-descricao').value = '';
+    document.getElementById('lc-link').value = '';
+    document.getElementById('lc-icone').value = 'box';
+    document.getElementById('lc-cor').value = 'gold';
+    document.getElementById('lc-ordem').value = '';
+    document.getElementById('lc-ativo').checked = true;
+}
+
+async function abrirModalLandingCard() {
+    resetFormLandingCard();
+    try {
+        const { data } = await supabaseClient.from('landing_cards').select('ordem').order('ordem', { ascending: false }).limit(1);
+        document.getElementById('lc-ordem').value = data && data[0] ? (data[0].ordem + 1) : 1;
+    } catch (e) { document.getElementById('lc-ordem').value = 1; }
+    document.getElementById('modal-landing-card').classList.add('active');
+}
+
+async function editarLandingCard(id) {
+    try {
+        const { data, error } = await supabaseClient.from('landing_cards').select('*').eq('id', id).single();
+        if (error || !data) { showToast('Card não encontrado', 'error'); return; }
+        document.getElementById('modal-lc-titulo').textContent = 'Editar Card';
+        document.getElementById('lc-id').value = data.id;
+        document.getElementById('lc-titulo').value = data.titulo;
+        document.getElementById('lc-descricao').value = data.descricao || '';
+        document.getElementById('lc-link').value = data.link;
+        document.getElementById('lc-icone').value = data.icone || 'box';
+        document.getElementById('lc-cor').value = data.cor || 'gold';
+        document.getElementById('lc-ordem').value = data.ordem;
+        document.getElementById('lc-ativo').checked = data.ativo;
+        document.getElementById('modal-landing-card').classList.add('active');
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    }
+}
+
+async function salvarLandingCard() {
+    const id = document.getElementById('lc-id').value;
+    const card = {
+        titulo: document.getElementById('lc-titulo').value.trim(),
+        descricao: document.getElementById('lc-descricao').value.trim(),
+        link: document.getElementById('lc-link').value.trim(),
+        icone: document.getElementById('lc-icone').value,
+        cor: document.getElementById('lc-cor').value,
+        ordem: parseInt(document.getElementById('lc-ordem').value) || 0,
+        ativo: document.getElementById('lc-ativo').checked
+    };
+    if (!card.titulo || !card.link) { showToast('Preencha título e link!', 'error'); return; }
+    
+    const btn = document.getElementById('btn-salvar-landing-card');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    try {
+        if (id) {
+            const { error } = await supabaseClient.from('landing_cards').update(card).eq('id', id);
+            if (error) throw error;
+        } else {
+            const { error } = await supabaseClient.from('landing_cards').insert([card]);
+            if (error) throw error;
+        }
+        showToast('✅ Card salvo!');
+        fecharModal('modal-landing-card');
+        carregarLandingCards();
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false; btn.textContent = '💾 Salvar Card';
+    }
+}
+
+async function toggleLandingCard(id, ativo) {
+    try {
+        const { error } = await supabaseClient.from('landing_cards').update({ ativo }).eq('id', id);
+        if (error) throw error;
+        showToast(ativo ? '✅ Card ativado!' : '⏸️ Card desativado');
+        carregarLandingCards();
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    }
+}
+
+async function excluirLandingCard(id, nome) {
+    if (!confirm(`Excluir o card "${nome}"? Esta ação não pode ser desfeita.`)) return;
+    try {
+        const { error } = await supabaseClient.from('landing_cards').delete().eq('id', id);
+        if (error) throw error;
+        showToast('Card excluído!');
+        carregarLandingCards();
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    }
+}
+
 document.addEventListener('click', async (e) => {
     const target = e.target.closest('[data-action], [data-close-modal]');
     if (!target) return;
@@ -2742,6 +3050,11 @@ document.addEventListener('click', async (e) => {
         }
         case 'edit-policy': abrirModalPolitica(id); break;
         case 'delete-order': excluirPedido(id); break;
+        // 🆕 Ações dos cards da landing
+        case 'new-landing-card': abrirModalLandingCard(); break;
+        case 'edit-landing-card': editarLandingCard(id); break;
+        case 'delete-landing-card': excluirLandingCard(id, name); break;
+        case 'preview-landing': window.open('index.html', '_blank'); break;
     }
 });
 
@@ -2749,6 +3062,8 @@ document.addEventListener('change', (e) => {
     if (e.target.dataset.action === 'toggle-banner') toggleBanner(e.target.dataset.id, e.target.checked);
     if (e.target.dataset.action === 'toggle-gateway') toggleGateway(e.target.dataset.id, e.target.checked);
     if (e.target.dataset.action === 'update-order-status') atualizarStatusPedido(e.target.dataset.id, e.target.value);
+    // 🆕 Toggle dos cards da landing
+    if (e.target.dataset.action === 'toggle-landing-card') toggleLandingCard(e.target.dataset.id, e.target.checked);
 });
 
 document.querySelectorAll('.sidebar-item[data-view]').forEach(item => {
@@ -2773,6 +3088,8 @@ document.getElementById('btn-salvar-banner').addEventListener('click', salvarBan
 document.getElementById('btn-salvar-gateway').addEventListener('click', salvarGateway);
 document.getElementById('btn-testar-gateway').addEventListener('click', () => testarGateway(document.getElementById('gw-id').value));
 document.getElementById('btn-salvar-politica').addEventListener('click', salvarPolitica);
+// 🆕 Listener para salvar card da landing
+document.getElementById('btn-salvar-landing-card').addEventListener('click', salvarLandingCard);
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
@@ -2795,7 +3112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Se for admin, carrega o painel normalmente
     const savedView = localStorage.getItem('admin_current_view');
-    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'politicas', 'contato', 'config'];
+    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
     if (savedView && validViews.includes(savedView)) navegarPara(savedView);
     else await carregarDashboard();
 });
