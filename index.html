@@ -710,7 +710,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 }
 .landing-section-title:first-of-type { margin-top: 0; }
 
-/* 🆕 Cards da Landing - Visualização no admin */
+/* Cards da Landing - Visualização no admin */
 .landing-card-preview {
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -759,7 +759,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 }
 .lc-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-/* 🆕 Tela de bloqueio de acesso */
+/* Tela de bloqueio de acesso */
 .access-denied-screen {
     position: fixed;
     top: 0; left: 0;
@@ -807,6 +807,36 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     word-break: break-all;
 }
 
+/* =====================================================
+   FIX MOBILE — header limpo, sem email, botões alinhados
+   ===================================================== */
+#admin-email-badge { display: none !important; }
+@media (max-width: 900px) {
+    .btn-view-store, .btn-view-odonto, .btn-view-catalogo { display: none !important; }
+    .admin-header {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        height: 56px !important;
+        padding: 0 12px !important;
+    }
+    .header-left, .header-right {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    .header-left { min-width: 0; flex: 1; }
+    .header-right { flex-shrink: 0; }
+    .admin-logo {
+        font-size: 1.1rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .menu-toggle { width: 38px; height: 38px; flex-shrink: 0; }
+    .btn-header { padding: 8px 10px !important; }
+    .btn-header span { display: none !important; }
+}
+
 @media (max-width: 1024px) {
     .admin-sidebar {
         position: fixed;
@@ -822,10 +852,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     .order-details { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-    .admin-header { padding: 0 12px; height: auto; min-height: 64px; flex-wrap: wrap; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
     .admin-badge { display: none; }
-    .btn-header span { display: none; }
-    .btn-header { padding: 8px 10px; }
     .stats-grid { grid-template-columns: 1fr; }
     .modal { margin: 20px; }
     .pagination {
@@ -839,7 +866,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 </head>
 <body>
 
-<!-- 🆕 TELA DE BLOQUEIO (inicialmente oculta) -->
+<!-- TELA DE BLOQUEIO (inicialmente oculta) -->
 <div class="access-denied-screen" id="access-denied-screen" style="display: none;">
     <div class="access-denied-card">
         <div class="access-denied-icon">🚫</div>
@@ -924,7 +951,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                 <span class="icon">📄</span>
                 <span>Páginas</span>
             </a>
-            <!-- 🆕 NOVO ITEM: Cards da Landing -->
             <div class="sidebar-item" data-view="landing-cards" role="button" tabindex="0">
                 <span class="icon">🎴</span>
                 <span>Cards da Landing</span>
@@ -1121,7 +1147,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                 <p>Edite os textos exibidos nas páginas</p>
             </div>
 
-            <!-- 🆕 CARD LANDING PAGE -->
             <div class="card landing-card">
                 <h2 class="card-title">🏠 Landing Page (E07 Imports)</h2>
                 <div class="alert-box alert-info" style="margin-bottom: 16px;">
@@ -1278,7 +1303,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <button class="btn btn-primary" id="btn-salvar-conteudo">💾 Salvar Todo o Conteúdo</button>
         </div>
 
-        <!-- 🆕 CARDS DA LANDING -->
+        <!-- CARDS DA LANDING -->
         <div class="admin-view" id="view-landing-cards">
             <div class="content-header">
                 <h1>🎴 Cards da Landing</h1>
@@ -1589,7 +1614,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     </div>
 </div>
 
-<!-- 🆕 MODAL LANDING CARD -->
+<!-- MODAL LANDING CARD -->
 <div class="modal-overlay" id="modal-landing-card" role="dialog" aria-labelledby="modal-lc-titulo">
     <div class="modal">
         <div class="modal-header">
@@ -1675,8 +1700,6 @@ const SUPABASE_URL = 'https://ksqutwabqqkkthpqdpqo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXV0d2FicXFra3RocHFkcHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3Mzc3MTQsImV4cCI6MjEwNDMxMzcxNH0.zctTCekjtWs7jElZoEIddw6UbEpTOqklnJS54uufGlY';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 🆕 EMAIL DO ADMIN AUTORIZADO (pode ter múltiplos via tabela admins)
-// Esta é uma camada extra de segurança em JavaScript
 const ADMIN_EMAIL_PRINCIPAL = 'admin@e07imports.com.br';
 
 const state = {
@@ -1688,7 +1711,7 @@ const state = {
     gateways: [],
     politicas: [],
     config: {},
-    userAdmin: null, // 🆕 dados do admin logado
+    userAdmin: null,
     pagination: {
         produtos: { page: 1, perPage: 20, total: 0 },
         pedidos:  { page: 1, perPage: 10, total: 0 },
@@ -1734,18 +1757,15 @@ function fecharModal(id) {
     if (modal) modal.classList.remove('active');
 }
 
-// 🆕 Função para mostrar tela de acesso negado
 function mostrarAcessoNegado(email) {
     const screen = document.getElementById('access-denied-screen');
     const emailEl = document.getElementById('access-denied-email');
     if (emailEl) emailEl.textContent = email || 'email desconhecido';
     if (screen) screen.style.display = 'flex';
-    // Esconde o resto da página
     document.querySelector('.admin-header').style.display = 'none';
     document.querySelector('.admin-layout').style.display = 'none';
 }
 
-// 🆕 Função para fazer logout forçado (da tela de bloqueio)
 async function fazerLogoutForcado() {
     try {
         await supabaseClient.auth.signOut();
@@ -1756,7 +1776,6 @@ async function fazerLogoutForcado() {
     window.location.replace('index.html');
 }
 
-// 🔒 VERIFICAÇÃO DE ADMIN COM VALIDAÇÃO NA TABELA admins
 async function verificarAuth() {
     try {
         const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
@@ -1780,7 +1799,6 @@ async function verificarAuth() {
             return false;
         }
         
-        // 🔒 VERIFICAÇÃO 1: Consulta tabela admins
         let isAdmin = false;
         let adminData = null;
         try {
@@ -1799,29 +1817,19 @@ async function verificarAuth() {
             console.warn('Tabela admins não encontrada, usando verificação hardcoded:', e);
         }
         
-        // 🔒 VERIFICAÇÃO 2 (fallback): se a tabela não existir, valida contra email principal
         if (!isAdmin && user.email === ADMIN_EMAIL_PRINCIPAL) {
             isAdmin = true;
             adminData = { email: user.email, nome: 'Administrador' };
         }
         
-        // ❌ Se não for admin, bloqueia
         if (!isAdmin) {
             console.warn('⛔ Acesso negado para:', user.email);
             mostrarAcessoNegado(user.email);
             return false;
         }
         
-        // ✅ Admin autorizado
         state.userAdmin = adminData;
         console.log('✅ Admin autenticado:', adminData.email, '-', adminData.nome);
-        
-        // Mostra email do admin no header
-        const emailBadge = document.getElementById('admin-email-badge');
-        if (emailBadge) {
-            emailBadge.textContent = '👤 ' + user.email;
-            emailBadge.style.display = 'inline-block';
-        }
         
         return true;
     } catch (error) {
@@ -1860,7 +1868,7 @@ function navegarPara(view) {
         mensagens: () => carregarMensagens(true),
         gateways:  carregarGateways,
         conteudo:  carregarConfiguracoes,
-        'landing-cards': carregarLandingCards,  // 🆕
+        'landing-cards': carregarLandingCards,
         politicas: carregarPoliticas,
         contato:   carregarContato,
         config:    carregarConfiguracoes
@@ -1888,7 +1896,6 @@ async function testarConexao() {
         if (errGw) resultados.push('❌ gateways: ' + errGw.message);
         else resultados.push('✅ gateways: ' + gateways.filter(g => g.ativo).length + ' ativos');
 
-        // 🆕 Teste da tabela admins
         const { data: admins, error: errAdmins } = await supabaseClient.from('admins').select('*');
         if (errAdmins) {
             resultados.push('⚠️ admins: tabela não existe (fallback ativo)');
@@ -2762,7 +2769,6 @@ async function salvarConteudo() {
         'produtos_titulo', 'produtos_subtitulo',
         'newsletter_titulo', 'newsletter_subtitulo', 'newsletter_botao',
         'footer_sobre', 'footer_endereco', 'footer_email', 'footer_telefone', 'footer_copyright',
-        // 🆕 LANDING PAGE
         'hero_titulo_landing',
         'card_odonto_titulo', 'card_odonto_desc', 'card_odonto_link',
         'card_geral_titulo', 'card_geral_desc', 'card_geral_link',
@@ -2870,7 +2876,6 @@ function renderizarPaginacao(containerId, totalPages, currentPage, onPageChange)
     });
 }
 
-// 🆕 FUNÇÕES DOS CARDS DA LANDING
 const ICONES_MAP = {
     tooth: '🦷', box: '📦', headphones: '🎧', tools: '🔧',
     laptop: '💻', smartphone: '📱', watch: '⌚', camera: '📷',
@@ -3050,7 +3055,6 @@ document.addEventListener('click', async (e) => {
         }
         case 'edit-policy': abrirModalPolitica(id); break;
         case 'delete-order': excluirPedido(id); break;
-        // 🆕 Ações dos cards da landing
         case 'new-landing-card': abrirModalLandingCard(); break;
         case 'edit-landing-card': editarLandingCard(id); break;
         case 'delete-landing-card': excluirLandingCard(id, name); break;
@@ -3062,7 +3066,6 @@ document.addEventListener('change', (e) => {
     if (e.target.dataset.action === 'toggle-banner') toggleBanner(e.target.dataset.id, e.target.checked);
     if (e.target.dataset.action === 'toggle-gateway') toggleGateway(e.target.dataset.id, e.target.checked);
     if (e.target.dataset.action === 'update-order-status') atualizarStatusPedido(e.target.dataset.id, e.target.value);
-    // 🆕 Toggle dos cards da landing
     if (e.target.dataset.action === 'toggle-landing-card') toggleLandingCard(e.target.dataset.id, e.target.checked);
 });
 
@@ -3088,7 +3091,6 @@ document.getElementById('btn-salvar-banner').addEventListener('click', salvarBan
 document.getElementById('btn-salvar-gateway').addEventListener('click', salvarGateway);
 document.getElementById('btn-testar-gateway').addEventListener('click', () => testarGateway(document.getElementById('gw-id').value));
 document.getElementById('btn-salvar-politica').addEventListener('click', salvarPolitica);
-// 🆕 Listener para salvar card da landing
 document.getElementById('btn-salvar-landing-card').addEventListener('click', salvarLandingCard);
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -3099,44 +3101,19 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
 });
 
-// 🔒 INICIALIZAÇÃO COM VALIDAÇÃO DE ADMIN
 document.addEventListener('DOMContentLoaded', async () => {
-    // Primeiro valida se é admin
     const isAutorizado = await verificarAuth();
     
-    // Se não for admin autorizado, PARA a execução
     if (!isAutorizado) {
         console.warn('⛔ Acesso bloqueado - execução interrompida');
         return;
     }
     
-    // Se for admin, carrega o painel normalmente
     const savedView = localStorage.getItem('admin_current_view');
     const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
     if (savedView && validViews.includes(savedView)) navegarPara(savedView);
     else await carregarDashboard();
 });
 </script>
-</body><style>
-/* Some com o email */
-#admin-email-badge{display:none !important;}
-
-/* Celular: 1 linha só, tudo alinhado */
-@media (max-width:900px){
-  /* Some com os 3 botões "ver site" que quebram a linha */
-  .btn-view-store,.btn-view-odonto,.btn-view-catalogo{display:none !important;}
-
-  /* Header travado em 1 linha, centralizado */
-  .admin-header{flex-wrap:nowrap !important;align-items:center !important;height:56px !important;padding:0 12px !important;}
-  .header-left,.header-right{flex-wrap:nowrap !important;align-items:center !important;gap:8px !important;}
-  .header-left{min-width:0;flex:1;}
-  .header-right{flex-shrink:0;}
-
-  /* Logo não empurra nada */
-  .admin-logo{font-size:1.1rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .menu-toggle{width:38px;height:38px;flex-shrink:0;}
-  .btn-header{padding:8px 10px !important;}
-  .btn-header span{display:none !important;}
-}
-</style>
+</body>
 </html>
