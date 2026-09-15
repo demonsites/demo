@@ -218,6 +218,7 @@ a.sidebar-item { text-decoration: none; }
 .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
 .stat-icon.teal { background: rgba(20, 184, 166, 0.1); color: #14b8a6; }
+.stat-icon.indigo { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
 .stat-info h3 { font-size: 1.8rem; font-weight: 900; color: var(--cobalt-deep); line-height: 1; }
 .stat-info p { color: var(--text-gray); font-size: 0.85rem; font-weight: 600; }
 .btn {
@@ -713,7 +714,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 }
 .landing-section-title:first-of-type { margin-top: 0; }
 
-/* Cards da Landing - Visualização no admin */
 .landing-card-preview {
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -762,7 +762,148 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
 }
 .lc-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-/* Tela de bloqueio de acesso */
+/* ============ NETMAIL ============ */
+.netmail-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 24px;
+    gap: 4px;
+    overflow-x: auto;
+}
+.netmail-tab {
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: var(--transition);
+    white-space: nowrap;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.netmail-tab:hover { color: var(--cobalt-main); }
+.netmail-tab.active {
+    color: var(--cobalt-main);
+    border-bottom-color: var(--cobalt-main);
+}
+.netmail-view { display: none; }
+.netmail-view.active { display: block; }
+
+.netmail-email-item {
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    background: white;
+    transition: var(--transition);
+}
+.netmail-email-item:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--cobalt-main);
+}
+.netmail-email-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.netmail-email-from {
+    font-weight: 700;
+    color: var(--cobalt-deep);
+    font-size: 0.95rem;
+}
+.netmail-email-date {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+}
+.netmail-email-subject {
+    font-weight: 700;
+    color: var(--cobalt-main);
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+.netmail-email-body {
+    color: var(--text-gray);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.netmail-account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-light);
+    margin-bottom: 8px;
+}
+.netmail-account-item:hover { background: white; border-color: var(--cobalt-main); }
+.netmail-account-email {
+    font-weight: 700;
+    color: var(--cobalt-deep);
+    font-size: 0.95rem;
+    font-family: monospace;
+}
+.netmail-account-date {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+.netmail-status {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: none;
+}
+.netmail-status.show { display: block; }
+.netmail-status.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-left: 3px solid var(--success);
+}
+.netmail-status.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border-left: 3px solid var(--danger);
+}
+.netmail-status.info {
+    background: rgba(26, 79, 184, 0.08);
+    color: var(--cobalt-deep);
+    border-left: 3px solid var(--cobalt-main);
+}
+
+.netmail-domain-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-light);
+    border: 2px solid var(--border);
+    border-left: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    font-family: monospace;
+}
+.netmail-username-input {
+    border-radius: var(--radius) 0 0 var(--radius) !important;
+    border-right: none !important;
+}
+
 .access-denied-screen {
     position: fixed;
     top: 0; left: 0;
@@ -810,7 +951,6 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     word-break: break-all;
 }
 
-/* FIX MOBILE — header limpo, sem email, botões alinhados */
 #admin-email-badge { display: none !important; }
 @media (max-width: 900px) {
     .btn-view-store, .btn-view-odonto, .btn-view-catalogo, .btn-view-servicos { display: none !important; }
@@ -862,12 +1002,13 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
         text-align: center;
     }
     .pagination-controls { justify-content: center; }
+    .netmail-tabs { flex-wrap: wrap; }
+    .netmail-tab { flex: 1; justify-content: center; font-size: 0.85rem; padding: 10px 12px; }
 }
 </style>
 </head>
 <body>
 
-<!-- TELA DE BLOQUEIO (inicialmente oculta) -->
 <div class="access-denied-screen" id="access-denied-screen" style="display: none;">
     <div class="access-denied-card">
         <div class="access-denied-icon">🚫</div>
@@ -944,6 +1085,13 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <div class="sidebar-item" data-view="mensagens" role="button" tabindex="0">
                 <span class="icon">💬</span>
                 <span>Mensagens</span>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-title">Comunicação</div>
+            <div class="sidebar-item" data-view="netmail" role="button" tabindex="0">
+                <span class="icon">✉️</span>
+                <span>Netmail</span>
             </div>
         </div>
         <div class="sidebar-section">
@@ -1029,6 +1177,13 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                     </div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon indigo">✉️</div>
+                    <div class="stat-info">
+                        <h3 id="stat-netmail">0</h3>
+                        <p>E-mails Netmail</p>
+                    </div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-icon purple">💳</div>
                     <div class="stat-info">
                         <h3 id="stat-gateways">0</h3>
@@ -1042,6 +1197,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                     <button class="btn btn-primary" data-action="quick-new-product">➕ Novo Produto</button>
                     <button class="btn btn-gold" data-action="quick-new-banner">➕ Novo Banner</button>
                     <button class="btn btn-secondary" data-action="quick-new-servico">➕ Novo Serviço</button>
+                    <button class="btn btn-secondary" data-action="quick-netmail">✉️ Netmail</button>
                     <button class="btn btn-secondary" data-action="quick-view-orders">🛒 Ver Pedidos</button>
                     <button class="btn btn-secondary" data-action="test-connection" style="border: 2px solid var(--cobalt-main); color: var(--cobalt-main);">🔍 Testar Conexão</button>
                 </div>
@@ -1157,6 +1313,126 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <div class="card">
                 <div id="lista-mensagens" class="loading">
                     <span class="spinner-inline"></span> Carregando mensagens...
+                </div>
+            </div>
+        </div>
+
+        <!-- 🆕 NETMAIL -->
+        <div class="admin-view" id="view-netmail">
+            <div class="content-header">
+                <h1>✉️ Netmail</h1>
+                <p>E-mail profissional para seu negócio — @e07imports.com.br</p>
+            </div>
+
+            <div class="alert-box alert-info" style="margin-bottom: 24px;">
+                <strong>💡 Dica:</strong> Crie contas profissionais como <code>contato@</code>, <code>vendas@</code> ou <code>suporte@</code>
+                para seu domínio e envie e-mails direto do painel.
+            </div>
+
+            <!-- Abas -->
+            <div class="netmail-tabs">
+                <button class="netmail-tab active" onclick="switchNetmailTab('inbox')" id="netmail-tab-inbox">
+                    📥 Caixa de Entrada
+                </button>
+                <button class="netmail-tab" onclick="switchNetmailTab('compose')" id="netmail-tab-compose">
+                    ✏️ Novo E-mail
+                </button>
+                <button class="netmail-tab" onclick="switchNetmailTab('accounts')" id="netmail-tab-accounts">
+                    👤 Minhas Contas
+                </button>
+            </div>
+
+            <!-- VIEW: INBOX -->
+            <div class="netmail-view active" id="netmail-view-inbox">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2 class="card-title" style="margin:0;">📥 Mensagens Recebidas</h2>
+                        <button class="btn btn-secondary btn-sm" onclick="netmailLoadInbox()">🔄 Atualizar</button>
+                    </div>
+                    <div id="netmail-inbox-list" class="loading">
+                        <span class="spinner-inline"></span> Carregando e-mails...
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: COMPOSE -->
+            <div class="netmail-view" id="netmail-view-compose">
+                <div class="card">
+                    <h2 class="card-title">✏️ Novo E-mail</h2>
+                    <div id="netmail-compose-status" class="netmail-status"></div>
+
+                    <form id="netmail-compose-form">
+                        <div class="form-group">
+                            <label>De (Sua conta Netmail) <span class="req">*</span></label>
+                            <select id="netmail-from" class="form-select">
+                                <option>Carregando contas...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Para <span class="req">*</span></label>
+                            <input type="email" id="netmail-to" required placeholder="destinatario@dominio.com" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Assunto <span class="req">*</span></label>
+                            <input type="text" id="netmail-subject" required placeholder="Assunto da mensagem" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mensagem <span class="req">*</span></label>
+                            <textarea id="netmail-body" rows="8" required placeholder="Escreva sua mensagem aqui..." class="form-textarea"></textarea>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                            <button type="submit" class="btn btn-primary" id="netmail-send-btn">
+                                📤 Enviar E-mail
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- VIEW: ACCOUNTS -->
+            <div class="netmail-view" id="netmail-view-accounts">
+                <div class="card">
+                    <h2 class="card-title">🆕 Criar Nova Conta Netmail</h2>
+                    <div id="netmail-create-status" class="netmail-status"></div>
+
+                    <form id="netmail-create-form">
+                        <div class="form-group">
+                            <label>Nome do Usuário <span class="req">*</span></label>
+                            <div style="display:flex;">
+                                <input type="text" id="netmail-new-username" required placeholder="contato" 
+                                    class="form-input netmail-username-input">
+                                <span class="netmail-domain-badge">@e07imports.com.br</span>
+                            </div>
+                            <small style="color: var(--text-gray); font-size: 0.8rem; display:block; margin-top:6px;">
+                                Ex: <code>contato</code> vira <strong>contato@e07imports.com.br</strong>
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Senha <span class="req">*</span></label>
+                            <input type="password" id="netmail-new-password" required placeholder="Mínimo 6 caracteres" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nome Completo (opcional)</label>
+                            <input type="text" id="netmail-new-fullname" placeholder="Ex: João da Silva" class="form-input">
+                        </div>
+
+                        <button type="submit" class="btn btn-gold">
+                            ➕ Criar Conta Netmail
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📋 Contas Netmail Ativas</h2>
+                    <div id="netmail-accounts-list" class="loading">
+                        <span class="spinner-inline"></span> Carregando contas...
+                    </div>
                 </div>
             </div>
         </div>
@@ -1812,6 +2088,12 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 
 const ADMIN_EMAIL_PRINCIPAL = 'admin@e07imports.com.br';
 
+// 🆕 NETMAIL - Supabase separado para e-mails
+const NETMAIL_SUPABASE_URL = 'https://enhasmqjniyplrajdbkh.supabase.co';
+const NETMAIL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVuaGFzbXFqbml5cGxyYWpkYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0ODkyNzgsImV4cCI6MjEwNTA2NTI3OH0.Ax9sm3lItl0Zv_r7RjE9HYTlvh9qnJMmLkbkiNl0z-4';
+const NETMAIL_DOMAIN = 'e07imports.com.br';
+const sbNetmail = window.supabase.createClient(NETMAIL_SUPABASE_URL, NETMAIL_SUPABASE_ANON_KEY);
+
 const state = {
     produtos: [],
     categorias: [],
@@ -1977,6 +2259,7 @@ function navegarPara(view) {
         servicos:  carregarServicosAdmin,
         pedidos:   () => carregarPedidos(true),
         mensagens: () => carregarMensagens(true),
+        netmail:   iniciarNetmail,
         gateways:  carregarGateways,
         conteudo:  carregarConfiguracoes,
         'landing-cards': carregarLandingCards,
@@ -2014,6 +2297,11 @@ async function testarConexao() {
             resultados.push('✅ admins: ' + admins.filter(a => a.ativo).length + ' admin(s) ativo(s)');
         }
 
+        // Teste Netmail
+        const { data: netmailContas, error: errNetmail } = await sbNetmail.from('email_accounts').select('*', { count: 'exact', head: true });
+        if (errNetmail) resultados.push('⚠️ netmail: ' + errNetmail.message);
+        else resultados.push('✅ netmail: ' + (netmailContas?.count || 0) + ' conta(s)');
+
         const allOk = resultados.every(r => !r.startsWith('❌'));
         container.innerHTML = '<div class="alert-box ' + (allOk ? 'alert-success' : 'alert-warning') + '"><strong>📊 Diagnóstico:</strong><br>' + resultados.join('<br>') + '</div>';
         showToast(allOk ? '✅ Tudo funcionando!' : '⚠️ Veja o diagnóstico', allOk ? 'success' : 'error');
@@ -2024,13 +2312,14 @@ async function testarConexao() {
 
 async function carregarDashboard() {
     try {
-        const [produtos, pedidos, mensagens, banners, gateways, servicos] = await Promise.all([
-            supabaseClient.from('produtos').select('*', { count: 'exact', head: true }),
-            supabaseClient.from('pedidos').select('*', { count: 'exact', head: true }),
-            supabaseClient.from('contatos').select('*', { count: 'exact', head: true }),
-            supabaseClient.from('banners').select('*', { count: 'exact', head: true }),
-            supabaseClient.from('gateways').select('*'),
-            supabaseClient.from('servicos').select('*', { count: 'exact', head: true })
+        const [produtos, pedidos, mensagens, banners, gateways, servicos, netmailEmails] = await Promise.all([
+            supabaseClient.from('produtos').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 })),
+            supabaseClient.from('pedidos').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 })),
+            supabaseClient.from('contatos').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 })),
+            supabaseClient.from('banners').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 })),
+            supabaseClient.from('gateways').select('*').catch(() => ({ data: [] })),
+            supabaseClient.from('servicos').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 })),
+            sbNetmail.from('emails').select('*', { count: 'exact', head: true }).then(r => r).catch(() => ({ count: 0 }))
         ]);
         document.getElementById('stat-produtos').textContent = produtos.count || 0;
         document.getElementById('stat-pedidos').textContent = pedidos.count || 0;
@@ -2038,6 +2327,7 @@ async function carregarDashboard() {
         document.getElementById('stat-banners').textContent = banners.count || 0;
         document.getElementById('stat-gateways').textContent = gateways.data ? gateways.data.filter(g => g.ativo).length : 0;
         document.getElementById('stat-servicos').textContent = servicos.count || 0;
+        document.getElementById('stat-netmail').textContent = netmailEmails.count || 0;
 
         const { data: recentes } = await supabaseClient.from('produtos').select('*').order('criado_em', { ascending: false }).limit(5);
         const container = document.getElementById('dashboard-produtos');
@@ -2666,6 +2956,208 @@ async function previewServicoImg(input) {
         content.innerHTML = '<div class="upload-icon">🖼️</div><div class="upload-text"><strong>Clique para enviar imagem</strong></div>';
     }
 }
+
+// ============ 🆕 NETMAIL ============
+function showNetmailStatus(id, msg, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'netmail-status show ' + type;
+    if (type === 'success') {
+        setTimeout(() => { el.className = 'netmail-status'; }, 5000);
+    }
+}
+
+function switchNetmailTab(tab) {
+    ['inbox', 'compose', 'accounts'].forEach(t => {
+        const view = document.getElementById(`netmail-view-${t}`);
+        const tabBtn = document.getElementById(`netmail-tab-${t}`);
+        if (view) view.classList.remove('active');
+        if (tabBtn) tabBtn.classList.remove('active');
+    });
+    const view = document.getElementById(`netmail-view-${tab}`);
+    const tabBtn = document.getElementById(`netmail-tab-${tab}`);
+    if (view) view.classList.add('active');
+    if (tabBtn) tabBtn.classList.add('active');
+
+    if (tab === 'inbox') netmailLoadInbox();
+    if (tab === 'accounts') netmailLoadAccounts();
+    if (tab === 'compose') netmailLoadFromSelect();
+}
+
+async function netmailLoadAccounts() {
+    const listEl = document.getElementById('netmail-accounts-list');
+    if (!listEl) return;
+    listEl.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando contas...</div>';
+
+    try {
+        const { data, error } = await sbNetmail
+            .from('email_accounts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            listEl.innerHTML = '<div class="empty-state"><div class="icon">👤</div><h3>Nenhuma conta criada</h3><p>Use o formulário acima para criar sua primeira conta Netmail.</p></div>';
+            return;
+        }
+
+        listEl.innerHTML = data.map(acc => `
+            <div class="netmail-account-item">
+                <div>
+                    <div class="netmail-account-email">${escapeHTML(acc.email)}</div>
+                    <div class="netmail-account-date">Criado em: ${formatarData(acc.created_at)}</div>
+                </div>
+                <span class="badge-status badge-active">Ativo</span>
+            </div>
+        `).join('');
+    } catch (e) {
+        listEl.innerHTML = `<div class="alert-box alert-warning">⚠️ ${escapeHTML(e.message)}</div>`;
+    }
+}
+
+async function netmailLoadFromSelect() {
+    const selectEl = document.getElementById('netmail-from');
+    if (!selectEl) return;
+    selectEl.innerHTML = '<option>Carregando...</option>';
+
+    try {
+        const { data, error } = await sbNetmail
+            .from('email_accounts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            selectEl.innerHTML = `<option value="">Nenhuma conta — crie uma primeiro</option>`;
+            return;
+        }
+
+        selectEl.innerHTML = data.map(acc =>
+            `<option value="${escapeHTML(acc.email)}">${escapeHTML(acc.email)}</option>`
+        ).join('');
+    } catch (e) {
+        selectEl.innerHTML = `<option value="">Erro ao carregar</option>`;
+    }
+}
+
+async function netmailLoadInbox() {
+    const listEl = document.getElementById('netmail-inbox-list');
+    if (!listEl) return;
+    listEl.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando e-mails...</div>';
+
+    try {
+        const { data, error } = await sbNetmail
+            .from('emails')
+            .select('*')
+            .eq('direction', 'inbound')
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            listEl.innerHTML = '<div class="empty-state"><div class="icon">📭</div><h3>Caixa de entrada vazia</h3><p>Nenhum e-mail recebido ainda.</p></div>';
+            return;
+        }
+
+        listEl.innerHTML = data.map(email => `
+            <div class="netmail-email-item">
+                <div class="netmail-email-header">
+                    <span class="netmail-email-from">📩 ${escapeHTML(email.from_email || 'Desconhecido')}</span>
+                    <span class="netmail-email-date">${formatarData(email.created_at)}</span>
+                </div>
+                <div class="netmail-email-subject">${escapeHTML(email.subject || '(Sem assunto)')}</div>
+                <div class="netmail-email-body">${escapeHTML(email.body || '')}</div>
+            </div>
+        `).join('');
+    } catch (e) {
+        listEl.innerHTML = `<div class="alert-box alert-warning">⚠️ ${escapeHTML(e.message)}</div>`;
+    }
+}
+
+function iniciarNetmail() {
+    netmailLoadInbox();
+    netmailLoadFromSelect();
+    netmailLoadAccounts();
+}
+
+// Handler: criar conta Netmail
+document.getElementById('netmail-create-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('netmail-new-username').value.trim().toLowerCase();
+    const password = document.getElementById('netmail-new-password').value;
+    const fullname = document.getElementById('netmail-new-fullname').value.trim();
+    const newEmail = `${username}@${NETMAIL_DOMAIN}`;
+
+    if (password.length < 6) {
+        showNetmailStatus('netmail-create-status', '❌ A senha deve ter pelo menos 6 caracteres.', 'error');
+        return;
+    }
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span> Criando...';
+
+    try {
+        const { error } = await sbNetmail.from('email_accounts').insert({
+            email: newEmail,
+            password_hash: password,
+            fullname: fullname || username,
+            status: 'active'
+        });
+
+        if (error) throw error;
+
+        showNetmailStatus('netmail-create-status', `✅ Conta ${newEmail} criada com sucesso!`, 'success');
+        e.target.reset();
+        netmailLoadAccounts();
+        netmailLoadFromSelect();
+    } catch (err) {
+        showNetmailStatus('netmail-create-status', '❌ ' + (err.message || 'Erro ao criar conta'), 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+});
+
+// Handler: enviar e-mail
+document.getElementById('netmail-compose-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const from = document.getElementById('netmail-from').value;
+    const to = document.getElementById('netmail-to').value;
+    const subject = document.getElementById('netmail-subject').value;
+    const body = document.getElementById('netmail-body').value;
+
+    if (!from) {
+        showNetmailStatus('netmail-compose-status', '❌ Crie uma conta Netmail primeiro.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('netmail-send-btn');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span> Enviando...';
+
+    try {
+        const { error } = await sbNetmail.functions.invoke('send-email', {
+            body: { to, subject, body, from }
+        });
+
+        if (error) throw error;
+
+        showNetmailStatus('netmail-compose-status', '✅ E-mail enviado com sucesso!', 'success');
+        e.target.reset();
+    } catch (err) {
+        showNetmailStatus('netmail-compose-status', '❌ ' + (err.message || 'Falha ao enviar'), 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+});
 
 async function carregarPedidos(resetPage = false) {
     const container = document.getElementById('lista-pedidos');
@@ -3326,6 +3818,7 @@ document.addEventListener('click', async (e) => {
         case 'new-servico': abrirModalServico(); break;
         case 'edit-servico': editarServico(id); break;
         case 'delete-servico': excluirServico(id, name); break;
+        case 'quick-netmail': navegarPara('netmail'); break;
         case 'quick-view-orders': navegarPara('pedidos'); break;
         case 'mark-read': marcarLida(id); break;
         case 'delete-message': excluirMensagem(id); break;
@@ -3399,7 +3892,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     const savedView = localStorage.getItem('admin_current_view');
-    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'servicos', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
+    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'servicos', 'pedidos', 'mensagens', 'netmail', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
     if (savedView && validViews.includes(savedView)) navegarPara(savedView);
     else await carregarDashboard();
 });
