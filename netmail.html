@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netmail | E-mail Profissional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .tab-inactive { color: #6b7280; }
+        .tab-inactive:hover { color: #374151; }
+        .logo-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <!-- Cabeçalho com Marca Netmail -->
+        <header class="mb-6">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="logo-gradient w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    N
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Netmail</h1>
+                    <p class="text-gray-500 text-sm">E-mail profissional para seu negócio</p>
+                </div>
+            </div>
+            <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <p class="text-sm text-blue-800">
+                             </p>
+            </div>
+        </header>
+
+        <!-- Abas de Navegação -->
+        <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+            <button onclick="switchTab('inbox')" id="tab-inbox" class="tab-active px-4 py-2 transition-colors whitespace-nowrap">📥 Caixa de Entrada</button>
+            <button onclick="switchTab('compose')" id="tab-compose" class="tab-inactive px-4 py-2 transition-colors whitespace-nowrap">✉️ Novo E-mail</button>
+            <button onclick="switchTab('create')" id="tab-create" class="tab-inactive px-4 py-2 transition-colors whitespace-nowrap">🆕 Criar Conta</button>
+        </div>
+
+        <!-- Seção 1: Caixa de Entrada -->
+        <div id="view-inbox" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Mensagens Recebidas</h2>
+                <button onclick="loadInbox()" class="text-sm text-blue-600 hover:underline">🔄 Atualizar</button>
+            </div>
+            <div id="inbox-list" class="space-y-3">
+                <p class="text-gray-400 text-center py-8">Carregando e-mails...</p>
+            </div>
+        </div>
+
+        <!-- Seção 2: Compor E-mail -->
+        <div id="view-compose" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold mb-4">✉️ Novo E-mail</h2>
+            <form id="email-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">De (Sua conta Netmail)</label>
+                    <select id="from-email-select" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                        <option>Carregando contas...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Para (E-mail)</label>
+                    <input type="email" id="to-email" required placeholder="exemplo@dominio.com" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Assunto</label>
+                    <input type="text" id="subject" required placeholder="Assunto da mensagem" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
+                    <textarea id="body" rows="6" required placeholder="Escreva sua mensagem aqui..." 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <p id="status-msg" class="text-sm"></p>
+                    <button type="submit" id="send-btn" 
+                        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors font-medium flex items-center gap-2">
+                        <span>Enviar E-mail</span>
+                        <svg id="loading-spinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Seção 3: Criar Nova Conta Netmail -->
+        <div id="view-create" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold mb-4">🆕 Criar Nova Conta Netmail</h2>
+            <div class="bg-purple-50 border-l-4 border-purple-400 p-4 mb-6">
+                <p class="text-sm text-purple-800">
+                    <strong>💡 Dica:</strong> Crie contas profissionais como <code>contato@</code>, <code>vendas@</code> ou <code>suporte@</code> para seu domínio.
+                </p>
+            </div>
+            <form id="create-account-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Usuário</label>
+                    <div class="flex">
+                        <input type="text" id="new-username" required placeholder="joao.silva" 
+                            class="flex-1 px-3 py-2 border border-r-0 border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm" id="domain-display">
+                            @e07imports.com.br
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="new-password" required placeholder="Mínimo 6 caracteres" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo (Opcional)</label>
+                    <input type="text" id="new-fullname" placeholder="João da Silva" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <p id="create-status-msg" class="text-sm"></p>
+                    <button type="submit" id="create-btn" 
+                        class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors font-medium flex items-center gap-2">
+                        <span>Criar Conta Netmail</span>
+                        <svg id="create-spinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold mb-3">Contas Netmail Ativas</h3>
+                <div id="accounts-list" class="space-y-2">
+                    <p class="text-gray-400 text-sm">Carregando contas...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="mt-12 text-center text-sm text-gray-500">
+            <p>Netmail © 2026 </p>
+        </footer>
+    </div>
+
+    <script>
+        // 1. CONFIGURAÇÃO
+        const SUPABASE_URL = 'https://enhasmqjniyplrajdbkh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVuaGFzbXFqbml5cGxyYWpkYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0ODkyNzgsImV4cCI6MjEwNTA2NTI3OH0.Ax9sm3lItl0Zv_r7RjE9HYTlvh9qnJMmLkbkiNl0z-4';
+        const MAIN_DOMAIN = 'e07imports.com.br'; 
+
+        // ✅ CORREÇÃO: Renomeei para 'sb' para evitar conflito
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('domain-display').textContent = `@${MAIN_DOMAIN}`;
+            loadAccounts();
+            loadInbox();
+        });
+
+        // 3. FUNÇÕES DE INTERFACE
+        function switchTab(tab) {
+            ['inbox', 'compose', 'create'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('tab-active');
+                document.getElementById(`tab-${t}`).classList.add('tab-inactive');
+            });
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.remove('tab-inactive');
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+
+            if (tab === 'inbox') loadInbox();
+            if (tab === 'create') loadAccounts();
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        // 4. CARREGAR CONTAS
+        async function loadAccounts() {
+            const listEl = document.getElementById('accounts-list');
+            const selectEl = document.getElementById('from-email-select');
+            
+            listEl.innerHTML = '<p class="text-gray-400 text-sm">Carregando...</p>';
+            selectEl.innerHTML = '<option>Carregando...</option>';
+
+            const { data, error } = await sb
+                .from('email_accounts')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error || !data || data.length === 0) {
+                listEl.innerHTML = '<p class="text-gray-400 text-sm">Nenhuma conta Netmail criada ainda.</p>';
+                selectEl.innerHTML = `<option value="contato@${MAIN_DOMAIN}">contato@${MAIN_DOMAIN} (Exemplo)</option>`;
+                return;
+            }
+
+            listEl.innerHTML = data.map(acc => `
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded border">
+                    <div>
+                        <p class="font-semibold text-gray-800">${acc.email}</p>
+                        <p class="text-xs text-gray-500">Criado em: ${formatDateTime(acc.created_at)}</p>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Ativo</span>
+                </div>
+            `).join('');
+
+            selectEl.innerHTML = data.map(acc => `<option value="${acc.email}">${acc.email}</option>`).join('');
+        }
+
+        // 5. CRIAR CONTA
+        document.getElementById('create-account-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('new-username').value.trim().toLowerCase();
+            const password = document.getElementById('new-password').value;
+            const fullname = document.getElementById('new-fullname').value.trim();
+            const newEmail = `${username}@${MAIN_DOMAIN}`;
+            
+            const statusMsg = document.getElementById('create-status-msg');
+            const createBtn = document.getElementById('create-btn');
+            const spinner = document.getElementById('create-spinner');
+
+            if (password.length < 6) {
+                statusMsg.textContent = '❌ A senha deve ter pelo menos 6 caracteres.';
+                statusMsg.className = 'text-sm text-red-600';
+                return;
+            }
+
+            createBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            statusMsg.textContent = 'Registrando conta Netmail...';
+            statusMsg.className = 'text-sm text-blue-600';
+
+            try {
+                const { data, error } = await sb.from('email_accounts').insert({
+                    email: newEmail,
+                    password_hash: password,
+                    fullname: fullname || username,
+                    status: 'active'
+                }).select();
+
+                if (error) throw error;
+
+                statusMsg.textContent = `✅ Conta Netmail ${newEmail} criada com sucesso!`;
+                statusMsg.className = 'text-sm text-green-600';
+                document.getElementById('create-account-form').reset();
+                
+                setTimeout(() => {
+                    statusMsg.textContent = '';
+                    loadAccounts();
+                }, 1000);
+
+            } catch (err) {
+                console.error('Erro ao criar conta:', err);
+                statusMsg.textContent = `❌ Erro: ${err.message}`;
+                statusMsg.className = 'text-sm text-red-600';
+            } finally {
+                createBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // 6. ENVIAR E-MAIL
+        document.getElementById('email-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const from = document.getElementById('from-email-select').value;
+            const to = document.getElementById('to-email').value;
+            const subject = document.getElementById('subject').value;
+            const body = document.getElementById('body').value;
+            
+            const statusMsg = document.getElementById('status-msg');
+            const sendBtn = document.getElementById('send-btn');
+            const spinner = document.getElementById('loading-spinner');
+
+            sendBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            statusMsg.textContent = 'Enviando via Netmail...';
+            statusMsg.className = 'text-sm text-blue-600';
+
+            try {
+                const { data, error } = await sb.functions.invoke('send-email', {
+                    body: { to, subject, body, from }
+                });
+
+                if (error) throw error;
+
+                statusMsg.textContent = '✅ E-mail enviado com sucesso pelo Netmail!';
+                statusMsg.className = 'text-sm text-green-600';
+                document.getElementById('email-form').reset();
+                
+                setTimeout(() => {
+                    statusMsg.textContent = '';
+                    switchTab('inbox');
+                }, 1500);
+
+            } catch (err) {
+                console.error('Erro ao enviar:', err);
+                statusMsg.textContent = `❌ Erro: ${err.message || 'Falha na conexão'}`;
+                statusMsg.className = 'text-sm text-red-600';
+            } finally {
+                sendBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // 7. CARREGAR CAIXA DE ENTRADA
+        async function loadInbox() {
+            const listEl = document.getElementById('inbox-list');
+            listEl.innerHTML = '<p class="text-gray-400 text-center py-8">Carregando...</p>';
+
+            const { data, error } = await sb
+                .from('emails')
+                .select('*')
+                .eq('direction', 'inbound')
+                .order('created_at', { ascending: false })
+                .limit(50);
+
+            if (error) {
+                listEl.innerHTML = `<p class="text-red-500 text-center py-8">Erro ao carregar: ${error.message}</p>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                listEl.innerHTML = '<p class="text-gray-400 text-center py-8">Nenhum e-mail recebido ainda.</p>';
+                return;
+            }
+
+            listEl.innerHTML = data.map(email => `
+                <div class="border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-semibold text-gray-800">${email.from_email}</span>
+                        <span class="text-xs text-gray-400">${formatDateTime(email.created_at)}</span>
+                    </div>
+                    <h3 class="font-medium text-gray-700 mb-2">${email.subject || '(Sem assunto)'}</h3>
+                    <p class="text-sm text-gray-600 whitespace-pre-wrap">${email.body}</p>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
