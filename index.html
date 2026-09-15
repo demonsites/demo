@@ -92,6 +92,8 @@ a:focus-visible {
 .btn-view-odonto:hover { background: rgba(251, 191, 36, 0.4); }
 .btn-view-catalogo { background: rgba(96, 165, 250, 0.25); color: white; }
 .btn-view-catalogo:hover { background: rgba(96, 165, 250, 0.4); }
+.btn-view-servicos { background: rgba(16, 185, 129, 0.25); color: white; }
+.btn-view-servicos:hover { background: rgba(16, 185, 129, 0.4); }
 .btn-logout { background: var(--danger); color: white; }
 .btn-logout:hover { background: #dc2626; }
 .menu-toggle {
@@ -215,6 +217,7 @@ a.sidebar-item { text-decoration: none; }
 .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
 .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+.stat-icon.teal { background: rgba(20, 184, 166, 0.1); color: #14b8a6; }
 .stat-info h3 { font-size: 1.8rem; font-weight: 900; color: var(--cobalt-deep); line-height: 1; }
 .stat-info p { color: var(--text-gray); font-size: 0.85rem; font-weight: 600; }
 .btn {
@@ -807,12 +810,10 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     word-break: break-all;
 }
 
-/* =====================================================
-   FIX MOBILE — header limpo, sem email, botões alinhados
-   ===================================================== */
+/* FIX MOBILE — header limpo, sem email, botões alinhados */
 #admin-email-badge { display: none !important; }
 @media (max-width: 900px) {
-    .btn-view-store, .btn-view-odonto, .btn-view-catalogo { display: none !important; }
+    .btn-view-store, .btn-view-odonto, .btn-view-catalogo, .btn-view-servicos { display: none !important; }
     .admin-header {
         flex-wrap: nowrap !important;
         align-items: center !important;
@@ -898,6 +899,9 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
         <a href="produtos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-catalogo" title="Ver Catálogo Geral">
             📦 <span>Catálogo</span>
         </a>
+        <a href="servicos.html" target="_blank" rel="noopener noreferrer" class="btn-header btn-view-servicos" title="Ver Serviços">
+            🛠️ <span>Serviços</span>
+        </a>
         <button class="btn-header btn-logout" id="btn-logout" aria-label="Sair do painel">
             🚪 <span>Sair</span>
         </button>
@@ -925,6 +929,10 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <div class="sidebar-item" data-view="banners" role="button" tabindex="0">
                 <span class="icon">🎯</span>
                 <span>Banners</span>
+            </div>
+            <div class="sidebar-item" data-view="servicos" role="button" tabindex="0">
+                <span class="icon">🛠️</span>
+                <span>Serviços</span>
             </div>
         </div>
         <div class="sidebar-section">
@@ -1014,6 +1022,13 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                     </div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon teal">🛠️</div>
+                    <div class="stat-info">
+                        <h3 id="stat-servicos">0</h3>
+                        <p>Serviços</p>
+                    </div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-icon purple">💳</div>
                     <div class="stat-info">
                         <h3 id="stat-gateways">0</h3>
@@ -1026,6 +1041,7 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <button class="btn btn-primary" data-action="quick-new-product">➕ Novo Produto</button>
                     <button class="btn btn-gold" data-action="quick-new-banner">➕ Novo Banner</button>
+                    <button class="btn btn-secondary" data-action="quick-new-servico">➕ Novo Serviço</button>
                     <button class="btn btn-secondary" data-action="quick-view-orders">🛒 Ver Pedidos</button>
                     <button class="btn btn-secondary" data-action="test-connection" style="border: 2px solid var(--cobalt-main); color: var(--cobalt-main);">🔍 Testar Conexão</button>
                 </div>
@@ -1095,6 +1111,26 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
             <div class="card">
                 <div id="lista-banners" class="loading">
                     <span class="spinner-inline"></span> Carregando banners...
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVIÇOS -->
+        <div class="admin-view" id="view-servicos">
+            <div class="content-header">
+                <h1>🛠️ Serviços</h1>
+                <p>Gerencie os serviços exibidos em servicos.html</p>
+            </div>
+            <div class="alert-box alert-info">
+                <strong>💡 Dica:</strong> Serviços não têm estoque nem carrinho. O cliente clica em
+                <strong>Agendar</strong> ou <strong>WhatsApp</strong> direto na página.
+            </div>
+            <div style="margin-bottom: 24px;">
+                <button class="btn btn-gold" data-action="new-servico">➕ Novo Serviço</button>
+            </div>
+            <div class="card">
+                <div id="lista-servicos-admin" class="loading">
+                    <span class="spinner-inline"></span> Carregando serviços...
                 </div>
             </div>
         </div>
@@ -1693,6 +1729,80 @@ input:checked + .toggle-slider:before { transform: translateX(24px); }
     </div>
 </div>
 
+<!-- MODAL SERVIÇO -->
+<div class="modal-overlay" id="modal-servico" role="dialog">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modal-servico-titulo">Novo Serviço</h3>
+            <button class="modal-close" data-close-modal="modal-servico" aria-label="Fechar">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="serv-id">
+            <div class="form-group">
+                <label>Nome do Serviço <span class="req">*</span></label>
+                <input type="text" class="form-input" id="serv-nome" placeholder="Ex: Consultoria Técnica">
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea class="form-textarea" id="serv-desc" placeholder="Descreva o serviço..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select class="form-select" id="serv-cat"></select>
+                </div>
+                <div class="form-group">
+                    <label>Selo / Destaque</label>
+                    <select class="form-select" id="serv-destaque">
+                        <option value="">Nenhum</option>
+                        <option value="POPULAR">⭐ POPULAR</option>
+                        <option value="NOVO">🆕 NOVO</option>
+                        <option value="OFERTA">🔥 OFERTA</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row three">
+                <div class="form-group">
+                    <label>Preço base (R$)</label>
+                    <input type="number" step="0.01" min="0" class="form-input" id="serv-preco" placeholder="250.00">
+                </div>
+                <div class="form-group">
+                    <label>Duração (min)</label>
+                    <input type="number" min="0" class="form-input" id="serv-duracao" placeholder="60">
+                </div>
+                <div class="form-group">
+                    <label>Ordem</label>
+                    <input type="number" class="form-input" id="serv-ordem" placeholder="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Benefícios (um por linha)</label>
+                <textarea class="form-textarea" id="serv-beneficios" placeholder="Análise personalizada&#10;Relatório técnico&#10;Garantia de 90 dias"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Imagem do Serviço</label>
+                <div class="upload-area" id="serv-upload">
+                    <div id="serv-upload-content">
+                        <div class="upload-icon">🖼️</div>
+                        <div class="upload-text"><strong>Clique para enviar imagem</strong><br>PNG, JPG ou WEBP • Máx. 5MB</div>
+                    </div>
+                </div>
+                <input type="file" id="serv-img-input" accept="image/*" style="display:none">
+                <input type="hidden" id="serv-img-url">
+            </div>
+            <div class="form-group">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="checkbox" id="serv-ativo" checked> Ativo (aparece no site)
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-close-modal="modal-servico">Cancelar</button>
+            <button class="btn btn-primary" id="btn-salvar-servico">💾 Salvar Serviço</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
 <script>
@@ -1864,6 +1974,7 @@ function navegarPara(view) {
         produtos:  () => carregarProdutos(true),
         categorias: carregarCategorias,
         banners:   carregarBanners,
+        servicos:  carregarServicosAdmin,
         pedidos:   () => carregarPedidos(true),
         mensagens: () => carregarMensagens(true),
         gateways:  carregarGateways,
@@ -1913,18 +2024,20 @@ async function testarConexao() {
 
 async function carregarDashboard() {
     try {
-        const [produtos, pedidos, mensagens, banners, gateways] = await Promise.all([
+        const [produtos, pedidos, mensagens, banners, gateways, servicos] = await Promise.all([
             supabaseClient.from('produtos').select('*', { count: 'exact', head: true }),
             supabaseClient.from('pedidos').select('*', { count: 'exact', head: true }),
             supabaseClient.from('contatos').select('*', { count: 'exact', head: true }),
             supabaseClient.from('banners').select('*', { count: 'exact', head: true }),
-            supabaseClient.from('gateways').select('*')
+            supabaseClient.from('gateways').select('*'),
+            supabaseClient.from('servicos').select('*', { count: 'exact', head: true })
         ]);
         document.getElementById('stat-produtos').textContent = produtos.count || 0;
         document.getElementById('stat-pedidos').textContent = pedidos.count || 0;
         document.getElementById('stat-mensagens').textContent = mensagens.count || 0;
         document.getElementById('stat-banners').textContent = banners.count || 0;
         document.getElementById('stat-gateways').textContent = gateways.data ? gateways.data.filter(g => g.ativo).length : 0;
+        document.getElementById('stat-servicos').textContent = servicos.count || 0;
 
         const { data: recentes } = await supabaseClient.from('produtos').select('*').order('criado_em', { ascending: false }).limit(5);
         const container = document.getElementById('dashboard-produtos');
@@ -2383,6 +2496,174 @@ async function excluirBanner(id) {
         carregarBanners();
     } catch (e) {
         showToast('Erro: ' + e.message, 'error');
+    }
+}
+
+// ============ SERVIÇOS (ADMIN) ============
+function formatarDuracaoAdmin(min) {
+    if (!min) return '-';
+    const h = Math.floor(min / 60), m = min % 60;
+    if (h > 0 && m > 0) return h + 'h' + m + 'min';
+    if (h > 0) return h + 'h';
+    return m + 'min';
+}
+
+async function carregarServicosAdmin() {
+    const container = document.getElementById('lista-servicos-admin');
+    container.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Carregando...</div>';
+    try {
+        const { data, error } = await supabaseClient.from('servicos').select('*').order('ordem', { ascending: true });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+            container.innerHTML = '<div class="empty-state"><div class="icon">🛠️</div><h3>Nenhum serviço</h3><p>Clique em "Novo Serviço".</p></div>';
+            return;
+        }
+        container.innerHTML = `<div class="table-container"><table>
+            <thead><tr><th>Imagem</th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Duração</th><th>Ativo</th><th>Ações</th></tr></thead>
+            <tbody>${data.map(s => `
+                <tr>
+                    <td><img src="${escapeHTML(s.imagem_url || '')}" class="product-img-thumb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e2e8f0%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E'"></td>
+                    <td><strong>${escapeHTML(s.nome)}</strong>${s.destaque ? ` <span class="badge-status badge-bestseller">${escapeHTML(s.destaque)}</span>` : ''}</td>
+                    <td>${escapeHTML(getCategoriaNome(s.categoria))}</td>
+                    <td>R$ ${formatarPreco(s.preco_base)}</td>
+                    <td>${formatarDuracaoAdmin(s.duracao_min)}</td>
+                    <td><label class="toggle-switch"><input type="checkbox" ${s.ativo ? 'checked' : ''} data-action="toggle-servico" data-id="${escapeHTML(s.id)}"><span class="toggle-slider"></span></label></td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" data-action="edit-servico" data-id="${escapeHTML(s.id)}">✏️</button>
+                        <button class="btn btn-sm btn-danger" data-action="delete-servico" data-id="${escapeHTML(s.id)}" data-name="${escapeHTML(s.nome)}">🗑️</button>
+                    </td>
+                </tr>`).join('')}
+            </tbody></table></div>`;
+    } catch (e) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar</h3><p>' + escapeHTML(e.message) + '</p><p>Execute o SQL da tabela <code>servicos</code> no Supabase.</p></div>';
+    }
+}
+
+function preencherSelectServCategorias(selecionada) {
+    const select = document.getElementById('serv-cat');
+    select.innerHTML = (state.categorias || []).map(c =>
+        `<option value="${escapeHTML(c.slug)}" ${c.slug === selecionada ? 'selected' : ''}>${escapeHTML(c.nome)}</option>`
+    ).join('') || '<option value="">(sem categorias)</option>';
+}
+
+function resetFormServico() {
+    document.getElementById('modal-servico-titulo').textContent = 'Novo Serviço';
+    document.getElementById('serv-id').value = '';
+    document.getElementById('serv-nome').value = '';
+    document.getElementById('serv-desc').value = '';
+    document.getElementById('serv-destaque').value = '';
+    document.getElementById('serv-preco').value = '';
+    document.getElementById('serv-duracao').value = '';
+    document.getElementById('serv-ordem').value = '';
+    document.getElementById('serv-beneficios').value = '';
+    document.getElementById('serv-img-url').value = '';
+    document.getElementById('serv-ativo').checked = true;
+    const up = document.getElementById('serv-upload');
+    up.classList.remove('has-image');
+    document.getElementById('serv-upload-content').innerHTML = '<div class="upload-icon">🖼️</div><div class="upload-text"><strong>Clique para enviar imagem</strong><br>PNG, JPG ou WEBP • Máx. 5MB</div>';
+}
+
+async function abrirModalServico() {
+    resetFormServico();
+    if (state.categorias.length === 0) {
+        const { data } = await supabaseClient.from('categorias').select('*').order('ordem');
+        state.categorias = data || [];
+    }
+    preencherSelectServCategorias(null);
+    document.getElementById('modal-servico').classList.add('active');
+}
+
+async function editarServico(id) {
+    const { data: s, error } = await supabaseClient.from('servicos').select('*').eq('id', id).single();
+    if (error || !s) { showToast('Serviço não encontrado', 'error'); return; }
+    document.getElementById('modal-servico-titulo').textContent = 'Editar Serviço';
+    document.getElementById('serv-id').value = s.id;
+    document.getElementById('serv-nome').value = s.nome || '';
+    document.getElementById('serv-desc').value = s.descricao || '';
+    document.getElementById('serv-destaque').value = s.destaque || '';
+    document.getElementById('serv-preco').value = s.preco_base || '';
+    document.getElementById('serv-duracao').value = s.duracao_min || '';
+    document.getElementById('serv-ordem').value = s.ordem || '';
+    document.getElementById('serv-beneficios').value = (s.beneficios || []).join('\n');
+    document.getElementById('serv-img-url').value = s.imagem_url || '';
+    document.getElementById('serv-ativo').checked = !!s.ativo;
+    preencherSelectServCategorias(s.categoria);
+    if (s.imagem_url) {
+        document.getElementById('serv-upload').classList.add('has-image');
+        document.getElementById('serv-upload-content').innerHTML = `<img src="${escapeHTML(s.imagem_url)}" class="preview-img">`;
+    }
+    document.getElementById('modal-servico').classList.add('active');
+}
+
+async function salvarServico() {
+    const id = document.getElementById('serv-id').value;
+    const beneficios = document.getElementById('serv-beneficios').value
+        .split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const servico = {
+        nome: document.getElementById('serv-nome').value.trim(),
+        descricao: document.getElementById('serv-desc').value.trim(),
+        categoria: document.getElementById('serv-cat').value || null,
+        destaque: document.getElementById('serv-destaque').value || null,
+        preco_base: parseFloat(document.getElementById('serv-preco').value) || 0,
+        duracao_min: parseInt(document.getElementById('serv-duracao').value) || null,
+        ordem: parseInt(document.getElementById('serv-ordem').value) || 0,
+        beneficios: beneficios,
+        imagem_url: document.getElementById('serv-img-url').value || null,
+        ativo: document.getElementById('serv-ativo').checked
+    };
+    if (!servico.nome) { showToast('Preencha o nome do serviço!', 'error'); return; }
+    const btn = document.getElementById('btn-salvar-servico');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    try {
+        if (id) {
+            const { error } = await supabaseClient.from('servicos').update(servico).eq('id', id);
+            if (error) throw error;
+        } else {
+            const { error } = await supabaseClient.from('servicos').insert([servico]);
+            if (error) throw error;
+        }
+        showToast('✅ Serviço salvo!');
+        fecharModal('modal-servico');
+        carregarServicosAdmin();
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false; btn.textContent = '💾 Salvar Serviço';
+    }
+}
+
+async function toggleServico(id, ativo) {
+    try {
+        const { error } = await supabaseClient.from('servicos').update({ ativo }).eq('id', id);
+        if (error) throw error;
+        showToast(ativo ? '✅ Serviço ativado!' : '⏸️ Serviço desativado');
+        carregarServicosAdmin();
+    } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+async function excluirServico(id, nome) {
+    if (!confirm(`Excluir o serviço "${nome}"?`)) return;
+    try {
+        const { error } = await supabaseClient.from('servicos').delete().eq('id', id);
+        if (error) throw error;
+        showToast('Serviço excluído!');
+        carregarServicosAdmin();
+    } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+async function previewServicoImg(input) {
+    if (!input.files[0]) return;
+    const content = document.getElementById('serv-upload-content');
+    content.innerHTML = '<div class="loading"><span class="spinner-inline"></span> Enviando...</div>';
+    try {
+        const url = await uploadImagem(input.files[0], 'produtos');
+        document.getElementById('serv-img-url').value = url;
+        document.getElementById('serv-upload').classList.add('has-image');
+        content.innerHTML = `<img src="${escapeHTML(url)}" class="preview-img">`;
+        showToast('✅ Imagem enviada!');
+    } catch (e) {
+        showToast('Erro: ' + e.message, 'error');
+        content.innerHTML = '<div class="upload-icon">🖼️</div><div class="upload-text"><strong>Clique para enviar imagem</strong></div>';
     }
 }
 
@@ -3041,6 +3322,10 @@ document.addEventListener('click', async (e) => {
         case 'quick-new-banner': navegarPara('banners'); setTimeout(abrirModalBanner, 100); break;
         case 'new-banner': abrirModalBanner(); break;
         case 'delete-banner': excluirBanner(id); break;
+        case 'quick-new-servico': navegarPara('servicos'); setTimeout(abrirModalServico, 100); break;
+        case 'new-servico': abrirModalServico(); break;
+        case 'edit-servico': editarServico(id); break;
+        case 'delete-servico': excluirServico(id, name); break;
         case 'quick-view-orders': navegarPara('pedidos'); break;
         case 'mark-read': marcarLida(id); break;
         case 'delete-message': excluirMensagem(id); break;
@@ -3067,6 +3352,7 @@ document.addEventListener('change', (e) => {
     if (e.target.dataset.action === 'toggle-gateway') toggleGateway(e.target.dataset.id, e.target.checked);
     if (e.target.dataset.action === 'update-order-status') atualizarStatusPedido(e.target.dataset.id, e.target.value);
     if (e.target.dataset.action === 'toggle-landing-card') toggleLandingCard(e.target.dataset.id, e.target.checked);
+    if (e.target.dataset.action === 'toggle-servico') toggleServico(e.target.dataset.id, e.target.checked);
 });
 
 document.querySelectorAll('.sidebar-item[data-view]').forEach(item => {
@@ -3080,6 +3366,8 @@ document.getElementById('prod-upload').addEventListener('click', () => document.
 document.getElementById('prod-img-input').addEventListener('change', (e) => previewProduto(e.target));
 document.getElementById('banner-upload').addEventListener('click', () => document.getElementById('banner-img-input').click());
 document.getElementById('banner-img-input').addEventListener('change', (e) => previewBanner(e.target));
+document.getElementById('serv-upload').addEventListener('click', () => document.getElementById('serv-img-input').click());
+document.getElementById('serv-img-input').addEventListener('change', (e) => previewServicoImg(e.target));
 document.getElementById('btn-logout').addEventListener('click', sair);
 document.getElementById('menu-toggle').addEventListener('click', toggleSidebar);
 document.getElementById('btn-salvar-conteudo').addEventListener('click', salvarConteudo);
@@ -3088,6 +3376,7 @@ document.getElementById('btn-salvar-config').addEventListener('click', salvarCon
 document.getElementById('btn-salvar-produto').addEventListener('click', salvarProduto);
 document.getElementById('btn-salvar-categoria').addEventListener('click', salvarCategoria);
 document.getElementById('btn-salvar-banner').addEventListener('click', salvarBanner);
+document.getElementById('btn-salvar-servico').addEventListener('click', salvarServico);
 document.getElementById('btn-salvar-gateway').addEventListener('click', salvarGateway);
 document.getElementById('btn-testar-gateway').addEventListener('click', () => testarGateway(document.getElementById('gw-id').value));
 document.getElementById('btn-salvar-politica').addEventListener('click', salvarPolitica);
@@ -3110,7 +3399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     const savedView = localStorage.getItem('admin_current_view');
-    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
+    const validViews = ['dashboard', 'produtos', 'categorias', 'banners', 'servicos', 'pedidos', 'mensagens', 'gateways', 'conteudo', 'landing-cards', 'politicas', 'contato', 'config'];
     if (savedView && validViews.includes(savedView)) navegarPara(savedView);
     else await carregarDashboard();
 });
