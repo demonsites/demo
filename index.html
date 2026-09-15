@@ -3117,5 +3117,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     else await carregarDashboard();
 });
 </script>
-</body><style>#admin-email-badge{display:none !important;}</style>
+</body><style>
+/* Some com o email */
+#admin-email-badge{display:none !important;}
+
+/* Celular: 1 linha só, tudo alinhado */
+@media (max-width:900px){
+  /* Some com os 3 botões "ver site" que quebram a linha */
+  .btn-view-store,.btn-view-odonto,.btn-view-catalogo{display:none !important;}
+
+  /* Header travado em 1 linha, centralizado */
+  .admin-header{flex-wrap:nowrap !important;align-items:center !important;height:56px !important;padding:0 12px !important;}
+  .header-left,.header-right{flex-wrap:nowrap !important;align-items:center !important;gap:8px !important;}
+  .header-left{min-width:0;flex:1;}
+  .header-right{flex-shrink:0;}
+
+  /* Logo não empurra nada */
+  .admin-logo{font-size:1.1rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .menu-toggle{width:38px;height:38px;flex-shrink:0;}
+  .btn-header{padding:8px 10px !important;}
+  .btn-header span{display:none !important;}
+}
+</style>
 </html>
